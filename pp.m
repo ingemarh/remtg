@@ -7,7 +7,7 @@ end
 x=zeros(max(nsamp),nsig); d=x*NaN;
 for i=1:nsig
  ld=nsamp(i)-1;
- p=rd((sig(i)+1):(sig(i)+nsamp(i)));
+ p=rd(sig(i)+(1:nsamp(i)));
  if isempty(blev)
   b=min(p);
  else
@@ -20,22 +20,38 @@ for i=1:nsig
 % d(1:nsamp(i),i)=conv2(d(1:nsamp(i),i),ones(floor(siglen(1)/dt(i)),1)/(siglen(1)/siglen(i)),'same');
 %end
 end
-yl='Power (K)';
+xl='\mus'; yl='Power (K)';
 if isfinite(r0(1:nsig))
- x=(x+ones(max(nsamp),1)*(r0(1:nsig)-siglen(1:nsig)/2-dt(1:nsig))*1e6)*.15;
- if bval(11)
-  if d_parbl(8)>100e3
-   d=d.*x.^2.*(ones(max(nsamp),1)*(2*radcon(site)/d_parbl(8)*dt(1:nsig)./siglen(1:nsig)));
-  else
-   d=d*0;
+ x=(x+ones(max(nsamp),1)*(r0(1:nsig)-siglen(1:nsig)/2-dt(1:nsig))*1e6);
+ if all(x(:,1)>0)
+  x=x*.15;
+  if bval(11)
+   if d_parbl(8)>100e3
+    d=d.*x.^2.*(ones(max(nsamp),1)*(2*radcon(site)/d_parbl(8)*dt(1:nsig)./siglen(1:nsig)));
+   else
+    d=d*0;
+   end
+   yl='Density (m^{-3})';
   end
-  yl='Density (m^{-3})';
+  re=6370; x=x/re; x=re*sqrt(1+x.*(x+2*sin(el/57.2957795)))-re;
+  xl='Altitude (km)';
+ elseif nsig==1
+  filltime=30e-6+1.5*dt(1);
+  y=[0 filltime siglen(1) siglen(1)+filltime]*1e6;
+  pshape=[0 1 1 0]; y=y-mean(y); p=interp1(y,pshape,x(1:nsamp(1),1));
+  p(find(isnan(p)))=0;
+  tri=conv2(d(1:nsamp(1)),p/sum(p),'same');
+  [m,p]=max(tri);
+  snr=m/syst/b;
+  s=max(snr,.05);
+  del=x(p,1); if snr<0, del=NaN; end
+  p=ones(size(x,1)-4,1)*NaN;
+  x(:,2)=[y';p]; d(:,2)=[s*pshape'*syst*b;p];
  end
- re=6370; x=x/re; x=re*sqrt(1+x.*(x+2*sin(el/57.2957795)))-re;
- xl='Altitude (km)';
-else
- xl='\mus';
 end
 updateplot(fig,ax,x,d)
 set(get(ax,'xlabel'),'string',xl)
 set(get(ax,'ylabel'),'string',yl)
+if exist('snr','var')
+ set(get(ax,'title'),'string',(sprintf('SNR=%.1f%% Delay=%.0f\\mus',100*snr,del)))
+end
