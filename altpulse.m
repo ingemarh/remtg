@@ -4,7 +4,8 @@ tp=slen/nbits;
 slen=round(slen/lagincr);
 frac=round(slen/nbits);
 gating=frac;
-weight=((2:2:(2*frac))+1)/(2*frac+1);
+%weight=[1/6 (1:(frac-1))/(frac-1/3) 1]; boxcar filter at dt
+weight=[(1:(frac-1))/(frac-1/3) 1];
 ngates=nsamp-slen+2-gating;
 sacf=zeros(ngates,maxlag+1);
 
