@@ -1,0 +1,7 @@
+#!/bin/sh
+MATLABPATH=/home/kstdev/remtg
+SHELL=/bin/sh
+XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
+export MATLABPATH SHELL XTERM_WM_NAME
+#xterm -T rtg -e /usr/local/bin/matlab -nojvm -nosplash -r rtg &
+matlab -nojvm -nosplash -r rtg

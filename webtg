@@ -1,0 +1,36 @@
+#!/bin/sh
+rtdir=
+null=">/dev/null"
+ndumps="60"
+usage="Usage: webtg [-v] [-d dir] [-s KSTVL2Z] [-n dumps/secs] [start] | stop"
+while getopts vd:s:n: flag
+do
+ case $flag in
+  v) null=;;
+  d) rtdir="$OPTARG";;
+  s) EISCATSITE="$OPTARG"
+     export EISCATSITE;;
+  n) ndumps="$OPTARG";;
+  ?) echo $usage
+     exit 2;;
+ esac
+done
+shift `expr $OPTIND - 1`
+if [ "$*" = "stop" ];then
+ /bin/ps -u kstdev | awk '/webtg/ && ! /awk/ {print "ps  -fu kstdev | grep " $1 " | grep matlab"}' | /bin/sh | awk '{print $2}' | xargs kill -9 >/dev/null
+elif [ "$*" = "start" ] || [ "$*" = "" ];then
+ MATLABPATH=/home/kstdev/remtg
+ SHELL=/bin/sh
+ export MATLABPATH SHELL
+ unset DISPLAY
+ matlab $null << !
+  global rtdir webtg
+  rtdir='$rtdir'
+  webtg=$ndumps
+  while ~remtg, end
+ exit
+!
+else
+ echo $usage
+ exit 1
+fi
