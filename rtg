@@ -2,12 +2,17 @@
 #find remtg directory
 filename=$0
 while [ -h $filename ]; do
-        lscmd=`ls -l $filename 2>/dev/null`
-        filename=`echo "$lscmd" | awk '{ print $NF }'`
+	lscmd=`ls -l $filename 2>/dev/null`
+	f1=`echo "$lscmd" | awk '{ print $NF }'`
+	fp=`echo "$f1" | awk '{ print index($1,"/") }'`
+	if [ $fp != "1" ];then
+		filename=`dirname $filename`/$f1
+	else
+		filename=$f1
+	fi
 done
-MATLABPATH=`echo "$filename" | awk -F/ ' {for (i=2;i<NF;i++) printf("/%s",$i)} '`
+MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
-#MATLABPATH=/home/kstdev/remtg
 umask 022
 SHELL=/bin/sh
 XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`

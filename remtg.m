@@ -177,10 +177,11 @@ for ch=1:noch
 end
 if ~isempty(tdev)
  lt=length(tdev);
- if ~exist('tdim','var') | size(tdim,1)~=lt
-  tdim=ones(lt,ntim)*NaN;
+ if ~isstruct(tdim) | size(tdim.data,1)~=lt
+  tdim.data=ones(lt,ntim)*NaN; tdim.time=tdim.data(1,:);
  end
- tdim=[tdev tdim(:,1:(ntim-1))];
+ tdim.data=[tdev tdim.data(:,1:(ntim-1))];
+ tdim.time=[datenum(d_parbl(1:6)) tdim.time(1:(ntim-1))];
  if bval(10)
   timedev(30,ntim,thead,head)
  end
