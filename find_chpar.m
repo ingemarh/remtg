@@ -19,6 +19,13 @@ if isempty(chpar)
    [chpar,i]=strtok(i);
   end
  end
+ if ~isstr(chpar)
+  chpar=d_ExpInfo;
+  [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar); chpar=strtok(chpar,'_'); 
+  while ~isempty(chpar) & ~exist([expdir chpar defile '.m'])
+   chpar=chpar(1:end-1);
+  end
+ end
 end
 if isstr(chpar)
  if exist(['rtg_' chpar])
