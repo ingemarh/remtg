@@ -19,11 +19,23 @@ if isempty(chpar)
    chpar=chpar(1:end-1);
   end
  end
+ if isempty(chpar) & isunix
+  chpar=d_ExpInfo;
+  [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
+  [i,j]=unix(['ls ' expdir '??/' chpar defile '.m']);
+  while ~isempty(chpar) & i
+   chpar=chpar(1:end-1);
+   [i,j]=unix(['ls ' expdir '??/' chpar defile '.m']);
+  end
+ end
 end
 if isstr(chpar)
  if exist([expdir chpar defile '.m'])
   def_file=([expdir chpar defile]);
  elseif exist(['rtg_' chpar])
   def_file=which(['rtg_' chpar]);
+ elseif isunix
+  [i,def_file]=unix(['ls ' expdir '??/' chpar defile '.m']);
+  def_file=def_file(1:end-1);
  end
 end
