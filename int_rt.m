@@ -6,17 +6,17 @@ dd_data=0; acc_parbl=0; err=0; d_ExpInfo=[]; d_parbl=[]; nbytes=0; obytes=0; i=0
 while i<bval(2)
  i=i+1;
  if isempty(rtdir)
-  ext={'kir','sod','uhf','vhf','32m','42m','zod'};
+  ext={'kir','sod','uhf','vhf','32m','42m','32p','zod'};
   rdir='/kst/exp/';
   s=1; j=1;
   while s
    filename=[rdir 'latest@' char(ext(bval(4))) '.mat'];
    if ~exist(filename,'file'), pause(.6)
     if ~exist(filename,'file')
-     wsite='K UVE2 ';
+     wsite='K UVE2P ';
      myextra=' -id `xwininfo -root -all | grep Navigator | awk ''{ print $1 }'' | sort -r | head -1`';
      myextra=' ';
-     [s,j]=unix(sprintf('netscape%s -remote ''openURL(http://www.eiscat.com/rtg/rtg.cgi?%s)''',myextra,wsite(bval(4))));
+     web(sprintf('http://www.eiscat.com/rtg/rtg.cgi?%s',wsite(bval(4))))
      disp('No data!'), err=1; i=i-1; odate=[]; return
     end
    end

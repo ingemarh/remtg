@@ -1,16 +1,16 @@
 function mkweb(sms)
-global site lastweb bval figs using_x
-if bval(4)<8 & exist('lastweb','var') & now-lastweb<30/86400, return, end
+global site lastweb bval figs using_x maxant
+if bval(4)<maxant & exist('lastweb','var') & now-lastweb<30/86400, return, end
 if using_x
  jpg='png'; flag='-r72';
 else
  jpg='png256'; flag='';
 end
-sites='kstve2z'; sitex=sites(site);
+sites='kstve2pz'; sitex=sites(site);
 dir=tempdir;
 files=[dir sitex '.html'];
 fid=fopen(files,'w');
-wsite={'Kiruna','Sodankyl&auml;','Troms&oslash; UHF','Troms&oslash; VHF','ESR1','ESR2','Zod'};
+wsite={'Kiruna','Sodankyl&auml;','Troms&oslash; UHF','Troms&oslash; VHF','ESR1','ESR2','ESR3','Zod'};
 fprintf(fid,'<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\n</head>\n',char(wsite(site)));
 %figs=sort(get(0,'children'));
 reloadfix=fix(10000*rand(1));

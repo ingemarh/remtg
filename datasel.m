@@ -1,7 +1,7 @@
 function datasel
-global rtdir bval butts d odate
+global rtdir bval butts d odate maxant
 v=get(butts(4),'value');
-if v==8
+if v==maxant
  dir=rtdir;
  if ~exist(dir,'dir'), dir='/data'; end
  if ~exist(dir,'dir'), dir='/data1'; end
@@ -23,7 +23,7 @@ if v==8
   set(butts(4),'value',bval(4))
  end
 elseif v~=bval(4)
- if v<8
+ if v<maxant
   rtdir=[];
   set(butts(5),'visible','on')
  else

@@ -1,26 +1,27 @@
 function [err,chpar]=remtg(chpar)
 % Main rtg routine [err,chpar]=remtg(chpar)
 % Version 2002-10-23
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x maxant
 if nargin<1, chpar=[]; end
+wsite={'Kiruna','Sodankyla','Tromso UHF','Tromso VHF','ESR1','ESR2','ESR3','Zod'};
+radcon=[6e11,6e11,6e11,2e11,6e11,3e11,6e11,5e11];
+antenna=[5 6 4 3 1 2 8 7]; tdev=[];
+maxant=max(antenna)+1;
 if isempty(bval)
  site=findstr('KSTVL2Z',getenv('EISCATSITE'));
  if isempty(site), site=1;
  elseif site==3 & ~isempty(findstr(getenv('RXHOST'),'v5011')), site=4;
  end
- bval=[1 1 1 8-isempty(rtdir)*(8-site) 0 1 0 1 0 0 0];
+ bval=[1 1 1 maxant-isempty(rtdir)*(maxant-site) 0 1 0 1 0 0 0];
  if strcmp('rtg',getenv('XTERM_WM_NAME')), bval(5)=1;
  elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1]) 1 1];
  end
  using_x=prod(get(0,'ScreenSize'))-1;
 end
-wsite={'Kiruna','Sodankyla','Tromso UHF','Tromso VHF','ESR1','ESR2','Zod'};
-radcon=[6e11,6e11,6e11,2e11,6e11,3e11,5e11];
-antenna=[5 6 4 3 1 2 7]; tdev=[];
 if isempty(butts) | ~ishandle(butts(1))
  rtgbuttons(10)
 end
-if bval(4)<9
+if bval(4)<maxant+1
  [ints,filename,nbytes,err]=int_rt;
  if err
   if ints==0, return, end
@@ -39,7 +40,7 @@ head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,d_parbl(8)/1000,rem(d_parbl(10)
 %raw data
 sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(wsite(site))];
 t1=raw(10,['Raw data' sitet],sms);
-if bval(4)<8
+if bval(4)<maxant
  if findstr(filename,'RT')
   set(t1,'string','Not recording')
  else
