@@ -5,7 +5,7 @@ slen=round(slen/lagincr);
 frac=round(slen/nbits);
 if nbits==1
  sacf=reshape(dd_data(sig+(1:ngates*(maxlag+1))),maxlag+1,ngates);
- weight=[1 ((maxlag-1):-1:1)/(maxlag-1/3) 1/6/maxlag];
+ weight=[1 ([(maxlag-1):-1:1 1/6])/(maxlag-1/3)];
  sacf=sacf./(weight(1:maxlag+1)'*ones(1,ngates));
  if r0==0
   r0=(1-ngates)/2*lagincr*frac;
@@ -20,20 +20,26 @@ else
  w1=[weight fliplr(weight(1:end-1)) 0];
  nr=ceil(maxlag/length(w1));
  w1=repmat(w1,1,nr)'; w2=[zeros(frac,1);w1];
- m=[1:frac-1 frac:-1:0]';
- m1=m*(nbits-1:-2:1); m2=m*(nbits-2:-2:1);
+ m=[1:frac-1 frac:-1:0];
+ m1=m(:)*(nbits-1:-2:1); m2=m(:)*(nbits-2:-2:1);
  m1=m1(:); m2=[zeros(frac,1);m2(:)];
 
  w=w1(1:maxlag).*m1(1:maxlag)+w2(1:maxlag).*m2(1:maxlag);
  sacf=[zeros(1,ngates);sacf./(w*ones(1,ngates))];
 
- if frac>4
-  nff=max(frac,6);
+ %sacf=sum(sacf,2);
+ if frac>12
+sacf(1,:)=max(abs(sacf(frac:end,:)));
+sacf(2,:)=mean(sacf([1 3],:));
+sacf(2,:)=complex(real(mean(sacf([1 2],:))),imag(mean(sacf([2 3],:))));
+sacf(1,:)=(4*abs(sacf(2,:))-abs(sacf(3,:)))/1;
+ elseif frac>6
+  nff=min(frac,6);
   nf=fix(nff/2);
-  sacf(1,:)=1;
+  %sacf(1,:)=1;
   for i=1:ngates
-   p=polyval(polyfit([1:nff-1]'.^2,abs([sacf(2:nff,i)]),1),(0:nf-1)'.^2);
-   ang=angle(sacf(1:nf,i));
+   p=polyval(polyfit([1:nff-1]'.^2,abs(sacf(2:nff,i)),1),(0:nf-1)'.^2);
+   ang=mean(angle(sacf(2:nff,i))./[1:nff-1]')*[0:nf-1]';
    sacf(1:nf,i)=p.*exp(j*ang);
   end
  else

@@ -9,13 +9,9 @@ for mm=m
  if isempty(kkk), kk=k; else, kk=kkk(1); end
  wind=hamming(2*kk); acf(1:kk,mm)=acf(1:kk,mm).*wind(kk+1:end);
 end
-sp=real(fft([acf(:,m);conj(acf(k:-1:2,m))]));
-f=[sp((k+1):(2*k-1),:);sp(1:k,:)];
+sp=real(fft([acf(1:k-1,m);conj(acf(k:-1:2,m))]));
 k=k-1;
-if nargin==3
- plot(0:k,real(acf(:,m)),'r',0:k,imag(acf(:,m)),'g',-k:k,f/sqrt(2*k+1),'b')
- grid
-end
+f=[sp(k+1:2*k,:);sp(1:k,:)];
 if nargin>1
- df=1/mean(diff(lag)); w=(-k:k)*df/(2*k+1); f=f/df;
+ df=1/mean(diff(lag)); w=(-k:k-1)*df/(2*k); f=f/df;
 end
