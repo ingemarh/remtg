@@ -88,7 +88,8 @@ elseif noch>0 & strcmp(get(butts(7),'visible'),'off')
  bval(6)=1;
 end
 for ch=1:noch
- nax=2+size(sigtyp,2);
+ nacf=0; for s=1:size(sigtyp,2), nacf=nacf+~isempty(char(sigtyp(ch,s))); end
+ nax=2+nacf;
  if isfinite(bacspec(ch)), nax=nax+1; end
  ax=getaxes(ch+20,nax/2,2,['Pulse ' num2str(ch) sitet],head);
  % back cal /pp
@@ -126,7 +127,7 @@ for ch=1:noch
  end
  % sig spec /spec
  kperc=mean(tsys)/mean(blev);
- for s=1:size(sigtyp,2)
+ for s=1:nacf
   if ~exist('srange0','var')
    s0=0;
    if site<3, s0=-1; end
