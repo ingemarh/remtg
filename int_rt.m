@@ -69,8 +69,8 @@ while i<bval(2)
  end
  obytes=nbytes;
  load(filename)
-% fprintf('%.0f %s\n',tosecs(d_parbl(1:6)),filename);
  dd_data=dd_data+d_data;
+ d_parbl=d_parbl(:).';
  acc_parbl=acc_parbl+d_parbl([7 8]);
  if bval(2)>30
   setbval(min([30 round(bval(2)/d_parbl(7))]),2)
