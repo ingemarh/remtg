@@ -32,9 +32,9 @@ set(ax,'ytick',sort(yt));
 tsys(find(tsys<0 | tsys>1000))=NaN;
 h=get(ax,'title');
 if length(tsys)>1
- set(h,'string',['Tsys=[' sprintf('%d ',round(tsys(1:(end-1)))) sprintf('%d]K (%dK)',round(tsys(end)),tcal)])
+ set(h,'string',['Tsys=[' sprintf('%d ',round(tsys(1:(end-1)))) sprintf('%d]K (%gK)',round(tsys(end)),tcal)])
 else
- set(h,'string',['Tsys=' sprintf('%d',round(tsys)) sprintf(' K (%dK)',tcal)])
+ set(h,'string',['Tsys=' sprintf('%d',round(tsys)) sprintf(' K (%gK)',tcal)])
 end
 h=get(ax,'ylabel');
 set(h,'string','Amplitude')
