@@ -15,7 +15,7 @@ if isempty(chpar)
  if ~isstr(chpar)
   chpar=d_ExpInfo;
   [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar); %chpar=strtok(chpar,'_'); 
-  while ~isempty(chpar) & ~exist([expdir chpar defile '.m'])
+  while ~isempty(chpar) & ~exist([expdir chpar defile '.m']) & ~exist(['rtg_' chpar])
    chpar=chpar(1:end-1);
   end
  end

@@ -4,7 +4,7 @@ tp=slen/nbits;
 slen=round(slen/lagincr);
 frac=round(slen/nbits);
 gating=frac;
-%weight=[1/6 (1:(frac-1))/(frac-1/3) 1]; boxcar filter at dt
+%weight=[1/6 (1:(frac-1))/(frac-1/3) 1]; %boxcar filter at dt
 weight=[(1:(frac-1))/(frac-1/3) 1];
 ngates=nsamp-slen+2-gating;
 sacf=zeros(ngates,maxlag+1);
@@ -51,6 +51,12 @@ end
 sacf=sacf(pick,:);
 %sacf=sum(sacf);
 ngates=size(sacf,1);
-sacf(:,1)=(4*abs(sacf(:,2))-abs(sacf(:,3)))/3;
+if frac>3
+ for i=1:ngates
+  sacf(i,1)=polyval(polyfit([1:frac-1].^2,abs([sacf(i,2:frac)]),1),0);
+ end
+else
+ sacf(:,1)=(4*abs(sacf(:,2))-abs(sacf(:,3)))/3;
+end
 h=spitspec(fig,ax,c2t*sacf.',(0:maxlag)*lagincr,lagincr*gating,r0);
 set(h,'string','Alternating code')
