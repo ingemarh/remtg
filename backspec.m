@@ -14,4 +14,4 @@ set(h,'string','Background')
 if ncal>1, bacf=mean(bacf')'; end
 
 function m=meddan(x)
-m=mean(x(find(abs(x-median(x))<3*std(x))));
+m=mean(x(find(abs(x-mean(x))<3*std(x))));
