@@ -1,5 +1,13 @@
 #!/bin/sh
-MATLABPATH=/home/kstdev/remtg
+#find remtg directory
+filename=$0
+while [ -h $filename ]; do
+        lscmd=`ls -l $filename 2>/dev/null`
+        filename=`echo "$lscmd" | awk '{ print $NF }'`
+done
+MATLABPATH=`echo "$filename" | awk -F/ ' {for (i=2;i<NF;i++) printf("/%s",$i)} '`
+#echo $MATLABPATH
+#MATLABPATH=/home/kstdev/remtg
 SHELL=/bin/sh
 XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
 export MATLABPATH SHELL XTERM_WM_NAME

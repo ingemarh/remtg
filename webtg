@@ -16,10 +16,17 @@ do
  esac
 done
 shift `expr $OPTIND - 1`
+#find remtg directory
+filename=$0
+while [ -h $filename ]; do
+        lscmd=`ls -l $filename 2>/dev/null`
+        filename=`echo "$lscmd" | awk '{ print $NF }'`
+done
+MATLABPATH=`echo "$filename" | awk -F/ ' {for (i=2;i<NF;i++) printf("/%s",$i)} '`
+#echo $MATLABPATH
 if [ "$*" = "stop" ];then
  /bin/ps -u kstdev | awk '/webtg/ && ! /awk/ {print "ps  -fu kstdev | grep " $1 " | grep matlab"}' | /bin/sh | awk '{print $2}' | xargs kill -9 >/dev/null
 elif [ "$*" = "start" ] || [ "$*" = "" ];then
- MATLABPATH=/home/kstdev/remtg
  SHELL=/bin/sh
  export MATLABPATH SHELL
  unset DISPLAY
