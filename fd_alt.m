@@ -23,11 +23,12 @@ else
  nr=ceil(maxlag/length(w1));
  w1=repmat(w1,1,nr)'; w2=[zeros(frac+1,1);w1]; w1=[weight(1);w1];
  m=[1:frac-1 frac:-1:0];
- m1=m(:)*(nbits-1:-2:1); m2=m(:)*(nbits-2:-2:1);
+ m1=m(:)*(nbits-1:-2:1); m2=m(:)*(nbits-2:-2:0);
  m1=[(nbits-1)*[frac*2:-1:frac] m1(frac+1:end)]'; m2=[zeros(frac+1,1);m2(:)];
 
  w=w1(1:maxlag+1).*m1(1:maxlag+1)+w2(1:maxlag+1).*m2(1:maxlag+1);
- sacf=sacf./(w*ones(1,ngates));
+ d=find(w>0);
+ sacf=sacf(d,:)./(w(d)*ones(1,ngates));
 
  %sacf=sum(sacf,2);
  if frac>660
@@ -38,13 +39,13 @@ else
    ang=mean(angle(sacf(2:nff,i))./[1:nff-1]')*[0:nf-1]';
    sacf(1:nf,i)=p.*exp(j*ang);
   end
- elseif frac>50
+ elseif frac>500
   nf=find(w(1:frac)<mean(w)/3); nf=nf(end);
   if ~exist('s'), s=[mean(mean(abs(sacf))) 1 0]; end
   x=[0:nf-1]'; b=w(x+1);
   for i=1:ngates
    a=sacf(x+1,i);
-   s=fminsearch(@(s) racf(s,x,a,b),s,optimset('display','off'));
+   %s=fminsearch(@(s) racf(s,x,a,b),s,optimset('display','off'));
    sacf(x+1,i)=racf(s,x);
   end
  else
