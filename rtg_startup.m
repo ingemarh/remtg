@@ -14,3 +14,6 @@ set(0,'defaultaxescolor','none')
 format compact
 format short g
 myb(128)
+global local
+local.ver=str2num(version('-release'));
+local.x=prod(get(0,'ScreenSize'))-1;

@@ -1,6 +1,6 @@
 function err=remtg
 % Main rtg routine err=remtg
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x def_file sitecode combine combhold tail
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw local def_file sitecode combine combhold tail maxsize_acf
 tnormal=[50 50 300 90 40 40 30 50]; tdev=[];
 if isempty(bval)
  radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11];
@@ -17,7 +17,6 @@ if isempty(bval)
  if findstr('rtg',xwn), bval(5)=1;
  elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1]) 1 1];
  end
- using_x=prod(get(0,'ScreenSize'))-1;
 end
 if isempty(butts) | ~ishandle(butts(1))
  rtgbuttons(10)
@@ -63,6 +62,7 @@ end
 
 % default chpar values
 psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN; tail=.7;
+maxsize_acf=[256 256];
 if site==5 | site==6
  tail=0;
 end
@@ -142,7 +142,7 @@ for ch=1:noch
  if sum(isfinite(psig(ch,:)))
   if ~exist('prange0','var'), prange0=zeros(size(psig)); end
   pp(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t,prange0(ch,:))
-  if nax==1 & exist('pplegend','var') & using_x>1
+  if nax==1 & exist('pplegend','var') & local.x
    legend(ax(1),pplegend(ch,:),-1), legend(ax(1),'boxoff')
   end
   sms=sprintf('%s %s',sms,get(get(ax(1),'title'),'string'));

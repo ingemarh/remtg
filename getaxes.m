@@ -1,8 +1,8 @@
 function ax=getaxes(fig,s1,s2,name,head)
-global figs
+global figs local
 if ~ishandle(fig)
  figure(fig)
- if ~prod(get(0,'ScreenSize'))-1 & strcmp(version('-release'),'13')
+ if ~local.x & local.ver==13
   close(fig),figure(fig); % Matlab R13 bug
  end
 end

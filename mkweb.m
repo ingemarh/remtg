@@ -1,7 +1,7 @@
 function mkweb(sms)
-global site lastweb bval figs using_x sitecode
+global site lastweb bval figs local sitecode
 if bval(4)>0 & exist('lastweb','var') & now-lastweb<30/86400, return, end
-if using_x
+if local.x
  jpg='png'; flag='-r72';
 else
  jpg='png256'; flag='';
@@ -36,7 +36,7 @@ fid=fopen(fname,'w');
 fprintf(fid,'%s',sms);
 fclose(fid);
 files=[files ' ' fname];
-if using_x
+if local.x
  heads=findobj(findobj(figs,'type','axes','tag','suptitle'),'type','text');
  set(heads,'visible','off'), set(heads,'visible','on')
 else

@@ -1,11 +1,18 @@
 function h=spitspec(fig,ax,sacf,lag,dt,r0)
-global bval d_parbl gating el site combine combhold
+global bval d_parbl gating el site combine combhold maxsize_acf
 if nargin<6, r0=0; end
-ngates=size(sacf,2);
-if gating>1
- nlags=size(sacf,1);
- ngates=floor(ngates/gating);
- sacf=reshape(sum(reshape(sacf(:,1:(ngates*gating))',gating,ngates,nlags)),ngates,nlags)';
+sgating=gating;
+[nlags,ngates]=size(sacf);
+if nlags>maxsize_acf(1)
+ nlags=maxsize_acf(1);
+ sacf=sacf(1:nlags,:); lag=lag(1:nlags);
+end
+if ngates/sgating>maxsize_acf(2)
+ sgating=ngates/maxsize_acf(2);
+end
+if sgating>1
+ ngates=floor(ngates/sgating);
+ sacf=reshape(sum(reshape(sacf(:,1:(ngates*sgating))',gating,ngates,nlags)),ngates,nlags)';
 end
 waterlim=[5 8];
 if bval(11)==1 & ngates>waterlim(2) & r0>0
