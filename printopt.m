@@ -62,7 +62,7 @@ if isempty(pcmd)
 	%if strcmp(cname(1:3),'SGI'), pcmd = 'lp -c'; end
 
 	% For Solaris
-	%if strcmp(cname,'SOL2'), pcmd = 'lp -c'; end
+	if strcmp(cname,'SOL2'), pcmd = 'lp -c'; end
 end
 
 if isempty(dev)
