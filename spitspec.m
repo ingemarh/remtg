@@ -14,16 +14,20 @@ elseif bval(11)==1 & nargin>4 & site<3
  [s,w]=max(sacf(1,:));
  par=qfit(fig,ax,sacf(:,w),lag,0,1e-2);
 end 
+fsc=1000;
 if bval(7)~=1
  [s,w]=acf2spec(sacf,lag);
  s=s*1000;
- w=w/1000;
+ if max(w)<fsc, fsc=1; end
+ w=w/fsc;
 elseif ngates>1
  s=real(sacf);
- w=lag*1e6;
+ if max(lag)*fsc>1, fsc=1; end
+ w=lag*fsc*1e3;
 else
  s=[real(sacf) imag(sacf)];
- w=lag*1e6;
+ if max(lag)*fsc>1, fsc=1; end
+ w=lag*fsc*1e3;
 end
 if ngates<waterlim(1)
  updateplot(fig,ax,w,s);
@@ -50,11 +54,19 @@ else
 end
 if bval(7)~=1
  set(h,'string','Power (K/kHz)')
- set(get(ax,'xlabel'),'string','Frequency (kHz)')
+ if fsc==1000
+  set(get(ax,'xlabel'),'string','Frequency (kHz)')
+ else
+  set(get(ax,'xlabel'),'string','Frequency (Hz)')
+ end
  set(ax,'xgrid','on','ygrid','on')
 else
  set(h,'string','Power (K)')
- set(get(ax,'xlabel'),'string','Lag (\mus)')
+ if fsc==1000
+  set(get(ax,'xlabel'),'string','Lag (\mus)')
+ else
+  set(get(ax,'xlabel'),'string','Lag (ms)')
+ end
  set(ax,'xgrid','off','ygrid','on')
 end
 h=get(ax,'title');
