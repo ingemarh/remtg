@@ -25,8 +25,6 @@ function [pcmd,dev] = printopt
 %
 %	See also PRINT.
 
-% $Revision$  $Date$
-
 % Intialize options to empty matrices
 pcmd = []; dev = [];
 
