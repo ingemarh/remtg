@@ -1,10 +1,16 @@
 function updateplot(fig,a,x1,y1,x2,y2)
 global bval tdev
-np=(nargin-2)/2;
-if nargin<5, np=prod(size(y1))/length(x1); end 
+narg=nargin;
+if rem(narg,2)==1
+  mktd=0; narg=narg-1;
+else
+  mktd=1;
+end
+np=(narg-2)/2;
+if narg<5, np=prod(size(y1))/length(x1); end 
 j=findobj(a,'type','line');
 if length(j)==np & length(get(j(end),'ydata'))==length(y1)
- if nargin==6 | np==1
+ if narg==6 | np==1
   set(j(np),'ydata',y1,'xdata',x1)
   if np>1, set(j(1),'ydata',y2,'xdata',x2), end
  else
@@ -20,7 +26,7 @@ if length(j)==np & length(get(j(end),'ydata'))==length(y1)
  if bval(8)==1, set(a,'xlim',[min(min(x1)) max(max(x1))]), end
 else
  setcurrent(fig,a)
- if nargin==6
+ if narg==6
   plot(x1,y1,x2,y2)
   x1=[x1(:);x2(:)];
  else
@@ -31,4 +37,6 @@ else
  set(get(a,'title'),'verticalalignment','middle')
 end
 set(a,'visible','on')
-tdev=[tdev;y1(find(isfinite(y1)));NaN];
+if mktd
+ tdev=[tdev;y1(find(isfinite(y1)));NaN];
+end

@@ -1,7 +1,7 @@
 function [err,chpar]=remtg(chpar)
 % Main rtg routine [err,chpar]=remtg(chpar)
 % Version 2002-10-23
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw
 if nargin<1, chpar=[]; end
 if isempty(bval)
  site=findstr('KSTVL2Z',getenv('EISCATSITE'));
@@ -69,6 +69,14 @@ if exist('rawlim','var') & ~isempty(rawlim)
   nrf=ceil(nrp/4); nrnow=ceil(nrp/nrf); nraw=nraw+1;
   raw(nraw+10,['Raw ' num2str(nraw) sitet],head,rawlim(1:nrnow,:));
   rawlim=rawlim(nrnow+1:nrp,:); nrp=nrp-nrnow;
+ end
+end
+if exist('txs','var') & ~isempty(txs)
+ nrp=size(txs,1); nraw=0;
+ while nrp>0
+  nrf=ceil(nrp/4); nrnow=ceil(nrp/nrf); nraw=nraw+1;
+  tx(nraw+50,['Transmitter samples ' num2str(nraw) sitet],head,txs(:),txsam(:),ntx(:),txdt(:))
+  nrp=nrp-nrnow;
  end
 end
 if exist('amplim','var') & ~isempty(amplim)
