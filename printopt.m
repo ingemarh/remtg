@@ -68,7 +68,7 @@ end
 if isempty(dev)
 
 	% For Unix, VAX/VMS, and Macintosh
-	dev = '-noui -dps2';
+	dev = '-noui -dps2c';
 
 	% For Windows
 	if strcmp(cname(1:2),'PC'), dev = '-dwin'; end

@@ -14,7 +14,7 @@ if isempty(bval)
  end
 end
 wsite={'Kiruna','Sodankyla','Tromso UHF','Tromso VHF','ESR1','ESR2','Zod'};
-radcon=[6e11,6e11,6e11,2e11,6e11,6e11,5e11];
+radcon=[6e11,6e11,6e11,2e11,6e11,3e11,5e11];
 antenna=[5 6 4 3 1 2 7]; tdev=[];
 if isempty(butts) | ~ishandle(butts(1))
  rtgbuttons(10)
