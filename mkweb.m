@@ -40,6 +40,12 @@ if using_x>1
 else
  close all
 end
+if site==2
+ [i,d]=unix('ps | grep cp | grep -v grep');
+ if i
+  unix(['cp ' files ' /net/aurora/www/ht/rtg/']);
+ end
+end
 [i,d]=unix('ps | grep curl | grep -v grep');
 if i
  file=[];

@@ -12,7 +12,7 @@ else
  setcurrent(fig,a)
  waterfall(x,y,z);
  zoom(fig,'on')
- set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)])
+ set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)],'view',[-10 50])
  set(get(a,'title'),'verticalalignment','middle')
 end
 set(a,'visible','on')
