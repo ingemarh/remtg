@@ -1,17 +1,16 @@
 function mkweb(sms)
-global site lastweb bval figs using_x
+global site lastweb bval figs using_x sitecode
 if bval(4)>0 & exist('lastweb','var') & now-lastweb<30/86400, return, end
 if using_x
  jpg='png'; flag='-r72';
 else
  jpg='png256'; flag='';
 end
-sites='kstve2pz'; sitex=sites(site);
+sitex=lower(sitecode.mini(site));
 dir=tempdir;
 files=[dir sitex '.html'];
 fid=fopen(files,'w');
-wsite={'ESR 32m','ESR 42m','Troms&oslash; VHF','Troms&oslash; UHF','Kiruna','Sodankyl&auml;','Zod','ESR 32p'};
-fprintf(fid,'<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\n</head>\n',char(wsite(site)));
+fprintf(fid,'<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\n</head>\n',char(sitecode.web(site)));
 %figs=sort(get(0,'children'));
 reloadfix=fix(10000*rand(1));
 for i=sort(figs)

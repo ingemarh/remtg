@@ -1,20 +1,18 @@
 function [i,filename,nbytes,err]=int_rt
-global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch
+global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode
 %d=[]; fn=[];
 if ~exist('odate','var'), odate=[]; end
 dd_data=0; acc_parbl=0; err=0; d_ExpInfo=[]; d_parbl=[]; nbytes=0; obytes=0; i=0;
 while i<bval(2)
  i=i+1;
  if isempty(rtdir)
-  ext={'32m','42m','vhf','uhf','kir','sod','zod','32p'};
   rdir='/kst/exp/';
   s=1; j=1;
   while s
-   filename=[rdir 'latest@' char(ext(bval(4))) '.mat'];
+   filename=[rdir 'latest@' lower(char(sitecode.short(2+bval(4)))) '.mat'];
    if ~exist(filename,'file'), pause(.6)
     if ~exist(filename,'file')
-     wsite='E2VUKS P';
-     web(sprintf('http://www.eiscat.com/rtg/rtg.cgi?%s',wsite(bval(4))))
+     web(sprintf('http://www.eiscat.com/rtg/rtg.cgi?%s',sitecode.mini(bval(4))))
      disp('No data!'), err=1; i=i-1; odate=[]; return
     end
    end

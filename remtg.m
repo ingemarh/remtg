@@ -1,13 +1,15 @@
-function [err,chpar]=remtg
-% Main rtg routine [err,chpar]=remtg
-% Version 2002-10-23
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x def_file
-wsite={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Zod','ESR 32p'};
-radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11]; tdev=[];
-tnormal=[50 50 300 90 40 40 30 50];
+function err=remtg
+% Main rtg routine err=remtg
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x def_file sitecode
+tnormal=[50 50 300 90 40 40 30 50]; tdev=[];
 if isempty(bval)
- site=findstr('L2VTKSZP',getenv('EISCATSITE'));
- if isempty(site), site=5;
+ radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11];
+ sitecode.web={'ESR 32m','ESR 42m','Troms&oslash; VHF','Troms&oslash; UHF','Kiruna','Sodankyl&auml;','Zod','ESR 32p'};
+ sitecode.long={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Zod','ESR 32p'};
+ sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Zod','32p'};
+ sitecode.mini='L2VTKSZP';
+ site=findstr(sitecode.mini,getenv('EISCATSITE'));
+ if isempty(site), site=5; err=1;
  elseif site==4 & ~isempty(findstr(getenv('RXHOST'),'v5011')), site=3;
  end
  bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
@@ -18,6 +20,7 @@ if isempty(bval)
 end
 if isempty(butts) | ~ishandle(butts(1))
  rtgbuttons(10)
+ if exist('err','var'), return, end
 end
 if bval(4)>=0
  [ints,filename,nbytes,err]=int_rt;
@@ -36,7 +39,7 @@ site=d_parbl(41); intt=d_parbl(7);
 tim=datestr(datenum(d_parbl(1:6)),31); tim=[tim(1:13) tim(15:19)];
 head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,d_parbl(8)/1000,rem(d_parbl(10),360),d_parbl(9));
 %raw data
-sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(wsite(site))];
+sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(sitecode.long(site))];
 t1=raw(10,['Raw data' sitet],sms);
 if bval(4)>0
  if findstr(filename,'RT')
