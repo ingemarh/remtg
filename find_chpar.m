@@ -13,7 +13,8 @@ while ~isempty(infodir) & isempty(def_file) & infodir(end).isdir
  if exist(fullfile(infodir,dm))
   def_file=fullfile(infodir,defile);
  else
-  idir=infodir, infodir=dir(idir); infodir(1:2)=[];
+  idir=infodir; infodir=dir(idir); infodir(1:2)=[];
+  for i=length(infodir):-1:1, if ~infodir(i).isdir, infodir(i)=[]; end, end
  end
 end
 while ~isempty(chpar) & isempty(def_file)

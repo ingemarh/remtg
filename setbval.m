@@ -6,3 +6,4 @@ end
 for i=1:length(bval)
  bval(i)=get(butts(i),'value');
 end
+bval(4)=bval(4)-2;
