@@ -32,8 +32,9 @@ else
  setbval(0,1)
 end
 rd=real(dd_data); id=imag(dd_data); id(find(~id))=NaN;
-pow=d_parbl(8); site=antenna(d_parbl(41));
-head=sprintf(' %04d-%02d-%02d %02d%02d:%05.2f %gs %.0fkW %.1f/%.1f',d_parbl(1:7),pow/1000,rem(d_parbl(10),360),d_parbl(9));
+site=antenna(d_parbl(41)); intt=d_parbl(7);
+tim=datestr(datenum(d_parbl(1:6)),31); tim=[tim(1:13) tim(15:19)];
+head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,d_parbl(8)/1000,rem(d_parbl(10),360),d_parbl(9));
 %raw data
 sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(wsite(site))];
 t1=raw(10,['Raw data' sitet],sms);
@@ -47,7 +48,7 @@ if bval(4)<8
    set(t1,'string',sprintf('Recording@%s',strtok(filename(2:end),'/')))
   else 	  
    d=str2num(d);
-   set(t1,'string',sprintf('Recording@%s (%.0f Mb=%.1f h)',strtok(filename(2:end),'/'),d/1024,d/nbytes*1024*d_parbl(7)/ints/3600))
+   set(t1,'string',sprintf('Recording@%s (%.0f Mb=%.1f h)',strtok(filename(2:end),'/'),d/1024,d/nbytes*1024*intt/ints/3600))
   end 
  end 
  sms=sprintf('%s\n%s',sms,get(t1,'string'));
@@ -95,14 +96,15 @@ for ch=1:noch
  elseif nax==1, s=1; end
  ax=getaxes(ch+20,nax/s,s,['Pulse ' num2str(ch) sitet],head);
  % back cal /pp
- if ~exist('loopc','var'), loopc=100*d_parbl(7)/ints; end
+ if ~exist('loopc','var'), loopc=100*intt/ints; end
  if sum(bsamp(ch,:))
   [tsys,blev]=noise(ch+20,ax(2),bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc);
   sms=sprintf('%s\n%s',sms,get(get(ax(2),'title'),'string'));
   tnormal=[40 40 90 300 50 50 30];
   tsys(find(isnan(tsys)))=tnormal(site);
+  cax=2;
  elseif exist('blev')
-  blev=blev(1);
+  blev=blev(1); cax=1;
  end
  %timing/pp
  if exist('elev','var')
@@ -156,19 +158,19 @@ for ch=1:noch
    gating=1;
   end
   if strcmp(styp,'rem')
-   rempulse(ch+20,ax(2+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),kperc);
+   rempulse(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),kperc);
   elseif strcmp(styp,'alt')
-   altpulse(ch+20,ax(2+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
+   altpulse(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   elseif strcmp(styp,'long')
-   longpulse(ch+20,ax(2+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),s0,kperc);
+   longpulse(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),s0,kperc);
   elseif strcmp(styp,'puls2')
-   pulspulse(ch+20,ax(2+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc);
+   pulspulse(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc);
   elseif strcmp(styp,'fft')
-   fftpulse(ch+20,ax(2+s),sig(ch,s),nffts(ch,s),sigdt(ch,s),kperc,siglen(ch,s),sgates(ch,s),s0);
+   fftpulse(ch+20,ax(cax+s),sig(ch,s),nffts(ch,s),sigdt(ch,s),kperc,siglen(ch,s),sgates(ch,s),s0);
   elseif strcmp(styp,'myalt')
-   myalt(ch+20,ax(2+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
+   myalt(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   else
-   set(ax(2+s),'visible','off')
+   set(ax(cax+s),'visible','off')
   end
  end
  set(ax((nax+1):end),'visible','off')
