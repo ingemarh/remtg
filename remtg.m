@@ -197,6 +197,8 @@ for ch=1:noch
    pulspulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc);
   elseif strcmp(styp,'fft')
    fftpulse(ch+20,axs,sig(ch,s),nffts(ch,s),sigdt(ch,s),kperc,siglen(ch,s),sgates(ch,s),s0);
+  elseif strcmp(styp,'fdalt')
+   fd_alt(ch+20,axs,sig(ch,s),sgates(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   elseif strcmp(styp,'myalt')
    myalt(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   else
