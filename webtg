@@ -28,7 +28,12 @@ if [ "$*" = "stop" ];then
  /bin/ps -u kstdev | awk '/webtg/ && ! /awk/ {print "ps  -fu kstdev | grep " $1 " | grep matlab"}' | /bin/sh | awk '{print $2}' | xargs kill -9 >/dev/null
 elif [ "$*" = "start" ] || [ "$*" = "" ];then
  SHELL=/bin/sh
- export MATLABPATH SHELL
+
+ TMP=$HOME/tmp
+ if [ ! -d $TMP ];then
+  mkdir $TMP
+ fi
+ export MATLABPATH SHELL TMP
  unset DISPLAY
  matlab $null << !
   global rtdir webtg
