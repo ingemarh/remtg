@@ -58,7 +58,7 @@ while i<bval(2)
     end
    end
    if isempty(d)
-    disp('End of data!'), err=1; i=i-1; odate=[]; return
+    disp('End of data!'), err=1; i=i-1; odate=[]; filename=[]; return
    end
   end
   filename=fullfile(rtdir,d(1).name);

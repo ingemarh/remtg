@@ -47,18 +47,18 @@ if bval(4)>0
   set(t1,'string','Not recording')
  else
   [s,df]=unix(['df -k ' filename]);
-  for i=1:11, [d,df]=strtok(df); end 
+  for i=1:11, [d,df]=strtok(df); end
   if isempty(d)
    set(t1,'string',sprintf('Recording@%s',strtok(filename(2:end),'/')))
-  else 	  
+  else
    d=str2num(d);
    set(t1,'string',sprintf('Recording@%s (%.0f Mb=%.1f h)',strtok(filename(2:end),'/'),d/1024,d/nbytes*1024*intt/ints/3600))
-  end 
- end 
+  end
+ end
  sms=sprintf('%s\n%s',sms,get(t1,'string'));
 else
  set(t1,'visible','off')
-end 
+end
 
 % default chpar values
 psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN;
@@ -150,8 +150,8 @@ for ch=1:noch
  % back spec /spec
  gating=1; bacf=0;
  if isfinite(bacspec(ch))
-  if ~exist('nfftb','var'), nfftb=NaN*ones(size(backspec)), end
-  if ~exist('maxlagb','var'), maxlagb=zeros(size(backspec)), end
+  if ~exist('nfftb','var'), nfftb=NaN*ones(size(bacspec)); end
+  if ~exist('maxlagb','var'), maxlagb=zeros(size(bacspec)); end
   bacf=backspec(ch+20,ax(nax),maxlag(ch,1),maxlagb(ch),bacspec(ch,:),backsamp(ch,:),nfftb(ch,:),sigdt(ch,1),tsys(1));
  end
  % sig spec /spec
@@ -168,7 +168,7 @@ for ch=1:noch
   end
   if ~exist('srange0','var')
    s0=0;
-   if site==5 | site==6, s0=-1; end
+   %if site==5 | site==6, s0=-1; end
   else
    s0=srange0(ch,s);
   end

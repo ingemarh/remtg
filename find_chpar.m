@@ -18,9 +18,10 @@ while ~isempty(infodir) & isempty(def_file) & infodir(end).isdir
  end
 end
 while ~isempty(chpar) & isempty(def_file)
+ [dum,inEI]=unix(['ls ' fullfile(expdir,'??',chpar,dm)]);
  if exist(fullfile(expdir,chpar,dm))
   def_file=fullfile(expdir,chpar,defile);
- elseif isempty(strfind(ls(fullfile(expdir,'??',chpar,dm)),' '))
+ elseif isempty(strfind(inEI,' '))
   def_file=ls(fullfile(expdir,'??',chpar,dm));
   def_file=def_file(1:end-3);
  elseif exist(['rtg_' chpar])
