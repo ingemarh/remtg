@@ -24,17 +24,18 @@ for lag=frac:frac:maxlag
  for flag=(lag+1):(lag+frac-1)
   plen=nsamp-flag;
   if flag<(nbits-1)*frac
-   w=weight(flag-lag)+weight(frac-(flag-lag));
+   w=[weight(frac-(flag-lag)) weight(flag-lag)];
    ii=[-1 1];
   else
    w=weight(frac-(flag-lag));
    ii=-1;
   end
+  sw=sum(w.^2);
   for i=ii
    add2=add+plen;
    lf=gating+frac/2+i*(frac/2-(flag-lag));
    shift=f1-(1-i)/2*(flag-lag);
-   sacf(:,flag+1)=sacf(:,flag+1)+conv2(dd_data(add2-ngates-lf+1-shift:add2-1-shift),ones(lf,1),'valid')/lf/(nbits-lag/frac-i/2-.5)/w;
+   sacf(:,flag+1)=sacf(:,flag+1)+conv2(dd_data(add2-ngates-lf+1-shift:add2-1-shift),ones(lf,1),'valid')/lf/(nbits-lag/frac-i/2-.5)*w((i+3)/2)/sw;
    add=add2;
   end
  end
@@ -51,9 +52,14 @@ end
 sacf=sacf(pick,:);
 %sacf=sum(sacf);
 ngates=size(sacf,1);
-if frac>3
+if frac>4
+ frac=max(frac,6);
+ nf=fix(frac/2);
+ sacf(:,1)=1;
  for i=1:ngates
-  sacf(i,1)=polyval(polyfit([1:frac-1].^2,abs([sacf(i,2:frac)]),1),0);
+  p=polyval(polyfit([1:frac-1].^2,abs([sacf(i,2:frac)]),1),(0:nf-1).^2);
+  ang=angle(sacf(i,1:nf));
+  sacf(i,1:nf)=p.*exp(j*ang);
  end
 else
  sacf(:,1)=(4*abs(sacf(:,2))-abs(sacf(:,3)))/3;
