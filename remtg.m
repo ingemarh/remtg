@@ -145,11 +145,9 @@ for ch=1:noch
  % back spec /spec
  gating=1; bacf=0;
  if isfinite(bacspec(ch))
-  if exist('maxlagb','var') & maxlagb(ch)>0
-   bacf=backspec(ch+20,ax(nax),maxlag(ch,1),maxlagb(ch),bacspec(ch,:),backsamp(ch,:),sigdt(ch,1),tsys);
-  elseif exist('nfftb','var')
-   fftpulse(ch+20,ax(nax),bacspec(ch,:),nfftb(ch,:),sigdt(ch,1),tsys);
-  end
+  if ~exist('nfftb','var'), nfftb=NaN*ones(size(backspec)), end
+  if ~exist('maxlagb','var'), maxlagb=zeros(size(backspec)), end
+  bacf=backspec(ch+20,ax(nax),maxlag(ch,1),maxlagb(ch),bacspec(ch,:),backsamp(ch,:),nfftb(ch,:),sigdt(ch,1),tsys);
  end
  % sig spec /spec
  s=min(length(tsys),length(blev));
