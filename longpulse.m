@@ -2,8 +2,9 @@ function sacf=longpulse(fig,ax,sig,len,maxlag,slen,bacf,lagincr,r0,c2t)
 global dd_data tp tail
 tp=slen;
 nh=len-round(2*maxlag*(1-tail));
-ngates=round(nh/round(slen/lagincr/2));
-vi=floor(nh/ngates);
+vi=round(slen/lagincr/2)+[-1:1];
+[d i]=min(rem(nh./vi,1)); vi=vi(i);
+ngates=floor(nh/vi);
 add=sig+1;
 w=round(slen/lagincr); w=(w:-1:1)/w;
 sacf=zeros((maxlag+1),ngates);
