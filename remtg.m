@@ -9,11 +9,12 @@ if isempty(bval)
  sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Zod','32p'};
  sitecode.mini='L2VTKSZP';
  site=findstr(sitecode.mini,getenv('EISCATSITE'));
+ xwn=getenv('XTERM_WM_NAME');
  if isempty(site), site=5; err=1;
- elseif site==4 & ~isempty(findstr(getenv('RXHOST'),'v5011')), site=3;
+ elseif site==4 & ~isempty(findstr(xwn,'VHF')), site=3;
  end
  bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
- if strcmp('rtg',getenv('XTERM_WM_NAME')), bval(5)=1;
+ if findstr('rtg',xwn), bval(5)=1;
  elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1]) 1 1];
  end
  using_x=prod(get(0,'ScreenSize'))-1;
@@ -151,7 +152,8 @@ for ch=1:noch
   end
  end
  % sig spec /spec
- kperc=mean(tsys)/mean(blev);
+ s=min(length(tsys),length(blev));
+ kperc=mean(tsys(1:s))/mean(blev(1:s));
  for s=1:nacf
   if ~exist('srange0','var')
    s0=0;

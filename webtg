@@ -20,9 +20,15 @@ shift `expr $OPTIND - 1`
 filename=$0
 while [ -h $filename ]; do
         lscmd=`ls -l $filename 2>/dev/null`
-        filename=`echo "$lscmd" | awk '{ print $NF }'`
+        f1=`echo "$lscmd" | awk '{ print $NF }'`
+        fp=`echo "$f1" | awk '{ print index($1,"/") }'`
+        if [ $fp != "1" ];then
+                filename=`dirname $filename`/$f1
+        else
+                filename=$f1
+        fi
 done
-MATLABPATH=`echo "$filename" | awk -F/ ' {for (i=2;i<NF;i++) printf("/%s",$i)} '`
+MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
 if [ "$*" = "stop" ];then
  /bin/ps -u kstdev -u eiscat | awk '/webtg/ && ! /awk/ {print "ps  -fu kstdev -u eiscat | grep " $1 " | grep matlab"}' | /bin/sh | awk '{print $2}' | xargs kill -9 >/dev/null
