@@ -6,7 +6,7 @@ ax=getaxes(fig,np/np2,np2,'Time development',head); s0=1;
 
 x=0:(ntim-1);
 tim=tdim.time(find(isfinite(tdim.time)));
-if ~any(diff(round(86400*diff(tim)))) & length(tim)>1
+if ~any(diff(round(86400*diff(tim)))) & length(tim)>1 & str2num(version('-release'))>12.1
  td=mean(diff(tim)); x=tdim.time(1)+x*td;
 end
 for i=1:np
