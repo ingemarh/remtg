@@ -2,9 +2,10 @@ function datasel
 global rtdir bval butts d odate
 v=get(butts(4),'value');
 if v==8
- dir='/data1';
- if ~exist(dir), dir='/data'; end
- if ~exist(dir), dir='.'; end
+ dir=rtdir;
+ if ~exist(dir,'dir'), dir='/data'; end
+ if ~exist(dir,'dir'), dir='/data1'; end
+ if ~exist(dir,'dir'), dir='.'; end
  [startfile,dir]=uigetfile([dir '/*.mat'],'Pick a start file in directory');
  if ~isequal(startfile,0) & ~isequal(dir,0)
   rtdir=dir;
