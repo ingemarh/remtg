@@ -1,7 +1,7 @@
 function chpar=find_chpar(filename)
 global d_ExpInfo site old_ExpInfo def_file old_chpar
 if strcmp(d_ExpInfo,old_ExpInfo) & ~isempty(def_file)
- chpar=old_chpar; return
+ chpar=old_chpar; clear(def_file), return
 end
 expdir=fullfile(filesep,'kst','exp');
 defile='rtg_def'; dm=[defile '.m']; def_file=[];
