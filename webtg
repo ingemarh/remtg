@@ -2,7 +2,7 @@
 rtdir=
 null=">/dev/null"
 ndumps="60"
-usage="Usage: webtg [-v] [-d dir] [-s KSTVL2Z] [-n dumps/secs] [start] | stop"
+usage="Usage: webtg [-v] [-d dir] [-s KSTVL2PZ] [-n dumps/secs] [start] | stop"
 while getopts vd:s:n: flag
 do
  case $flag in

@@ -3,7 +3,7 @@ function [err,chpar]=remtg(chpar)
 % Version 2002-10-23
 global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x maxant
 if nargin<1, chpar=[]; end
-wsite={'Kiruna','Sodankyla','Tromso UHF','Tromso VHF','ESR1','ESR2','ESR3','Zod'};
+wsite={'Kiruna','Sodankyla','Tromso UHF','Tromso VHF','ESR 32m','ESR 42m','ESR 32p','Zod'};
 radcon=[6e11,6e11,6e11,2e11,6e11,3e11,6e11,5e11];
 antenna=[5 6 4 3 1 2 8 7]; tdev=[];
 tnormal=[40 40 90 300 50 50 50 30];

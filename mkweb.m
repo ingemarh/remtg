@@ -10,7 +10,7 @@ sites='kstve2pz'; sitex=sites(site);
 dir=tempdir;
 files=[dir sitex '.html'];
 fid=fopen(files,'w');
-wsite={'Kiruna','Sodankyl&auml;','Troms&oslash; UHF','Troms&oslash; VHF','ESR1','ESR2','ESR3','Zod'};
+wsite={'Kiruna','Sodankyl&auml;','Troms&oslash; UHF','Troms&oslash; VHF','ESR 32m','ESR 42m','ESR 32p','Zod'};
 fprintf(fid,'<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\n</head>\n',char(wsite(site)));
 %figs=sort(get(0,'children'));
 reloadfix=fix(10000*rand(1));
