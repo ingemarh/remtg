@@ -89,15 +89,21 @@ elseif noch>0 & strcmp(get(butts(7),'visible'),'off')
 end
 for ch=1:noch
  nacf=0; for s=1:size(sigtyp,2), nacf=nacf+~isempty(char(sigtyp(ch,s))); end
- nax=2+nacf;
- if isfinite(bacspec(ch)), nax=nax+1; end
- ax=getaxes(ch+20,nax/2,2,['Pulse ' num2str(ch) sitet],head);
+ nax=1+nacf; s=2;
+ if sum(bsamp(ch,:))>0, nax=nax+1; end
+ if isfinite(bacspec(ch)), nax=nax+1;
+ elseif nax==1, s=1; end
+ ax=getaxes(ch+20,nax/s,s,['Pulse ' num2str(ch) sitet],head);
  % back cal /pp
  if ~exist('loopc','var'), loopc=100*d_parbl(7)/ints; end
- [tsys,blev]=noise(ch+20,ax(2),bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc);
- sms=sprintf('%s\n%s',sms,get(get(ax(2),'title'),'string'));
- tnormal=[40 40 90 300 50 50 30];
- tsys(find(isnan(tsys)))=tnormal(site);
+ if sum(bsamp(ch,:))
+  [tsys,blev]=noise(ch+20,ax(2),bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc);
+  sms=sprintf('%s\n%s',sms,get(get(ax(2),'title'),'string'));
+  tnormal=[40 40 90 300 50 50 30];
+  tsys(find(isnan(tsys)))=tnormal(site);
+ elseif exist('blev')
+  blev=blev(1);
+ end
  %timing/pp
  if exist('elev','var')
   el=elev(ch,1);
@@ -112,6 +118,9 @@ for ch=1:noch
  if exist('pbac','var'), pb=pbac(ch,:).*blev; end
  if exist('prange0','var')
   pp(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t,prange0(ch,:))
+  if nax==1 & exist('pplegend','var')
+   legend(ax(1),pplegend(ch,:),-1), legend(ax(1),'boxoff')
+  end
  else
   timing(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t)
   sms=sprintf('%s %s',sms,get(get(ax(1),'title'),'string'));
