@@ -6,7 +6,7 @@ dd_data=0; acc_parbl=0; err=0; d_ExpInfo=[]; d_parbl=[]; nbytes=0; obytes=0; i=0
 while i<bval(2)
  i=i+1;
  if isempty(rtdir)
-  ext={'32m','42m','uhf','vhf','kir','sod','zod','32p'};
+  ext={'32m','42m','vhf','uhf','kir','sod','zod','32p'};
   rdir='/kst/exp/';
   s=1; j=1;
   while s
