@@ -1,8 +1,11 @@
 function mkweb(sms)
-global site lastweb bval figs
+global site lastweb bval figs using_x
 if bval(4)<8 & exist('lastweb','var') & now-lastweb<30/86400, return, end
-jpg='png256'; flag=''; using_x=prod(get(0,'ScreenSize'));
-if using_x>1, jpg='png'; flag='-r72'; end
+if using_x
+ jpg='png'; flag='-r72';
+else
+ jpg='png256'; flag='';
+end
 sites='kstve2z'; sitex=sites(site);
 dir=tempdir;
 files=[dir sitex '.html'];
@@ -34,7 +37,7 @@ fid=fopen(fname,'w');
 fprintf(fid,'%s',sms);
 fclose(fid);
 files=[files ' ' fname];
-if using_x>1
+if using_x
  heads=findobj(findobj(figs,'type','axes','tag','suptitle'),'type','text');
  set(heads,'visible','off'), set(heads,'visible','on')
 else

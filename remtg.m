@@ -1,7 +1,7 @@
 function [err,chpar]=remtg(chpar)
 % Main rtg routine [err,chpar]=remtg(chpar)
 % Version 2002-10-23
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x
 if nargin<1, chpar=[]; end
 if isempty(bval)
  site=findstr('KSTVL2Z',getenv('EISCATSITE'));
@@ -12,6 +12,7 @@ if isempty(bval)
  if strcmp('rtg',getenv('XTERM_WM_NAME')), bval(5)=1;
  elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1]) 1 1];
  end
+ using_x=prod(get(0,'ScreenSize'))-1;
 end
 wsite={'Kiruna','Sodankyla','Tromso UHF','Tromso VHF','ESR1','ESR2','Zod'};
 radcon=[6e11,6e11,6e11,2e11,6e11,3e11,5e11];
@@ -128,7 +129,7 @@ for ch=1:noch
  if exist('pbac','var'), pb=pbac(ch,:).*blev; end
  if exist('prange0','var')
   pp(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t,prange0(ch,:))
-  if nax==1 & exist('pplegend','var')
+  if nax==1 & exist('pplegend','var') & using_x>1
    legend(ax(1),pplegend(ch,:),-1), legend(ax(1),'boxoff')
   end
  else
