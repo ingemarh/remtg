@@ -37,21 +37,22 @@ if isfinite(r0(1:nsig))
   xl='Altitude (km)';
  elseif nsig==1
   filltime=30e-6+1.5*dt(1);
-  y=[0 filltime siglen(1) siglen(1)+filltime]*1e6;
-  pshape=[0 1 1 0]; y=y-mean(y); p=interp1(y,pshape,x(1:nsamp(1),1));
-  p(find(isnan(p)))=0;
-  tri=conv2(d(1:nsamp(1)),p/sum(p),'same');
+  y=[0;filltime;siglen(1);siglen(1)+filltime]*1e6;
+  if r0(1)==0, x(1:nsamp(1),1)=x(1:nsamp(1),1)-mean(x(1:nsamp(1),1)); end
+  pshape=[0;1;1;0]; y=y-mean(y); p=interp1(y,pshape,x(1:nsamp(1),1));
+  p(find(isnan(p)))=[];
+  tri=conv2(d(1:nsamp(1)),flipud(p)/sum(p),'same');
   [m,p]=max(tri);
   snr=m/syst/b;
   s=max(snr,.05);
   del=x(p,1); if snr<0, del=NaN; end
-  p=ones(size(x,1)-4,1)*NaN;
-  x(:,2)=[y';p]; d(:,2)=[s*pshape'*syst*b;p];
  end
 end
-updateplot(fig,ax,x,d)
+if exist('snr','var')
+ updateplot(fig,ax,x,d,y,s*pshape*syst*b)
+ set(get(ax,'title'),'string',(sprintf('SNR=%.1f%% Delay=%.0f\\mus',100*snr,del)))
+else
+ updateplot(fig,ax,x,d)
+end
 set(get(ax,'xlabel'),'string',xl)
 set(get(ax,'ylabel'),'string',yl)
-if exist('snr','var')
- set(get(ax,'title'),'string',(sprintf('SNR=%.1f%% Delay=%.0f\\mus',100*snr,del)))
-end

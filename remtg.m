@@ -139,13 +139,12 @@ for ch=1:noch
  end
  c2t=tsys(1:length(blev))./blev; pb=blev;
  if exist('pbac','var'), pb=pbac(ch,:).*blev; end
- if exist('prange0','var')
+ if sum(isfinite(psig(ch,:)))
+  if ~exist('prange0','var'), prange0=zeros(size(psig)); end
   pp(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t,prange0(ch,:))
   if nax==1 & exist('pplegend','var') & using_x>1
    legend(ax(1),pplegend(ch,:),-1), legend(ax(1),'boxoff')
   end
- elseif sum(isfinite(psig(ch,:)))
-  timing(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t)
   sms=sprintf('%s %s',sms,get(get(ax(1),'title'),'string'));
  else
   cax=cax-1;
@@ -155,6 +154,7 @@ for ch=1:noch
  gating=1; bacf=0;
  if isfinite(bacspec(ch))
   if ~exist('nfftb','var'), nfftb=NaN*ones(size(bacspec)); end
+  if ~exist('backsamp','var'), backsamp=NaN*ones(size(bacspec)); end
   if ~exist('maxlagb','var'), maxlagb=zeros(size(bacspec)); end
   bacf=backspec(ch+20,ax(nax),maxlag(ch,1),maxlagb(ch),bacspec(ch,:),backsamp(ch,:),nfftb(ch,:),sigdt(ch,1),tsys(1));
  end

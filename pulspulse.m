@@ -8,7 +8,7 @@ if isfinite(p0)
 else
  sacf=[(4*sacf(:,1)-sacf(:,2))/3 sacf];
 end
-if r0>0
+if r0~=0
  r0=r0-dt;
 else
  r0=(1-len)/2*dt;
