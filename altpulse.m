@@ -1,8 +1,8 @@
 function altpulse(fig,ax,sig,nsamp,maxlag,slen,nbits,lagincr,r0,c2t)
 global dd_data tp site
 if site<5
-%display half the tails
- tail=.5;
+%display more than half of the tails
+ tail=.7;
 else
  tail=0;
 end

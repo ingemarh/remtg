@@ -45,6 +45,7 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
   global rtdir webtg
   rtdir='$rtdir'
   webtg=$ndumps
+  rtg_startup
   while ~remtg, end
  exit
 !

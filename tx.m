@@ -18,5 +18,5 @@ for n=1:np
  t=(0:nsam(n)-1)'*dt(n)*1e6;
  updateplot(fig,a(n),t,[tx ang],[])
  set(get(a(n),'xlabel'),'string','\mus')
- set(get(a(n),'ylabel'),'string','Norm. power and phase(\circ)')
+ set(get(a(n),'ylabel'),'string','Phase(\circ) and power')
 end

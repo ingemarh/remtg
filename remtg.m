@@ -34,6 +34,7 @@ else
  ints=d_parbl(7)/5;
  err=0;
  setbval(0,1)
+ filename=[];
 end
 rd=real(dd_data); id=imag(dd_data); id(find(~id))=NaN;
 site=d_parbl(41); intt=d_parbl(7);
