@@ -25,5 +25,5 @@ else
  set(a,'ydir','normal')
  set(get(a,'title'),'verticalalignment','middle')
 end
-set(j,'userdata',zlim)
+set(j,'userdata',zlim,'alphadata',double(~isnan(z)))
 set(a,'visible','on')

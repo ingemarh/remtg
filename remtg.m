@@ -1,6 +1,6 @@
 function err=remtg
 % Main rtg routine err=remtg
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x def_file sitecode
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x def_file sitecode combine combhold
 tnormal=[50 50 300 90 40 40 30 50]; tdev=[];
 if isempty(bval)
  radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11];
@@ -103,9 +103,14 @@ end
 for ch=1:noch
  nacf=0; for s=1:size(sigtyp,2), nacf=nacf+~isempty(char(sigtyp(ch,s))); end
  nax=nacf; s=2;
- if sum(isfinite(psig(ch,:)))>0, nax=nax+1; end
- if sum(bsamp(ch,:))>0, nax=nax+1; end
- if isfinite(bacspec(ch)), nax=nax+1;
+ if exist('scomb','var')
+  combine=scomb(ch,:); nax=nacf-sum(combine); combhold=[];
+ else
+  combine=[];
+ end
+ if any(isfinite(psig(ch,:))), nax=nax+1; end
+ if any(bsamp(ch,:)), nax=nax+1; end
+ if isfinite(bacspec(ch,1)), nax=nax+1;
  elseif nax==1, s=1; end
  ax=getaxes(ch+20,nax/s,s,['Pulse ' num2str(ch) sitet],head);
  % back cal /pp
@@ -147,12 +152,20 @@ for ch=1:noch
  if isfinite(bacspec(ch))
   if ~exist('nfftb','var'), nfftb=NaN*ones(size(backspec)), end
   if ~exist('maxlagb','var'), maxlagb=zeros(size(backspec)), end
-  bacf=backspec(ch+20,ax(nax),maxlag(ch,1),maxlagb(ch),bacspec(ch,:),backsamp(ch,:),nfftb(ch,:),sigdt(ch,1),tsys);
+  bacf=backspec(ch+20,ax(nax),maxlag(ch,1),maxlagb(ch),bacspec(ch,:),backsamp(ch,:),nfftb(ch,:),sigdt(ch,1),tsys(1));
  end
  % sig spec /spec
  s=min(length(tsys),length(blev));
  kperc=mean(tsys(1:s))/mean(blev(1:s));
  for s=1:nacf
+  if isempty(combine) | s==1
+   axs=ax(cax+s);
+  elseif ~combine(s-1)
+   axs=ax(cax+s-length(find(combine(1:s-1))));
+  end
+  if ~isempty(combine) & combine(s)
+   combine(s)=axs;
+  end
   if ~exist('srange0','var')
    s0=0;
    if site==5 | site==6, s0=-1; end
@@ -171,19 +184,19 @@ for ch=1:noch
    gating=1;
   end
   if strcmp(styp,'rem')
-   rempulse(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),kperc);
+   rempulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),kperc);
   elseif strcmp(styp,'alt')
-   altpulse(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
+   altpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   elseif strcmp(styp,'long')
-   longpulse(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),s0,kperc);
+   longpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),s0,kperc);
   elseif strcmp(styp,'puls2')
-   pulspulse(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc);
+   pulspulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc);
   elseif strcmp(styp,'fft')
-   fftpulse(ch+20,ax(cax+s),sig(ch,s),nffts(ch,s),sigdt(ch,s),kperc,siglen(ch,s),sgates(ch,s),s0);
+   fftpulse(ch+20,axs,sig(ch,s),nffts(ch,s),sigdt(ch,s),kperc,siglen(ch,s),sgates(ch,s),s0);
   elseif strcmp(styp,'myalt')
-   myalt(ch+20,ax(cax+s),sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
+   myalt(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   else
-   set(ax(cax+s),'visible','off')
+   set(axs,'visible','off')
   end
  end
  set(ax((nax+1):end),'visible','off')

@@ -14,7 +14,7 @@ for i=1:ncal
   bacf(1:nfft(i),i)=ifft(rd(back(i)+(1:nfft(i))));
  end
 end
-h=spitspec(fig,ax,ones(mlag+1,1)*(tsys(1:ncal)./bacf(1,:)).*bacf,(0:mlag)*lagincr);
+h=spitspec(fig,ax,ones(mlag+1,1)*(tsys./bacf(1,:)).*bacf,(0:mlag)*lagincr);
 set(h,'string','Background')
 ncal=find(nsamp);
 if ~isempty(ncal), bacf=mean(bacf(1:maxlag+1,ncal),2); end

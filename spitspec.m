@@ -1,5 +1,5 @@
 function h=spitspec(fig,ax,sacf,lag,dt,r0)
-global bval d_parbl gating el site
+global bval d_parbl gating el site combine combhold
 if nargin<6, r0=0; end
 ngates=size(sacf,2);
 if gating>1
@@ -38,6 +38,16 @@ else
  if r0>0
   r=r*.15;
   re=6370; r=r/re; r=re*sqrt(1+r.*(r+2*sin(el/57.2957795)))-re;
+ end
+ if ~isempty(combhold)
+  dr=diff(r(1:2)); n=round((r(1)-combhold.r(end))/dr)-1;
+  s=interp2(r,w',s,r,combhold.w');
+  r=[combhold.r (1:n)*dr+combhold.r(end) r];
+  s=[combhold.s NaN*ones(length(combhold.w),n) s];
+  ngates=length(r); combhold=[];
+ elseif ~isempty(combine) & any(combine==ax)
+  combhold.s=s; combhold.r=r; combhold.w=w;
+  h=[]; return
  end
  if ngates<waterlim(2) | get(ax,'view')-[0 90]
   updatewater(fig,ax,w,r,s')
