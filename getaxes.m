@@ -1,6 +1,11 @@
 function ax=getaxes(fig,s1,s2,name,head)
 global figs
-if ~ishandle(fig), figure(fig), end %zoom(fig,'on'), end
+if ~ishandle(fig)
+ figure(fig)
+ if ~prod(get(0,'ScreenSize'))-1 & strcmp(version('-release'),'13')
+  close(fig),figure(fig); % Matlab R13 bug
+ end
+end
 ax=sort(findobj(fig,'type','axes','tag',[]));
 h=findobj(findobj(fig,'type','axes','tag','suptitle'),'type','text');
 if nargin<4, name='EISCAT rtg'; end

@@ -4,7 +4,7 @@ if bval(4)<8 & exist('lastweb','var') & now-lastweb<30/86400, return, end
 jpg='png256'; flag=''; using_x=prod(get(0,'ScreenSize'));
 if using_x>1, jpg='png'; flag='-r72'; end
 sites='kstve2z'; sitex=sites(site);
-dir='/tmp/';
+dir=tempdir;
 files=[dir sitex '.html'];
 fid=fopen(files,'w');
 wsite={'Kiruna','Sodankyl&auml;','Troms&oslash; UHF','Troms&oslash; VHF','ESR1','ESR2','Zod'};
