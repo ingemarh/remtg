@@ -7,7 +7,7 @@ if gating>1
  ngates=floor(ngates/gating);
  sacf=reshape(sum(reshape(sacf(:,1:(ngates*gating))',gating,ngates,nlags)),ngates,nlags)';
 end
-waterlim=[4 8];
+waterlim=[5 8];
 if bval(11)==1 & ngates>waterlim(2) & r0>0
  h=qfit(fig,ax,sacf,lag,dt,r0); return
 elseif bval(11)==1 & nargin>4 & site<3
