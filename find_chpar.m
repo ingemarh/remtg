@@ -1,41 +1,36 @@
-function [def_file,chpar]=find_chpar(chpar)
-global d_ExpInfo site
-expdir='/kst/exp/'; defile='/rtg_def'; def_file=[];
-if isempty(chpar)
- chpar=d_ExpInfo(find(d_ExpInfo~='-')); i=chpar;
- while ~isempty(chpar) & ~exist(['rtg_' chpar])
-  [chpar,i]=strtok(i);
- end
- if ~isstr(chpar)
-  chpar=d_ExpInfo; i=chpar;
-  while ~isempty(chpar) & ~exist([expdir chpar defile '.m'])
-   [chpar,i]=strtok(i);
-  end
- end
- if ~isstr(chpar)
-  chpar=d_ExpInfo;
-  [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar); %chpar=strtok(chpar,'_'); 
-  while ~isempty(chpar) & ~exist([expdir chpar defile '.m']) & ~exist(['rtg_' chpar])
-   chpar=chpar(1:end-1);
-  end
- end
- if isempty(chpar) & isunix
-  chpar=d_ExpInfo;
-  [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
-  [i,j]=unix(['ls ' expdir '??/' chpar defile '.m']);
-  while ~isempty(chpar) & i
-   chpar=chpar(1:end-1);
-   [i,j]=unix(['ls ' expdir '??/' chpar defile '.m']);
-  end
+function chpar=find_chpar(filename)
+global d_ExpInfo site old_ExpInfo def_file old_chpar
+if strcmp(d_ExpInfo,old_ExpInfo) & ~isempty(def_file)
+ chpar=old_chpar; return
+end
+expdir=fullfile(filesep,'kst','exp');
+defile='rtg_def'; dm=[defile '.m']; def_file=[];
+[i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
+idir=fileparts(fileparts(filename));
+infodir=dir(fullfile(idir,'*_information'));
+while ~isempty(infodir) & isempty(def_file) & infodir(end).isdir
+ infodir=fullfile(idir,infodir(end).name);
+ if exist(fullfile(infodir,dm))
+  def_file=fullfile(infodir,defile);
+ else
+  idir=infodir, infodir=dir(idir); infodir(1:2)=[];
  end
 end
-if isstr(chpar)
- if exist([expdir chpar defile '.m'])
-  def_file=([expdir chpar defile]);
+while ~isempty(chpar) & isempty(def_file)
+ if exist(fullfile(expdir,chpar,dm))
+  def_file=fullfile(expdir,chpar,defile);
+ elseif isempty(strfind(ls(fullfile(expdir,'??',chpar,dm)),' '))
+  def_file=ls(fullfile(expdir,'??',chpar,dm));
+  def_file=def_file(1:end-3);
  elseif exist(['rtg_' chpar])
   def_file=which(['rtg_' chpar]);
- elseif isunix
-  [i,def_file]=unix(['ls ' expdir '??/' chpar defile '.m']);
-  def_file=def_file(1:end-1);
+ else
+  chpar(end)=[];
  end
 end
+if ~isempty(def_file)
+ fprintf('RTG definition file set to: %s\n',def_file)
+elseif ~strcmp(d_ExpInfo,old_ExpInfo)
+ fprintf('No RTG definition file found\n',def_file)
+end
+old_ExpInfo=d_ExpInfo; old_chpar=chpar;

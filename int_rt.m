@@ -33,40 +33,40 @@ while i<bval(2)
    s=2-exist(filename,'file');
   end
   odate=fname;
+  [s,df]=unix(['ls -l ' filename]);
+  for j=1:5, [nbytes,df]=strtok(df); end
+  if isempty(nbytes)
+   disp('End of data!'), err=1; i=i-1; odate=[]; return
+  end
+  nbytes=str2num(nbytes);
  else
   if ~strcmp(odate,rtdir)
-   [s,d]=unix(['ls -1 ' rtdir '/[0-9]*.mat']); odate=rtdir;
-   if s~=0
+   d=dir(fullfile(rtdir,'*.mat'));
+   if isempty(d)
     disp('No data!'), err=1; i=i-1; odate=[]; return
    end
   end
-  [filename,d]=strtok(d,10);
-  if isempty(filename)
-   if rtdir(end)==filesep, rtdir=rtdir(1:end-1); end
-   [j,s]=fileparts(rtdir); s=sscanf(s,'%04d%02d%02d_%02d',4);
+  if isempty(d)
+   if rtdir(end)==filesep, rtdir(end)=[]; end
+   [j,s]=fileparts(rtdir); df='%04d%02d%02d_%02d'; s=sscanf(s,df,4);
    if length(s)==4
     s=datevec(datenum([s' 0 0])+1.01/24);
-    s=fullfile(j,sprintf('%04d%02d%02d_%02d',s(1:4)));
+    s=fullfile(j,sprintf(df,s(1:4)));
     if exist(s,'dir')
-     [j,d]=unix(['ls -1 ' s '/[0-9]*.mat']);
-     if j==0
-      rtdir=s; odate=s; [filename,d]=strtok(d,10);
+     d=dir(fullfile(s,'*.mat'));
+     if ~isempty(d)
+      rtdir=s;
      end
     end
    end
-   if isempty(filename)
+   if isempty(d)
     disp('End of data!'), err=1; i=i-1; odate=[]; return
    end
   end
+  filename=fullfile(rtdir,d(1).name);
+  nbytes=d(1).bytes; d(1)=[]; odate=rtdir;
  end
- [s,df]=unix(['ls -l ' filename]);
- for j=1:5, [nbytes,df]=strtok(df); end
- if isempty(nbytes)
-  disp('End of data!'), err=1; i=i-1; odate=[]; return
- end
- nbytes=str2num(nbytes);
  if obytes & nbytes~=obytes
-%	 obytes,nbytes
   j=j-1; odate=[]; return
  end
  obytes=nbytes;

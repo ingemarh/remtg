@@ -1,8 +1,7 @@
-function [err,chpar]=remtg(chpar)
-% Main rtg routine [err,chpar]=remtg(chpar)
+function [err,chpar]=remtg
+% Main rtg routine [err,chpar]=remtg
 % Version 2002-10-23
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x
-if nargin<1, chpar=[]; end
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x def_file
 wsite={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Zod','ESR 32p'};
 radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11]; tdev=[];
 tnormal=[50 50 300 90 40 40 30 50];
@@ -60,7 +59,7 @@ end
 % default chpar values
 psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN;
 
-[def_file,chpar]=find_chpar(chpar);
+chpar=find_chpar(filename);
 try
 if ~isempty(def_file), run(def_file); end
 head=[chpar head];
