@@ -44,7 +44,21 @@ while i<bval(2)
   end
   [filename,d]=strtok(d,10);
   if isempty(filename)
-   disp('End of data!'), err=1; i=i-1; odate=[]; return
+   if rtdir(end)==filesep, rtdir=rtdir(1:end-1); end
+   [j,s]=fileparts(rtdir); s=sscanf(s,'%04d%02d%02d_%02d',4);
+   if length(s)==4
+    s=datevec(datenum([s' 0 0])+1.01/24);
+    s=fullfile(j,sprintf('%04d%02d%02d_%02d',s(1:4)));
+    if exist(s,'dir')
+     [j,d]=unix(['ls -1 ' s '/[0-9]*.mat']);
+     if j==0
+      rtdir=s; odate=s; [filename,d]=strtok(d,10);
+     end
+    end
+   end
+   if isempty(filename)
+    disp('End of data!'), err=1; i=i-1; odate=[]; return
+   end
   end
  end
  [s,df]=unix(['ls -l ' filename]);
