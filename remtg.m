@@ -1,6 +1,6 @@
 function err=remtg
 % Main rtg routine err=remtg
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x def_file sitecode combine combhold
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x def_file sitecode combine combhold tail
 tnormal=[50 50 300 90 40 40 30 50]; tdev=[];
 if isempty(bval)
  radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11];
@@ -62,7 +62,10 @@ else
 end
 
 % default chpar values
-psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN;
+psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN; tail=.7;
+if site==5 | site==6
+ tail=0;
+end
 
 chpar=find_chpar(filename);
 try
