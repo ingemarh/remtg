@@ -6,6 +6,7 @@ if nargin<1, chpar=[]; end
 wsite={'Kiruna','Sodankyla','Tromso UHF','Tromso VHF','ESR1','ESR2','ESR3','Zod'};
 radcon=[6e11,6e11,6e11,2e11,6e11,3e11,6e11,5e11];
 antenna=[5 6 4 3 1 2 8 7]; tdev=[];
+tnormal=[40 40 90 300 50 50 50 30];
 maxant=max(antenna)+1;
 if isempty(bval)
  site=findstr('KSTVL2Z',getenv('EISCATSITE'));
@@ -100,7 +101,8 @@ elseif noch>0 & strcmp(get(butts(7),'visible'),'off')
 end
 for ch=1:noch
  nacf=0; for s=1:size(sigtyp,2), nacf=nacf+~isempty(char(sigtyp(ch,s))); end
- nax=1+nacf; s=2;
+ nax=nacf; s=2;
+ if sum(isfinite(psig(ch,:)))>0, nax=nax+1; end
  if sum(bsamp(ch,:))>0, nax=nax+1; end
  if isfinite(bacspec(ch)), nax=nax+1;
  elseif nax==1, s=1; end
@@ -110,7 +112,6 @@ for ch=1:noch
  if sum(bsamp(ch,:))
   [tsys,blev]=noise(ch+20,ax(2),bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc);
   sms=sprintf('%s\n%s',sms,get(get(ax(2),'title'),'string'));
-  tnormal=[40 40 90 300 50 50 30];
   tsys(find(isnan(tsys)))=tnormal(site);
   cax=2;
  elseif exist('blev')
@@ -133,9 +134,11 @@ for ch=1:noch
   if nax==1 & exist('pplegend','var') & using_x>1
    legend(ax(1),pplegend(ch,:),-1), legend(ax(1),'boxoff')
   end
- else
+ elseif sum(isfinite(psig(ch,:)))
   timing(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t)
   sms=sprintf('%s %s',sms,get(get(ax(1),'title'),'string'));
+ else
+  cax=cax-1;
  end
  set(ax(1),'ygrid','on')
  % back spec /spec
