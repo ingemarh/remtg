@@ -106,6 +106,7 @@ for ch=1:noch
  end
  if exist('bfac','var')
   blev=blev./bfac(ch,find(isfinite(bfac(ch,:))));
+  if length(blev)>length(tsys), tsys(end+1:length(blev))=mean(tsys); end
  end
  c2t=tsys(1:length(blev))./blev; pb=blev;
  if exist('pbac','var'), pb=pbac(ch,:).*blev; end
