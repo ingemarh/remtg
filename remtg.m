@@ -105,10 +105,10 @@ for ch=1:noch
   el=d_parbl(9);
  end
  if exist('bfac','var')
-  blev=blev./bfac(ch,:);
+  blev=blev./bfac(ch,find(isfinite(bfac(ch,:))));
  end
  c2t=tsys(1:length(blev))./blev; pb=blev;
- if exist('pbac','var') pb=pbac(ch,:).*blev; end
+ if exist('pbac','var'), pb=pbac(ch,:).*blev; end
  if exist('prange0','var')
   pp(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t,prange0(ch,:))
  else
