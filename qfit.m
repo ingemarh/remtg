@@ -41,7 +41,7 @@ for j=alt
 end
 
 mi=23.5-7.5*tanh((al-200)/20);
-f0r=[930*cos(.2) 930*cos(.4) 930 224 500 500 450]*1e6;
+f0r=[500 500 224 930 930*cos(.2) 930*cos(.4) 450 500]*1e6;
 f0=f0r(site); c=3e8;
 const=radcon(site)*ran.^2/pt/tp*diff(lag(1:2));
 
@@ -56,7 +56,7 @@ v=-qf(:,3)*c/2/f0;
 v(find(v<-1000))=-1000;
 v(find(v>1000))=1000;
 
-if site<3
+if site==5 | site==6
  h=[te ti v]; return
 end
 par=[ne/1e6 te ti v];

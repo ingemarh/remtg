@@ -1,19 +1,17 @@
 function [err,chpar]=remtg(chpar)
 % Main rtg routine [err,chpar]=remtg(chpar)
 % Version 2002-10-23
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x maxant
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw using_x
 if nargin<1, chpar=[]; end
-wsite={'Kiruna','Sodankyla','Tromso UHF','Tromso VHF','ESR 32m','ESR 42m','ESR 32p','Zod'};
-radcon=[6e11,6e11,6e11,2e11,6e11,3e11,6e11,5e11];
-antenna=[5 6 4 3 1 2 8 7]; tdev=[];
-tnormal=[40 40 90 300 50 50 50 30];
-maxant=max(antenna)+1;
+wsite={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Zod','ESR 32p'};
+radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11]; tdev=[];
+tnormal=[50 50 300 90 40 40 30 50];
 if isempty(bval)
- site=findstr('KSTVL2Z',getenv('EISCATSITE'));
- if isempty(site), site=1;
- elseif site==3 & ~isempty(findstr(getenv('RXHOST'),'v5011')), site=4;
+ site=findstr('L2VTKSZP',getenv('EISCATSITE'));
+ if isempty(site), site=5;
+ elseif site==4 & ~isempty(findstr(getenv('RXHOST'),'v5011')), site=3;
  end
- bval=[1 1 1 maxant-isempty(rtdir)*(maxant-site) 0 1 0 1 0 0 0];
+ bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
  if strcmp('rtg',getenv('XTERM_WM_NAME')), bval(5)=1;
  elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1]) 1 1];
  end
@@ -22,7 +20,7 @@ end
 if isempty(butts) | ~ishandle(butts(1))
  rtgbuttons(10)
 end
-if bval(4)<maxant+1
+if bval(4)>=0
  [ints,filename,nbytes,err]=int_rt;
  if err
   if ints==0, return, end
@@ -35,13 +33,13 @@ else
  setbval(0,1)
 end
 rd=real(dd_data); id=imag(dd_data); id(find(~id))=NaN;
-site=antenna(d_parbl(41)); intt=d_parbl(7);
+site=d_parbl(41); intt=d_parbl(7);
 tim=datestr(datenum(d_parbl(1:6)),31); tim=[tim(1:13) tim(15:19)];
 head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,d_parbl(8)/1000,rem(d_parbl(10),360),d_parbl(9));
 %raw data
 sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(wsite(site))];
 t1=raw(10,['Raw data' sitet],sms);
-if bval(4)<maxant
+if bval(4)>0
  if findstr(filename,'RT')
   set(t1,'string','Not recording')
  else
@@ -155,7 +153,7 @@ for ch=1:noch
  for s=1:nacf
   if ~exist('srange0','var')
    s0=0;
-   if site<3, s0=-1; end
+   if site==5 | site==6, s0=-1; end
   else
    s0=srange0(ch,s);
   end

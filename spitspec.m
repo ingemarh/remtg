@@ -10,7 +10,7 @@ end
 waterlim=[5 8];
 if bval(11)==1 & ngates>waterlim(2) & r0>0
  h=qfit(fig,ax,sacf,lag,dt,r0); return
-elseif bval(11)==1 & nargin>4 & site<3
+elseif bval(11)==1 & nargin>4 & (site==5 | site==6)
  [s,w]=max(sacf(1,:));
  par=qfit(fig,ax,sacf(:,w),lag,0,1e-2);
 end 
@@ -71,7 +71,7 @@ else
 end
 h=get(ax,'title');
 set(ax,'visible','on')
-if bval(11)==1 & nargin>4 & site<3
+if bval(11)==1 & nargin>4 & (site==5 | site==6)
  set(h,'string',sprintf('%.0fK %.0fK %.0fms^{-1}',par))
  h=get(ax,'zlabel');
 end
