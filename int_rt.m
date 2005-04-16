@@ -10,21 +10,21 @@ while i<bval(2)
   s=1; j=1;
   while s
    filename=[rdir 'latest@' lower(char(sitecode.short(2+bval(4)))) '.mat'];
-   if ~exist(filename,'file'), pause(.6)
+   if ~exist(filename,'file'), pause(1)
     if ~exist(filename,'file')
      web(sprintf('http://www.eiscat.com/rtg/rtg.cgi?%s',sitecode.mini(bval(4))))
      disp('No data!'), err=1; i=i-1; odate=[]; return
     end
    end
    while s
-    if rem(j,10)==0 & j>150
+    if rem(j,10)==0 & j>90
      beep
      disp('End of data?')
-    elseif j>300 & (bval(4)~=6 | j>60000)
+    elseif j>180 & (bval(4)~=6 | j>9000)
      disp('End of data!'), err=1; i=i-1; odate=[]; return
     end
     if bval(1)==0 | i>bval(2), return, end
-    [s,fname]=unix(['ls -l ' filename]); j=j+1; pause(.6)
+    [s,fname]=unix(['ls -l ' filename]); j=j+1; pause(1)
     s=s+strcmp(fname,odate);
    end
    filename=strtok(fname(end:-1:1)); filename=filename(end:-1:1);
