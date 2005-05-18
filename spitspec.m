@@ -8,11 +8,11 @@ if nlags>maxsize_acf(1)
  sacf=sacf(1:nlags,:); lag=lag(1:nlags);
 end
 if ngates/sgating>maxsize_acf(2)
- sgating=ngates/maxsize_acf(2);
+ sgating=ceil(ngates/maxsize_acf(2));
 end
 if sgating>1
  ngates=floor(ngates/sgating);
- sacf=reshape(sum(reshape(sacf(:,1:(ngates*sgating))',gating,ngates,nlags)),ngates,nlags)';
+ sacf=reshape(sum(reshape(sacf(:,1:(ngates*sgating))',sgating,ngates,nlags)),ngates,nlags)';
 end
 waterlim=[5 8];
 if bval(11)==1 & ngates>waterlim(2) & r0>0
@@ -41,7 +41,7 @@ if ngates<waterlim(1)
  h=get(ax,'ylabel');
 else
  if bval(7)~=1, s(find(s<0))=0; end
- r=(r0+(0:(ngates-1))*dt*gating)*1e6;
+ r=(r0+(0:(ngates-1))*dt*sgating)*1e6;
  if r0>0
   r=r*.15;
   re=6370; r=r/re; r=re*sqrt(1+r.*(r+2*sin(el/57.2957795)))-re;
