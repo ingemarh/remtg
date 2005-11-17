@@ -36,16 +36,16 @@ if isfinite(r0(1:nsig))
   re=6370; x=x/re; x=re*sqrt(1+x.*(x+2*sin(el/57.2957795)))-re;
   xl='Altitude (km)';
  elseif nsig==1
-  filltime=30e-6+1.5*dt(1);
+  filltime=30e-6+1.5*dt(1); guard=r0(1)*1e6;
   y=[0;filltime;siglen(1);siglen(1)+filltime]*1e6;
-  if r0(1)==0, x(1:nsamp(1),1)=x(1:nsamp(1),1)-mean(x(1:nsamp(1),1)); end
-  pshape=[0;1;1;0]; y=y-mean(y); p=interp1(y,pshape,x(1:nsamp(1),1));
+  if guard==0, x(1:nsamp(1),1)=x(1:nsamp(1),1)-mean(x(1:nsamp(1),1)); end
+  pshape=[0;1;1;0]; y=y-mean(y)-guard; p=interp1(y,pshape,x(1:nsamp(1),1));
   p(find(isnan(p)))=[];
   tri=conv2(d(1:nsamp(1)),flipud(p)/sum(p),'same');
   [m,p]=max(tri);
   snr=m/syst/b;
   s=max(snr,.05);
-  del=x(p,1); if snr<0, del=NaN; end
+  del=x(p,1)+guard; if snr<0, del=NaN; end
  end
 end
 if exist('snr','var')
