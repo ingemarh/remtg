@@ -10,8 +10,12 @@ while i<bval(2)
   s=1; j=1;
   while s
    filename=[rdir 'latest@' lower(char(sitecode.short(2+bval(4)))) '.mat'];
-   if ~exist(filename,'file'), pause(1)
-    if ~exist(filename,'file')
+   jj=3;
+   while ~exist(filename,'file')
+    jj=jj-1,
+    if jj>0
+     pause(1)
+    else
      web(sprintf('http://www.eiscat.com/rtg/rtg.cgi?%s',sitecode.mini(bval(4))))
      disp('No data!'), err=1; i=i-1; odate=[]; return
     end
@@ -27,13 +31,13 @@ while i<bval(2)
     [s,fname]=unix(['ls -l ' filename]); j=j+1; pause(1)
     s=s+strcmp(fname,odate);
    end
-   filename=strtok(fname(end:-1:1)); filename=filename(end:-1:1);
+   filename=fliplr(strtok(fliplr(fname)));
    s=2-exist(filename,'file');
   end
   odate=fname;
   [s,df]=unix(['ls -l ' filename]);
   for j=1:5, [nbytes,df]=strtok(df); end
-  if isempty(nbytes)
+  if s | isempty(nbytes)
    disp('End of data!'), err=1; i=i-1; odate=[]; return
   end
   nbytes=str2num(nbytes);
@@ -68,7 +72,9 @@ while i<bval(2)
   j=j-1; odate=[]; return
  end
  obytes=nbytes;
+ clear d_raw
  load(filename)
+ clear d_raw
  dd_data=dd_data+d_data;
  d_parbl=d_parbl(:).';
  acc_parbl=acc_parbl+d_parbl([7 8]);
