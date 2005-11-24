@@ -72,9 +72,8 @@ while i<bval(2)
   j=j-1; odate=[]; return
  end
  obytes=nbytes;
- clear d_raw
+ d_raw=[];
  load(filename)
- clear d_raw
  dd_data=dd_data+d_data;
  d_parbl=d_parbl(:).';
  acc_parbl=acc_parbl+d_parbl([7 8]);

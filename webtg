@@ -41,11 +41,11 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  fi
  export MATLABPATH SHELL TMP
  unset DISPLAY
- matlab $null << !
+ matlab -nodisplay $null << !
+  rtg_startup
   global rtdir webtg
   rtdir='$rtdir'
   webtg=$ndumps
-  rtg_startup
   while ~remtg, end
  exit
 !
