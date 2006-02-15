@@ -9,7 +9,7 @@ end
 np=(narg-2)/2;
 if narg<5, np=prod(size(y1))/length(x1); end 
 j=findobj(a,'type','line');
-if length(j)==np & length(get(j(end),'ydata'))==length(y1)
+if length(j)==np & length(get(j(end),'ydata'))==size(y1,1)
  if narg==6 | np==1
   set(j(np),'ydata',y1,'xdata',x1)
   if np>1, set(j(1),'ydata',y2,'xdata',x2), end

@@ -52,8 +52,10 @@ else
   r=[combhold.r (1:n)*dr+combhold.r(end) r];
   s=[combhold.s NaN*ones(length(combhold.w),n) s];
   ngates=length(r); combhold=[];
- elseif ~isempty(combine) & any(combine==ax)
+ end
+ if ~isempty(combine) & any(combine==ax)
   combhold.s=s; combhold.r=r; combhold.w=w;
+  d=find(combine==ax); combine(d(1))=1;
   h=[]; return
  end
  if ngates<waterlim(2) | get(ax,'view')-[0 90]
