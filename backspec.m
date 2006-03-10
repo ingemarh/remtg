@@ -1,7 +1,7 @@
 function bacf=backspec(fig,ax,maxlag,maxlagb,back,nsamp,nfft,lagincr,tsys)
 global dd_data rd
 ncal=sum(isfinite(back));
-mlag=max([maxlag maxlagb nfft/2]),
+mlag=max([maxlag maxlagb nfft/2]);
 bacf=zeros(mlag+1,ncal);
 for i=1:ncal
  if nsamp(i)>0
