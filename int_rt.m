@@ -10,7 +10,7 @@ while i<bval(2)
   s=1; j=1;
   while s
    filename=[rdir 'latest@' lower(char(sitecode.short(2+bval(4)))) '.mat'];
-   jj=3;
+   jj=9;
    while ~exist(filename,'file')
     jj=jj-1,
     if jj>0
