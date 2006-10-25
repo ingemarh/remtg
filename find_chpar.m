@@ -22,8 +22,8 @@ while ~isempty(chpar) & isempty(def_file)
  if exist(fullfile(expdir,chpar,dm))
   def_file=fullfile(expdir,chpar,defile);
  elseif isempty(strfind(inEI,' '))
-  def_file=ls(fullfile(expdir,'??',chpar,dm));
-  def_file=def_file(1:end-3);
+  def_file=strtok(ls(fullfile(expdir,'??',chpar,dm)));
+  def_file=def_file(1:end-2);
  elseif exist(['rtg_' chpar])
   def_file=which(['rtg_' chpar]);
  else
