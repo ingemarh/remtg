@@ -7,7 +7,7 @@ for varno=1:length(varargin)
  if strmatch(varname,{'txs' 'psig' 'back' 'cal' 'sig' 'sig0' 'backspec'},'exact')
   s=ones(size(vartemp));
   s=s(:)*(1:mr*mc);
-  [a,b]=size(varargout{varno})
+  [a,b]=size(varargout{varno});
   varargout{varno}=varargout{varno}+j*reshape(s-1,b,a).';
  end
 end

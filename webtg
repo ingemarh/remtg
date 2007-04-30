@@ -1,6 +1,9 @@
 #!/bin/sh
 rtdir=
 null=">/dev/null"
+if [ -z "$matlab" ]; then
+ matlab=matlab
+fi
 ndumps="60"
 usage="Usage: webtg [-v] [-d dir] [-s KSTVL2PZ] [-n dumps/secs] [start] | stop"
 while getopts vd:s:n: flag
@@ -41,7 +44,7 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  fi
  export MATLABPATH SHELL TMP
  unset DISPLAY
- matlab -nodisplay $null << !
+ $matlab -nodisplay $null << !
   rtg_startup
   global rtdir webtg
   rtdir='$rtdir'

@@ -104,6 +104,9 @@ elseif noch>0 & strcmp(get(butts(7),'visible'),'off')
  set(butts(6),'visible','off','value',1)
  bval(6)=1;
 end
+if ~exist('tcal','var')
+ tcal=d_parbl(21)*ones(noch,1);
+end
 for ch=1:noch
  nacf=0; for s=1:size(sigtyp,2), nacf=nacf+~isempty(char(sigtyp(ch,s))); end
  nax=nacf; s=2;
@@ -120,7 +123,7 @@ for ch=1:noch
  % back cal /pp
  if ~exist('loopc','var'), loopc=100*intt/ints; end
  if sum(bsamp(ch,:))
-  [tsys,blev]=noise(ch+20,ax(2),bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc);
+  [tsys,blev]=noise(ch+20,ax(2),bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc,tcal(ch));
   sms=sprintf('%s\n%s',sms,get(get(ax(2),'title'),'string'));
   tsys(find(isnan(tsys)))=tnormal(site);
   cax=2;

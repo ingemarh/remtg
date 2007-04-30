@@ -1,6 +1,6 @@
-function [tsys,blev]=noise(fig,ax,nb,nc,back,cal,loopc)
-global rd d_parbl
-ncal=length(find(nb+nc)); tsys=[]; blev=[]; tcal=d_parbl(21);
+function [tsys,blev]=noise(fig,ax,nb,nc,back,cal,loopc,tcal)
+global rd
+ncal=length(find(nb+nc)); tsys=[]; blev=[];
 if ncal==0
  set(ax,'visible','off'), return
 end
