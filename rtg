@@ -13,7 +13,7 @@ while [ -h $filename ]; do
 done
 MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
-umask 022
+umask 002
 TMP=$HOME/tmp
 if [ ! -d $TMP ];then
  mkdir $TMP
@@ -21,5 +21,6 @@ fi
 SHELL=/bin/sh
 XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
 export MATLABPATH SHELL XTERM_WM_NAME TMP
+unset `env | grep UTF | awk -F = '{ print $1 }'`
 #xterm -T rtg -e /usr/local/bin/matlab -nojvm -nosplash -r rtg &
 matlab -nojvm -nosplash -r rtg
