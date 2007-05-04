@@ -185,6 +185,11 @@ for ch=1:noch
   else
    lag00=NaN; w00=NaN;
   end
+  if exist('stransp','var')
+   transp=stransp(ch,s);
+  else
+   transp=[];
+  end
   if exist('sgating','var')
    gating=sgating(ch,s);
   else
@@ -197,7 +202,7 @@ for ch=1:noch
   elseif strcmp(styp,'long')
    longpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),s0,kperc);
   elseif strcmp(styp,'puls2')
-   pulspulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc);
+   pulspulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc,transp);
   elseif strcmp(styp,'fft')
    fftpulse(ch+20,axs,sig(ch,s),nffts(ch,s),sigdt(ch,s),kperc,siglen(ch,s),sgates(ch,s),s0);
   elseif strcmp(styp,'fdalt')
