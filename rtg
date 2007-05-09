@@ -20,7 +20,26 @@ if [ ! -d $TMP ];then
 fi
 SHELL=/bin/sh
 XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
-export MATLABPATH SHELL XTERM_WM_NAME TMP
 unset `env | grep UTF | awk -F = '{ print $1 }'`
-#xterm -T rtg -e /usr/local/bin/matlab -nojvm -nosplash -r rtg &
-matlab -nojvm -nosplash -r rtg
+usage="Usage: rtg [-v] [-s KSTVL2PZ]"
+term=0
+while getopts ts: flag
+do
+ case $flag in
+  t) term=1;;
+  s) EISCATSITE="$OPTARG"
+     export EISCATSITE;;
+  ?) echo $usage
+     exit 2;;
+ esac
+done
+shift `expr $OPTIND - 1`
+export MATLABPATH SHELL XTERM_WM_NAME TMP
+comm="matlab -nojvm -nosplash -r rtg"
+if [ $term -eq 0 ]
+then
+ exec $comm
+else
+ xterm -title rtg$EISCATSITE -bg white -fg blue -geometry 60x5-20+800 \
+  -sb -sl 256 -fn fixed -e $comm &
+fi
