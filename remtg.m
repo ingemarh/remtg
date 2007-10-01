@@ -1,6 +1,6 @@
 function err=remtg
 % Main rtg routine err=remtg
-global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw local def_file sitecode combine combhold tail maxsize_acf
+global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw local def_file sitecode combine combhold tail maxsize_acf selax
 tnormal=[50 50 300 90 40 40 30 50]; tdev=[];
 if isempty(bval)
  radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11];
@@ -225,6 +225,9 @@ if ~isempty(tdev)
  if bval(10)
   timedev(30,ntim,thead,head)
  end
+end
+if ~isempty(selax) & exist(selax.fun,'file')
+ run(selax.fun)
 end
 catch
  disp(lasterr)

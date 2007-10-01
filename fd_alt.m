@@ -57,6 +57,7 @@ else
   r0=r0-(frac+1)*lagincr;
  end
 end
+%sacf=sacf(:,1);
 h=spitspec(fig,ax,c2t*sacf,(0:maxlag)*lagincr,lagincr*frac,r0);
 set(h,'string','Alternating code')
 

@@ -1,6 +1,15 @@
 function updateplot(fig,a,x1,y1,x2,y2)
-global bval tdev
+global bval tdev selax
 narg=nargin;
+if ~isempty(selax) & all(selax.fig==[fig a])
+ %stack=dbstack
+ %if ~strcmp(stack(2).name,'spitspec')
+  selax.x1=x1; selax.y1=y1;
+  if nargin>4
+   selax.x2=x2; selax.y2=y2;
+  end
+ %end
+end
 if rem(narg,2)==1
   mktd=0; narg=narg-1;
 else

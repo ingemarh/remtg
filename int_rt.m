@@ -43,7 +43,7 @@ while i<bval(2)
   nbytes=str2num(nbytes);
  else
   if ~strcmp(odate,rtdir)
-   d=dir(fullfile(rtdir,'*.mat'));
+   d=dir(fullfile(rtdir,'*.mat*'));
    if isempty(d)
     disp('No data!'), err=1; i=i-1; odate=[]; return
    end
@@ -55,7 +55,7 @@ while i<bval(2)
     s=datevec(datenum([s' 0 0])+1.01/24);
     s=fullfile(j,sprintf(df,s(1:4)));
     if exist(s,'dir')
-     d=dir(fullfile(s,'*.mat'));
+     d=dir(fullfile(s,'*.mat*'));
      if ~isempty(d)
       rtdir=s;
      end
@@ -71,9 +71,16 @@ while i<bval(2)
  if obytes & nbytes~=obytes
   j=j-1; odate=[]; return
  end
- obytes=nbytes;
- d_raw=[];
- load(filename)
+ d_raw=[]; tempfile=[tempname '.mat'];
+ if strfind(filename,'.mat.bz2')
+  tfile=[tempname '.mat'];
+  unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
+  load(tfile)
+  delete(tfile)
+ else
+  obytes=nbytes;
+  load(filename)
+ end
  dd_data=dd_data+d_data;
  d_parbl=d_parbl(:).';
  acc_parbl=acc_parbl+d_parbl([7 8]);

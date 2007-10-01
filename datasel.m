@@ -6,10 +6,11 @@ if v==0
  if ~exist(ndir,'dir'), ndir=fullfile(filesep,'data'); end
  if ~exist(ndir,'dir'), ndir=fullfile(filesep,'data1'); end
  if ~exist(ndir,'dir'), ndir=pwd; end
- [startfile,ndir]=uigetfile(fullfile(ndir,'*.mat'),'Pick a start file in directory');
+ %[startfile,ndir,dum]=uigetfile(fullfile(ndir,'*.mat'),'Pick a start file in directory');
+ [startfile,ndir,dum]=uigetfile('*.mat*','Pick a start file in directory');
  if ~isequal(startfile,0) & ~isequal(ndir,0)
   rtdir=ndir;
-  d=dir(fullfile(rtdir,'*.mat')); odate=rtdir;
+  d=dir(fullfile(rtdir,'*.mat*')); odate=rtdir;
   while ~isempty(d) & isempty(strfind(d(1).name,startfile))
    d(1)=[];
   end

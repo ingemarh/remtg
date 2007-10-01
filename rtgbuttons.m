@@ -14,4 +14,5 @@ butts(10)=uicontrol('Style','togglebutton','string','Tdev','position',[340 0 30 
 butts(11)=uicontrol('Style','togglebutton','string','Phys','position',[230 0 30 20],'value',bval(11),'callback','setbval','tooltipstring','Physical parameters (prel)','visible','off');
 uicontrol('Style','pushbutton','string','Quit','position',[510 0 30 25],'value',0,'callback','quit');
 uicontrol('Style','pushbutton','string','Def','position',[0 35 30 20],'value',0,'tooltipstring','Force definition file','callback','[o,p]=uigetfile(''*.m'',''RTG definition file'');if o,if ~exist(''def_file''),global def_file,end,def_file=fullfile(p,o);end');
+uicontrol('Style','pushbutton','string','Sel','position',[0 55 30 20],'value',0,'tooltipstring','Select plot for special threatment','callback','axessel');
 uicontrol('Style','pushbutton','string','?','position',[400 0 20 20],'value',0,'tooltipstring','Help','callback','[o,p]=imread(''help.png'');figure(9),set(gcf,''pos'',[10 40 820 310]),image(o),colormap(p),set(gca,''units'',''pixels'',''pos'',[1 1 812 308],''tickl'',[0 0])');
