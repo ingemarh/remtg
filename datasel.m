@@ -2,11 +2,11 @@ function datasel
 global rtdir bval butts d odate
 v=get(butts(4),'value')-2;
 if v==0
- ndir=rtdir;
- if ~exist(ndir,'dir'), ndir=fullfile(filesep,'data'); end
- if ~exist(ndir,'dir'), ndir=fullfile(filesep,'data1'); end
- if ~exist(ndir,'dir'), ndir=pwd; end
- %[startfile,ndir,dum]=uigetfile(fullfile(ndir,'*.mat'),'Pick a start file in directory');
+ if exist(rtdir,'dir'), ndir=rtdir;
+ elseif exist(fullfile(filesep,'data'),'dir'), ndir=fullfile(filesep,'data');
+ elseif exist(fullfile(filesep,'data1'),'dir'), ndir=fullfile(filesep,'data1');
+ else, ndir=pwd; end
+ %[startfile,ndir,dum]=uigetfile(fullfile(ndir,'*.mat*'),'Pick a start file in directory');
  [startfile,ndir,dum]=uigetfile('*.mat*','Pick a start file in directory');
  if ~isequal(startfile,0) & ~isequal(ndir,0)
   rtdir=ndir;
