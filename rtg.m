@@ -1,5 +1,5 @@
 global bval rtdir butts
-fprintf('EISCAT Real Time Graph vs %g\n',2.5)
+fprintf('EISCAT Real Time Graph vs %g\n',2.6)
 rtg_startup
 if ~exist('rtdir')
 %rtdir='../elin/decelin';
