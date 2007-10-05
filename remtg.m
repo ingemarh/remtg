@@ -8,6 +8,7 @@ if isempty(bval)
  sitecode.long={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Zod','ESR 32p'};
  sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Zod','32p'};
  sitecode.mini='L2VTKSZP';
+ sitecode.low='llvurr p';
  site=findstr(sitecode.mini,getenv('EISCATSITE'));
  xwn=getenv('XTERM_WM_NAME');
  if isempty(site), site=5; err=1;
