@@ -4,10 +4,10 @@ global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el
 tnormal=[50 50 300 90 40 40 30 50]; tdev=[];
 if isempty(bval)
  radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11];
- sitecode.web={'ESR 32m','ESR 42m','Troms&oslash; VHF','Troms&oslash; UHF','Kiruna','Sodankyl&auml;','Zod','ESR 32p'};
- sitecode.long={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Zod','ESR 32p'};
- sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Zod','32p'};
- sitecode.mini='L2VTKSZP';
+ sitecode.web={'ESR 32m','ESR 42m','Troms&oslash; VHF','Troms&oslash; UHF','Kiruna','Sodankyl&auml;','Hot','ESR 32p'};
+ sitecode.long={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Hot','ESR 32p'};
+ sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Hot','32p'};
+ sitecode.mini='L2VTKSHP';
  sitecode.low='llvurr p';
  site=findstr(sitecode.mini,getenv('EISCATSITE'));
  xwn=getenv('XTERM_WM_NAME');
