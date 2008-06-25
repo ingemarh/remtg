@@ -2,7 +2,7 @@ function ax=getaxes(fig,s1,s2,name,head)
 global figs local
 if ~ishandle(fig)
  figure(fig)
- if ~local.x & local.ver==13
+ if ~local.x & local.ver==6.5
   close(fig),figure(fig); % Matlab R13 bug
  end
 end

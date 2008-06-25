@@ -16,5 +16,11 @@ format compact
 format short g
 myb(128)
 global local
-local.ver=str2num(version('-release'));
+matver=ver('matlab'); matver=matver.Version;
+d=strfind(matver,'.'); matver(d(2:end))=[];
+local.ver=str2num(matver);
+clear matver d
 local.x=prod(get(0,'ScreenSize'))-1;
+if ~usejava('jvm') & local.ver>=7.5
+ set(0,'DefaultAxesButtonDownFcn','zoom')
+end
