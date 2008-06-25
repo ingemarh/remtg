@@ -20,7 +20,11 @@ if [ ! -d $TMP ];then
 fi
 SHELL=/bin/sh
 XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
-unset `env | grep UTF | awk -F = '{ print $1 }'`
+utf=`env | grep UTF`
+if [ $utf ]
+then
+ unset `echo $utf | awk -F = '{ print $1 }'`
+fi
 usage="Usage: rtg [-v] [-s KSTVL2PZ]"
 term=0
 while getopts ts: flag
