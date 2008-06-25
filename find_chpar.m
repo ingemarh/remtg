@@ -12,6 +12,7 @@ while ~isempty(infodir) & isempty(def_file) & infodir(end).isdir
  infodir=fullfile(idir,infodir(end).name);
  if exist(fullfile(infodir,dm))
   def_file=fullfile(infodir,defile);
+  chpar=strtok(chpar,'_');
  else
   idir=infodir; infodir=dir(idir); infodir(1:2)=[];
   for i=length(infodir):-1:1, if ~infodir(i).isdir, infodir(i)=[]; end, end
@@ -22,7 +23,8 @@ while ~isempty(chpar) & isempty(def_file)
  if exist(fullfile(expdir,chpar,dm))
   def_file=fullfile(expdir,chpar,defile);
  elseif isempty(strfind(inEI,' '))
-  def_file=strtok(ls(fullfile(expdir,'??',chpar,dm)));
+  %def_file=strtok(ls(fullfile(expdir,'??',chpar,dm)));
+  def_file=strtok(inEI);
   def_file=def_file(1:end-2);
  elseif exist(['rtg_' chpar])
   def_file=which(['rtg_' chpar]);
