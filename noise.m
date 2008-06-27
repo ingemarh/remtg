@@ -23,13 +23,17 @@ for i=1:ncal
 end
 updateplot(fig,ax,x,y)
 yt=get(ax,'ytick');
-btic=round([mean(ble) mean(cle)]);
-[a,p1]=min(abs(yt-btic(1)));
-[a,p2]=min(abs(yt-btic(2)));
-yt(p1)=btic(1);
-if p2~=p1, yt(p2)=btic(2); elseif btic(2)~=btic(1), yt=[yt(1:p1) btic(2) yt((p1+1):end)]; end
-set(ax,'ytick',sort(yt));
-tsys(find(tsys<0 | tsys>1000))=NaN;
+if ~isempty(cle)
+ btic=round([mean(ble) mean(cle)]);
+ [a,p1]=min(abs(yt-btic(1)));
+ [a,p2]=min(abs(yt-btic(2)));
+ yt(p1)=btic(1);
+ if p2~=p1, yt(p2)=btic(2); elseif btic(2)~=btic(1), yt=[yt(1:p1) btic(2) yt((p1+1):end)]; end
+ set(ax,'ytick',sort(yt));
+ tsys(find(tsys<0 | tsys>1000))=NaN;
+else
+ tsys=NaN*ones(size(blev));
+end
 h=get(ax,'title');
 if length(tsys)>1
  set(h,'string',['Tsys=[' sprintf('%d ',round(tsys(1:(end-1)))) sprintf('%d]K (%gK)',round(tsys(end)),tcal)])
