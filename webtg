@@ -42,16 +42,10 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  if [ ! -d $TMP ];then
   mkdir $TMP
  fi
- export MATLABPATH SHELL TMP
+ WTG="rtdir='$rtdir',webtg=$ndumps"
+ export MATLABPATH SHELL TMP WTG
  unset DISPLAY
- $matlab -nodisplay $null << !
-  rtg_startup
-  global rtdir webtg
-  rtdir='$rtdir'
-  webtg=$ndumps
-  while ~remtg, end
- exit
-!
+ $matlab -nodisplay -r wtg $null
 else
  echo $usage
  exit 1

@@ -124,8 +124,9 @@ for ch=1:noch
  % back cal /pp
  if ~exist('loopc','var'), loopc=100*intt/ints; end
  if sum(bsamp(ch,:))
-  [tsys,blev]=noise(ch+20,ax(2),bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc,tcal(ch));
-  sms=sprintf('%s\n%s',sms,get(get(ax(2),'title'),'string'));
+  bax=ax(1+any(isfinite(psig(ch,:))));
+  [tsys,blev]=noise(ch+20,bax,bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc,tcal(ch));
+  sms=sprintf('%s\n%s',sms,get(get(bax,'title'),'string'));
   tsys(find(isnan(tsys)))=tnormal(site);
   cax=2;
  elseif exist('blev')
@@ -158,7 +159,7 @@ for ch=1:noch
  gating=1; bacf=0;
  if isfinite(bacspec(ch))
   if ~exist('nfftb','var'), nfftb=NaN*ones(size(bacspec)); end
-  if ~exist('backsamp','var'), backsamp=NaN*ones(size(bacspec)); end
+  if ~exist('backsamp','var'), backsamp=zeros(size(bacspec)); end
   if ~exist('maxlagb','var'), maxlagb=zeros(size(bacspec)); end
   bacf=backspec(ch+20,ax(nax),maxlag(ch,1),maxlagb(ch),bacspec(ch,:),backsamp(ch,:),nfftb(ch,:),sigdt(ch,1),tsys(1));
  end
