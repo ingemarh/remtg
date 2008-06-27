@@ -45,7 +45,7 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  WTG="rtdir='$rtdir',webtg=$ndumps"
  export MATLABPATH SHELL TMP WTG
  unset DISPLAY
- $matlab -nodisplay -r wtg $null
+ $matlab -nodisplay -r wtg $null </dev/null
 else
  echo $usage
  exit 1
