@@ -229,6 +229,7 @@ if ~isempty(tdev)
  end
 end
 if ~isempty(selax) & exist(selax.fun,'file')
+ clear(selax.fun)
  run(selax.fun)
 end
 catch
@@ -236,6 +237,6 @@ catch
 end
 if bval(5)
  mkweb(sms)
-elseif ~isempty(rtdir)
+elseif ~isempty(rtdir) & isempty(selax)
  pause(5)
 end
