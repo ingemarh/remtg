@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/sh -l
 #find remtg directory
 filename=$0
 while [ -h $filename ]; do
 	lscmd=`ls -l $filename 2>/dev/null`
-	f1=`echo "$lscmd" | awk '{ print $NF }'`
-	fp=`echo "$f1" | awk '{ print index($1,"/") }'`
+	f1=`echo "$lscmd" | gawk '{ print $NF }'`
+	fp=`echo "$f1" | gawk '{ print index($1,"/") }'`
 	if [ $fp != "1" ];then
 		filename=`dirname $filename`/$f1
 	else
@@ -19,7 +19,6 @@ if [ ! -d $TMP ];then
  mkdir $TMP
 fi
 SHELL=/bin/sh
-XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
 for utf in `env | grep UTF`
 do
  unset `echo $utf | awk -F = '{ print $1 }'`
@@ -37,12 +36,15 @@ do
  esac
 done
 shift `expr $OPTIND - 1`
-export MATLABPATH SHELL XTERM_WM_NAME TMP
 comm="matlab -nojvm -nosplash -r rtg"
 if [ $term -eq 0 ]
 then
+ XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
+ export MATLABPATH SHELL XTERM_WM_NAME TMP
  exec $comm
 else
+ XTERM_WM_NAME=rtg$EISCATSITE
+ export MATLABPATH SHELL XTERM_WM_NAME TMP
  xterm -title rtg$EISCATSITE -bg white -fg blue -geometry 60x5-20+800 \
   -sb -sl 256 -fn fixed -e $comm &
 fi
