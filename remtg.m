@@ -38,7 +38,7 @@ else
 end
 rd=real(dd_data); id=imag(dd_data); id(find(~id))=NaN;
 site=d_parbl(41); intt=d_parbl(7);
-tim=datestr(datenum(d_parbl(1:6)),31); tim=[tim(1:13) tim(15:19)];
+tim=datestr(datenum(round(d_parbl(1:6))),31); tim=[tim(1:13) tim(15:19)];
 head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,d_parbl(8)/1000,rem(d_parbl(10),360),d_parbl(9));
 %raw data
 sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(sitecode.long(site))];
