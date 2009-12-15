@@ -81,6 +81,9 @@ while i<bval(2)
   obytes=nbytes;
   load(filename)
  end
+ if length(d_parbl)==128
+  d_parbl=nd2eros4(d_parbl,d_data);
+ end
  dd_data=dd_data+d_data;
  d_parbl=d_parbl(:).';
  acc_parbl=acc_parbl+d_parbl([7 8]);
