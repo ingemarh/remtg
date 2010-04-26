@@ -31,20 +31,23 @@ else
  sacf=sacf(d,:)./(w(d)*ones(1,ngates));
 
  %sacf=sum(sacf,2);
- if frac>660
-  nff=min(frac,12);
+ if frac>600
+  nff=min(frac,6);
   nf=fix(nff/2);
   for i=1:ngates
-   p=polyval(polyfit([0:nff-1]'.^2,abs(sacf(1:nff,i)),1),(0:nf-1)'.^2);
+   p=polyval(polyfit([1:nff-1]'.^2,abs(sacf(2:nff,i)),1),(0:nf-1)'.^2);
    ang=mean(angle(sacf(2:nff,i))./[1:nff-1]')*[0:nf-1]';
    sacf(1:nf,i)=p.*exp(j*ang);
   end
- elseif frac>50 & local.ver>=7
-  nf=find(w(1:frac)<mean(w)/3); nf=nf(end);
+ elseif frac>500 & local.ver>=7
+  nf=find(w(1:frac)<mean(w)/100); nf=max([nf(end) 4]),
+  nf=maxlag+1;
   s=[0 1 0]; x=[0:nf-1]'; b=w(x+1).^2; b(1:2)=0;
   for i=1:ngates
    a=sacf(x+1,i);
-   s=fminsearch(@(s) racf(s,x,a,b),s,optimset('display','off'));
+   eval('ss=@(s) racf(s,x,a,b)');
+   %ss=@(s) racf(s,x,a,b);
+   s=fminsearch(ss,s,optimset('display','off'));
    sacf(x+1,i)=racf(s,x);
   end
  else
@@ -64,6 +67,7 @@ set(h,'string','Alternating code')
 function err=racf(s,x,y,w)
 s=2*sinh(s);
 err=s(1)^2./(1+(x/s(2)).^2).*exp(i*s(3)*x);
+%err=s(1)./(1+(x/s(2)).^2).*exp(i*s(3)*x);
 %err=s(1)./(1+x.^2/s(2)).*exp(i*s(3)*x);
 %err=s(1)*exp(-(x/s(2)).^2+i*s(3)*x);
 if nargin>2
