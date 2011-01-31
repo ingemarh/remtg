@@ -39,7 +39,8 @@ end
 rd=real(dd_data); id=imag(dd_data); id(find(~id))=NaN;
 site=d_parbl(41); intt=d_parbl(7);
 tim=datestr(datenum(round(d_parbl(1:6))),31); tim=[tim(1:13) tim(15:19)];
-head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,d_parbl(8)/1000,rem(d_parbl(10),360),d_parbl(9));
+if site==14, txpow=d_parbl(65); else, txpow=d_parbl(8)/1000; end
+head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,txpow,rem(d_parbl(10),360),d_parbl(9));
 %raw data
 sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(sitecode.long(site))];
 t1=raw(10,['Raw data' sitet],sms);
@@ -197,12 +198,17 @@ for ch=1:noch
   else
    gating=1;
   end
+  if exist('bacfac','var')
+   bacfact=bacfac(ch,s);
+  else
+   bacfact=1;
+  end
   if strcmp(styp,'rem')
-   rempulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),kperc);
+   rempulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf*bacfact,sigdt(ch,s),kperc);
   elseif strcmp(styp,'alt')
    altpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   elseif strcmp(styp,'long')
-   longpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf,sigdt(ch,s),s0,kperc);
+   longpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf*bacfact,sigdt(ch,s),s0,kperc);
   elseif strcmp(styp,'puls2')
    pulspulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc,transp);
   elseif strcmp(styp,'fft')

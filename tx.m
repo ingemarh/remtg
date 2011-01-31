@@ -15,7 +15,7 @@ for n=1:np
  tx=abs(raw).^2/mtx;
  ang=angle(raw)*180/pi;
  sang=sort(ang(:));
- ang=ang-sang(end/4);
+ ang=ang-sang(ceil(end/4));
  d=find(ang>300); ang(d)=ang(d)-360;
  d=find(ang<-150); ang(d)=ang(d)+360;
  t=(0:nsam(n)-1)'*dt(n)*1e6;
