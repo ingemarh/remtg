@@ -18,7 +18,10 @@ myb(128)
 global local
 matver=ver('matlab'); matver=matver.Version;
 d=strfind(matver,'.'); matver(d(2:end))=[];
-local.ver=str2num(matver);
+[matver,d]=strtok(matver,'.');
+local.ver=str2num(d(2:end))/10;
+if local.ver>=1, local.ver=0.9+local.ver/100; end
+local.ver=local.ver+str2num(matver);
 clear matver d
 local.x=prod(get(0,'ScreenSize'))-1;
 if ~usejava('jvm') & local.ver>=7.5

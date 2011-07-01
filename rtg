@@ -25,10 +25,12 @@ do
 done
 usage="Usage: rtg [-v] [-s KSTVL2PZ]"
 term=0
-while getopts ts: flag
+jvm="-nojvm"
+while getopts jts: flag
 do
  case $flag in
   t) term=1;;
+  j) jvm="-nodesktop";;
   s) EISCATSITE="$OPTARG"
      export EISCATSITE;;
   ?) echo $usage
@@ -36,7 +38,7 @@ do
  esac
 done
 shift `expr $OPTIND - 1`
-comm="matlab -nojvm -nosplash -r rtg"
+comm="matlab $jvm -nosplash -r rtg"
 if [ $term -eq 0 ]
 then
  XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
