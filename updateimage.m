@@ -2,13 +2,12 @@ function updateimage(fig,a,x,y,z)
 global bval
 j=findobj(a,'type','image');
 z=asinh(z/2); % almost log
-zok=z(find(isfinite(z)));
 if length(j)==1 & isempty(find(size(get(j,'cdata'))-size(z)))
  if bval(8)==3
   set(a,'climmode','manual')
   zlim=get(j,'userdata');
  else
-  zlim(1)=min(zok); zlim(2)=max(zok);
+  zlim=smart_caxis(z,0.01);
   set(a,'climmode','auto')
  end
  z=(z-zlim(1))/diff(zlim);
@@ -17,7 +16,7 @@ if length(j)==1 & isempty(find(size(get(j,'cdata'))-size(z)))
   set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)])
  end
 else
- zlim(1)=min(zok); zlim(2)=max(zok);
+ zlim=smart_caxis(z,0.01);
  z=(z-zlim(1))/diff(zlim);
  setcurrent(fig,a)
  j=imagesc(x,y,z);
@@ -27,3 +26,11 @@ else
 end
 set(j,'userdata',zlim,'alphadata',double(~isnan(z)))
 set(a,'visible','on')
+end
+
+function zlim=smart_caxis(z,a)
+zok=z(find(isfinite(z)));
+zs=sort(z(zok));
+n=ceil(a*length(zs));
+zlim=[zs(n+1) zs(end-n)];
+end
