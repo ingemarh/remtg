@@ -22,8 +22,13 @@ d=strfind(matver,'.'); matver(d(2:end))=[];
 local.ver=str2num(d(2:end))/10;
 if local.ver>=1, local.ver=0.9+local.ver/100; end
 local.ver=local.ver+str2num(matver);
+d=get(0,'ScreenSize');
+local.x=prod(d)-1;
+if local.x
+ matver=get(0,'defaultFigurePosition');
+ set(0,'defaultFigurePosition',[d(3)/2 matver(2:4)])
+end
 clear matver d
-local.x=prod(get(0,'ScreenSize'))-1;
 if ~usejava('jvm') & local.ver>=7.5
  set(0,'DefaultAxesButtonDownFcn','zoom')
 end

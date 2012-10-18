@@ -2,7 +2,10 @@ function ax=getaxes(fig,s1,s2,name,head)
 global figs local
 if ~ishandle(fig)
  figure(fig)
- if ~local.x & local.ver==6.5
+ if local.x
+  d=get(0,'defaultfigureposition');
+  set(fig,'position',[d(1:2)+[1 -1]*fig d(3:4)])
+ elseif local.ver==6.5
   close(fig),figure(fig); % Matlab R13 bug
  end
 end
