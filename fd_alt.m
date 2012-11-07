@@ -23,7 +23,7 @@ else
  nr=ceil(maxlag/length(w1));
  w1=repmat(w1,1,nr)'; w2=[zeros(frac+1,1);w1]; w1=[weight(1);w1];
  m=[1:frac-1 frac:-1:0];
- m1=m(:)*(nbits-1:-2:1); m2=m(:)*(nbits-2:-2:0);
+ m1=m(:)*(nbits-1:-2:0); m2=m(:)*(nbits-2:-2:-1);
  m1=[(nbits-1)*[frac*2:-1:frac] m1(frac+1:end)]'; m2=[zeros(frac+1,1);m2(:)];
 
  w=w1(1:maxlag+1).*m1(1:maxlag+1)+w2(1:maxlag+1).*m2(1:maxlag+1);
