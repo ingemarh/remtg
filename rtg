@@ -25,12 +25,12 @@ do
 done
 usage="Usage: rtg [-v] [-s KSTVL2PZ]"
 term=0
-jvm="-nojvm"
+jvm="-nodesktop"
 while getopts jts: flag
 do
  case $flag in
   t) term=1;;
-  j) jvm="-nodesktop";;
+  j) jvm="-nojvm";;
   s) EISCATSITE="$OPTARG"
      export EISCATSITE;;
   ?) echo $usage
