@@ -24,6 +24,6 @@ if nargin<2 | ~bval(9)
 else
  f=gray(nl);
 end
-h=get(0,'children'),
+h=get(0,'children');
 if ~isempty(h), set(h,'colormap',f); end
 set(0,'defaultfigurecolormap',f)
