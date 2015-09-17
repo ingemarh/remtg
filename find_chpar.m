@@ -1,6 +1,6 @@
 function chpar=find_chpar(filename)
 global d_ExpInfo site old_ExpInfo def_file old_chpar
-if strcmp(d_ExpInfo,old_ExpInfo) & ~isempty(def_file)
+if strcmp(d_ExpInfo,old_ExpInfo) && ~isempty(def_file)
  chpar=old_chpar; clear(def_file), return
 end
 expdir=fullfile(filesep,'kst','exp');
@@ -8,7 +8,7 @@ defile='rtg_def'; dm=[defile '.m']; def_file=[];
 [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
 idir=fileparts(fileparts(filename));
 infodir=dir(fullfile(idir,'*_information'));
-while ~isempty(infodir) & isempty(def_file) & infodir(end).isdir
+while ~isempty(infodir) && isempty(def_file) && infodir(end).isdir
  infodir=fullfile(idir,infodir(end).name);
  if exist(fullfile(infodir,dm))
   def_file=fullfile(infodir,defile);
@@ -18,8 +18,12 @@ while ~isempty(infodir) & isempty(def_file) & infodir(end).isdir
   for i=length(infodir):-1:1, if ~infodir(i).isdir, infodir(i)=[]; end, end
  end
 end
-while ~isempty(chpar) & isempty(def_file)
- [dum,inEI]=unix(['ls ' fullfile(expdir,'??',chpar,dm)]);
+while ~isempty(chpar) && isempty(def_file)
+ if isunix
+  [dum,inEI]=unix(['ls ' fullfile(expdir,'??',chpar,dm)]);
+ else
+  inEI=' ';
+ end
  if exist(fullfile(expdir,chpar,dm))
   def_file=fullfile(expdir,chpar,defile);
  elseif isempty(strfind(inEI,' '))

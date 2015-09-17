@@ -13,7 +13,7 @@ ax=sort(findobj(fig,'type','axes','tag',[]));
 h=findobj(findobj(fig,'type','axes','tag','suptitle'),'type','text');
 if nargin<4, name='EISCAT rtg'; end
 if nargin<5, head='EISCAT rtg'; end
-if isempty(ax) | length(ax)~=prod([s1 s2]) | isempty(h)
+if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
  delete(ax)
  ax=0;
  set(0,'currentfigure',fig)

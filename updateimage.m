@@ -1,12 +1,12 @@
 function updateimage(fig,a,x,y,z)
-global bval
+global bval local
 j=findobj(a,'type','image');
 %if isempty(find(z<0))
 % z=log(z);
 %else
  z=asinh(z/2); % almost log
 %end
-if length(j)==1 & isempty(find(size(get(j,'cdata'))-size(z)))
+if ~strcmp(local.name,'Octave') && length(j)==1 && isempty(find(size(get(j,'cdata'))-size(z)))
  if bval(8)==3
   zlim=get(j,'userdata');
  else

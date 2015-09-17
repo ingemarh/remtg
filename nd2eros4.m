@@ -12,12 +12,12 @@ parbl([7:10 63])=d_parbl([94 99 9 6 97]).*[1;1000;.1;.1;1000];
 parbl(58:62)=d_parbl(121:125); 
 parbl(57)=d_parbl(92);
 parbl(22)=1;
-if rem(d_parbl(95),2)==1 | d_parbl(95)==64
+if rem(d_parbl(95),2)==1 || d_parbl(95)==64
   parbl(8)=-1;
 end
 %if d_parbl(95)~=0, fprintf(' Status word is %g\n',d_parbl(95)), end 
 ant=[30 210 280 30;5 4 3 6];
-if d_parbl(1)==2 & rem(d_parbl(127),2)==1
+if d_parbl(1)==2 && rem(d_parbl(127),2)==1
   d_parbl(1)=3;
 end
 parbl([21 41])=ant(:,d_parbl(1));

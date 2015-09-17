@@ -56,7 +56,7 @@ v=-qf(:,3)*c/2/f0;
 v(find(v<-1000))=-1000;
 v(find(v>1000))=1000;
 
-if site==5 | site==6
+if site==5 || site==6
  h=[te ti v]; return
 end
 par=[ne/1e6 te ti v];

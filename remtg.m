@@ -12,14 +12,14 @@ if isempty(bval)
  site=findstr(sitecode.mini,getenv('EISCATSITE'));
  xwn=getenv('XTERM_WM_NAME');
  if isempty(site), site=5; err=1;
- elseif site==4 & ~isempty(findstr(xwn,'VHF')), site=3;
+ elseif site==4 && ~isempty(findstr(xwn,'VHF')), site=3;
  end
  bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
  if findstr('rtg',xwn), bval(5)=1;
  elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1]) 1 1];
  end
 end
-if isempty(butts) | ~ishandle(butts(1))
+if isempty(butts) || ~ishandle(butts(1))
  rtgbuttons(10)
  if exist('err','var'), return, end
 end
@@ -65,7 +65,7 @@ end
 % default chpar values
 psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN; tail=.7;
 maxsize_acf=[256 256];
-if site==5 | site==6
+if site==5 || site==6
  tail=0;
 end
 
@@ -73,7 +73,7 @@ chpar=find_chpar(filename);
 try
 if ~isempty(def_file), run(def_file); end
 head=[chpar head];
-if exist('rawlim','var') & ~isempty(rawlim)
+if exist('rawlim','var') && ~isempty(rawlim)
  nrp=size(rawlim,1); nraw=0;
  while nrp>0
   nrf=ceil(nrp/4); nrnow=ceil(nrp/nrf); nraw=nraw+1;
@@ -81,7 +81,7 @@ if exist('rawlim','var') & ~isempty(rawlim)
   rawlim=rawlim(nrnow+1:nrp,:); nrp=nrp-nrnow;
  end
 end
-if exist('txs','var') & ~isempty(txs)
+if exist('txs','var') && ~isempty(txs)
  nrp=size(txs,1); nraw=0;
  while nrp>0
   nrf=ceil(nrp/4); nrnow=ceil(nrp/nrf); nraw=nraw+1;
@@ -89,7 +89,7 @@ if exist('txs','var') & ~isempty(txs)
   nrp=nrp-nrnow;
  end
 end
-if exist('amplim','var') & ~isempty(amplim)
+if exist('amplim','var') && ~isempty(amplim)
  nrp=size(amplim,1); nraw=0;
  while nrp>0
   nrf=ceil(nrp/4); nrnow=ceil(nrp/nrf); nraw=nraw+1;
@@ -98,10 +98,10 @@ if exist('amplim','var') & ~isempty(amplim)
  end
 end
 noch=size(psig,1);
-if noch==0 & strcmp(get(butts(7),'visible'),'on')
+if noch==0 && strcmp(get(butts(7),'visible'),'on')
  set(butts([7 11]),'visible','off')
  set(butts(6),'visible','on')
-elseif noch>0 & strcmp(get(butts(7),'visible'),'off')
+elseif noch>0 && strcmp(get(butts(7),'visible'),'off')
  set(butts([7 11]),'visible','on')
  set(butts(6),'visible','off','value',1)
  bval(6)=1;
@@ -148,7 +148,7 @@ for ch=1:noch
  if sum(isfinite(psig(ch,:)))
   if ~exist('prange0','var'), prange0=zeros(size(psig)); end
   pp(ch+20,ax(1),psig(ch,:),psamp(ch,:),plen(ch,:),pdt(ch,:),pb,c2t,prange0(ch,:))
-  if nax==1 & exist('pplegend','var') & local.x
+  if nax==1 && exist('pplegend','var') && local.x
    legend(ax(1),pplegend(ch,:),-1), legend(ax(1),'boxoff')
   end
   sms=sprintf('%s %s',sms,get(get(ax(1),'title'),'string'));
@@ -168,17 +168,16 @@ for ch=1:noch
  s=min(length(tsys),length(blev));
  kperc=mean(tsys(1:s))/mean(blev(1:s));
  for s=1:nacf
-  if isempty(combine) | s==1
+  if isempty(combine) || s==1
    axs=ax(cax+s);
   elseif ~combine(s-1)
    axs=ax(cax+s-length(find(combine(1:s-1))));
   end
-  if ~isempty(combine) & combine(s)
+  if ~isempty(combine) && combine(s)
    combine(s)=axs;
   end
   if ~exist('srange0','var')
    s0=0;
-   %if site==5 | site==6, s0=-1; end
   else
    s0=srange0(ch,s);
   end
@@ -225,7 +224,7 @@ for ch=1:noch
 end
 if ~isempty(tdev)
  lt=length(tdev);
- if ~isstruct(tdim) | size(tdim.data,1)~=lt
+ if ~isstruct(tdim) || size(tdim.data,1)~=lt
   tdim.data=ones(lt,ntim)*NaN; tdim.time=tdim.data(1,:);
  end
  tdim.data=[tdev tdim.data(:,1:(ntim-1))];
@@ -234,7 +233,7 @@ if ~isempty(tdev)
   timedev(30,ntim,thead,head)
  end
 end
-if ~isempty(selax) & exist(selax.fun,'file')
+if ~isempty(selax) && exist(selax.fun,'file')
  clear(selax.fun)
  run(selax.fun)
 end
@@ -243,6 +242,6 @@ catch
 end
 if bval(5)
  mkweb(sms)
-elseif ~isempty(rtdir) & isempty(selax)
+elseif ~isempty(rtdir) && isempty(selax)
  pause(5)
 end

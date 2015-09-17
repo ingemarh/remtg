@@ -16,12 +16,17 @@ format compact
 format short g
 myb(128)
 global local
-matver=ver('matlab'); matver=matver.Version;
+matvers=ver; matver=matvers.Version;
 d=strfind(matver,'.'); matver(d(2:end))=[];
 [matver,d]=strtok(matver,'.');
 local.ver=str2num(d(2:end))/10;
 if local.ver>=1, local.ver=0.9+local.ver/100; end
 local.ver=local.ver+str2num(matver);
+local.name=matvers(1).Name;
+if strcmp(local.name,'Octave')
+ [dum,a]=strtok(fliplr(which('rtg')),filesep);
+ addpath(fullfile(fliplr(a),'private'))
+end
 d=get(0,'ScreenSize');
 local.x=prod(d)-1;
 if local.x
@@ -29,6 +34,6 @@ if local.x
  set(0,'defaultFigurePosition',[d(3)/2 matver(2:4)])
 end
 clear matver d
-if ~usejava('jvm') & local.ver>=7.5
+if ~usejava('jvm') && local.ver>=7.5
  set(0,'DefaultAxesButtonDownFcn','zoom')
 end

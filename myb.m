@@ -5,7 +5,7 @@ if nargin==0, nl=[]; end
 if isempty(nl)
  nl=size(get(gcf,'colormap'),1);
 end
-if nargin<2 | ~bval(9)
+if nargin<2 || ~bval(9)
  f=zeros(nl,3)+.5; j=0;
  b=round(1:(nl-1)/7:nl);
  f(b,:)=[0 0 0 0 1 1 1 1

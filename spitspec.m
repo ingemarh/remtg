@@ -1,7 +1,7 @@
 function h=spitspec(fig,ax,sacf,lag,dt,r0)
 global bval d_parbl gating el site combine combhold maxsize_acf selax
 if nargin<6, r0=0; end
-if ~isempty(selax) & all(selax.fig==[fig ax])
+if ~isempty(selax) && all(selax.fig==[fig ax])
  selax.sacf=sacf; selax.lag=lag;
  if nargin>4
   selax.dt=dt; selax.r0=r0;
@@ -21,9 +21,9 @@ if sgating>1
  sacf=reshape(sum(reshape(sacf(:,1:(ngates*sgating))',sgating,ngates,nlags)),ngates,nlags)';
 end
 waterlim=[5 8];
-if bval(11)==1 & ngates>waterlim(2) & r0>0
+if bval(11)==1 && ngates>waterlim(2) && r0>0
  h=qfit(fig,ax,sacf,lag,dt,r0); return
-elseif bval(11)==1 & nargin>4 & (site==5 | site==6)
+elseif bval(11)==1 && nargin>4 && (site==5 || site==6)
  [s,w]=max(sacf(1,:));
  par=qfit(fig,ax,sacf(:,w),lag,0,1e-2);
 end 
@@ -59,12 +59,12 @@ else
   s=[combhold.s NaN*ones(length(combhold.w),n) s];
   ngates=length(r); combhold=[];
  end
- if ~isempty(combine) & any(combine==ax)
+ if ~isempty(combine) && any(combine==ax)
   combhold.s=s; combhold.r=r; combhold.w=w;
   d=find(combine==ax); combine(d(1))=1;
   h=[]; return
  end
- if ngates<waterlim(2) | get(ax,'view')-[0 90]
+ if ngates<waterlim(2) || any(get(ax,'view')-[0 90])
   updatewater(fig,ax,w,r,s')
  else
   updateimage(fig,ax,w,r,s')
@@ -96,7 +96,7 @@ else
 end
 h=get(ax,'title');
 set(ax,'visible','on')
-if bval(11)==1 & nargin>4 & (site==5 | site==6)
+if bval(11)==1 && nargin>4 && (site==5 || site==6)
  set(h,'string',sprintf('%.0fK %.0fK %.0fms^{-1}',par))
  h=get(ax,'zlabel');
 end

@@ -18,4 +18,4 @@ uicontrol('Style','pushbutton','string','Sel','position',[0 55 35 20],'value',0,
 if local.ver>=7.5
  uicontrol('Style','pushbutton','string','Print','position',[0 75 30 20],'value',0,'tooltipstring','Select plot for printing','callback','axessel(1)');
 end
-uicontrol('Style','pushbutton','string','?','position',[425 0 20 20],'value',0,'tooltipstring','Help','callback','[o,p]=imread(''help.png'');figure(9),set(gcf,''pos'',[10 40 820 310]),image(o),colormap(p),set(gca,''units'',''pixels'',''pos'',[1 1 812 308],''tickl'',[0 0])');
+uicontrol('Style','pushbutton','string','?','position',[425 0 20 20],'value',0,'tooltipstring','Help','callback','[o,p]=imread(which(''help.png''));figure(9),set(gcf,''position'',[10 40 820 310]),image(o),colormap(p),set(gca,''units'',''pixels'',''position'',[1 1 812 308],''ticklength'',[0 0])');

@@ -16,7 +16,7 @@ else
 end
 for i=a7'
  j=findobj(i,'type','line');
- if ~isempty(j) & size(get(j(1),'ydata'),2)==lrd
+ if ~isempty(j) && size(get(j(1),'ydata'),2)==lrd
   set(j(1),'ydata',id)
   set(j(2),'ydata',rd)
   if bval(8)~=3, set(i,'ylimmode','auto'); end

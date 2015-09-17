@@ -16,9 +16,6 @@ for i=1:nsig
  syst=tsys(min([i length(tsys)]));
  d(1:nsamp(i),i)=(p-b)*syst;
  x(1:nsamp(i),i)=(0:ld)'*dt(i)*1e6;
-%if i>1 & siglen(i)<siglen(1)
-% d(1:nsamp(i),i)=conv2(d(1:nsamp(i),i),ones(floor(siglen(1)/dt(i)),1)/(siglen(1)/siglen(i)),'same');
-%end
 end
 xl='\mus'; yl='Power (K)';
 if isfinite(r0(1:nsig))

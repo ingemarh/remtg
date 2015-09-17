@@ -39,7 +39,7 @@ else
    ang=mean(angle(sacf(2:nff,i))./[1:nff-1]')*[0:nf-1]';
    sacf(1:nf,i)=p.*exp(j*ang);
   end
- elseif frac>500 & local.ver>=7
+ elseif frac>500 && local.ver>=7
   nf=find(w(1:frac)<mean(w)/100); nf=max([nf(end) 4]),
   nf=maxlag+1;
   s=[0 1 0]; x=[0:nf-1]'; b=w(x+1).^2; b(1:2)=0;

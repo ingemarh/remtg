@@ -21,13 +21,13 @@ while i<bval(2)
     end
    end
    while s
-    if rem(j,10)==0 & j>90
+    if rem(j,10)==0 && j>90
      beep
      disp('End of data?')
-    elseif j>180 & (bval(4)~=6 | j>9000)
+    elseif j>180 && (bval(4)~=6 || j>9000)
      disp('End of data!'), err=1; i=i-1; odate=[]; return
     end
-    if bval(1)==0 | i>bval(2), return, end
+    if bval(1)==0 || i>bval(2), return, end
     [s,fname]=unix(['ls -l ' filename]); j=j+1; pause(1)
     s=s+strcmp(fname,odate);
    end
@@ -37,7 +37,7 @@ while i<bval(2)
   odate=fname;
   [s,df]=unix(['ls -l ' filename]);
   for j=1:5, [nbytes,df]=strtok(df); end
-  if s | isempty(nbytes)
+  if s || isempty(nbytes)
    disp('End of data!'), err=1; i=i-1; odate=[]; return
   end
   nbytes=str2num(nbytes);
@@ -69,7 +69,7 @@ while i<bval(2)
   filename=fullfile(rtdir,d(1).name);
   nbytes=d(1).bytes; d(1)=[]; odate=rtdir;
  end
- if obytes & nbytes~=obytes
+ if obytes && nbytes~=obytes
   j=j-1; odate=[]; return
  end
  d_raw=[];
@@ -93,11 +93,11 @@ while i<bval(2)
  end
  d_parbl(7)=acc_parbl(1);
  d_parbl(8)=acc_parbl(2)/i;
- if ~isempty(butts) & ishandle(butts(1))
+ if ~isempty(butts) && ishandle(butts(1))
   setbval
   if bval(1)==0, return, end
  end
- if isempty(rtdir) & i<bval(2)
+ if isempty(rtdir) && i<bval(2)
   fprintf('\r %d/%d PIs done ',i,bval(2))
  end
  pause(.1)
