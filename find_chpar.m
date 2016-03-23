@@ -7,14 +7,16 @@ expdir=fullfile(filesep,'kst','exp');
 defile='rtg_def'; dm=[defile '.m']; def_file=[];
 [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
 idir=fileparts(fileparts(filename));
-infodir=dir(fullfile(idir,'*_information'));
+[i,sdir,sext]=fileparts(idir);
+idir=fullfile(idir,[sdir sext '_information']);
+infodir=dir(idir);
 while ~isempty(infodir) && isempty(def_file) && infodir(end).isdir
  infodir=fullfile(idir,infodir(end).name);
  if exist(fullfile(infodir,dm))
   def_file=fullfile(infodir,defile);
   chpar=strtok(chpar,'_');
  else
-  idir=infodir; infodir=dir(idir); infodir(1:2)=[];
+  idir=infodir, infodir=dir(idir), infodir(1:2)=[];
   for i=length(infodir):-1:1, if ~infodir(i).isdir, infodir(i)=[]; end, end
  end
 end
