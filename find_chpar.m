@@ -22,13 +22,13 @@ while ~isempty(infodir) && isempty(def_file) && infodir(end).isdir
 end
 while ~isempty(chpar) && isempty(def_file)
  if isunix
-  [dum,inEI]=unix(['ls ' fullfile(expdir,'??',chpar,dm)]);
+  [dum,inEI]=unix(['/bin/sh -c ''ls ' fullfile(expdir,'??',chpar,dm) ' 2>/dev/null''']);
  else
-  inEI=' ';
+  dum=1;
  end
  if exist(fullfile(expdir,chpar,dm))
   def_file=fullfile(expdir,chpar,defile);
- elseif isempty(strfind(inEI,' '))
+ elseif ~dum
   %def_file=strtok(ls(fullfile(expdir,'??',chpar,dm)));
   def_file=strtok(inEI);
   def_file=def_file(1:end-2);
