@@ -243,5 +243,5 @@ end
 if bval(5)
  mkweb(sms)
 elseif ~isempty(rtdir) && isempty(selax)
- pause(5)
+ pause(1)
 end

@@ -39,15 +39,12 @@ else
    ang=mean(angle(sacf(2:nff,i))./[1:nff-1]')*[0:nf-1]';
    sacf(1:nf,i)=p.*exp(j*ang);
   end
- elseif frac>500 && local.ver>=7
-  nf=find(w(1:frac)<mean(w)/100); nf=max([nf(end) 4]),
-  nf=maxlag+1;
+ elseif frac>500 & local.ver>=7
+  nf=find(w(1:frac)<mean(w)/3); nf=nf(end);
   s=[0 1 0]; x=[0:nf-1]'; b=w(x+1).^2; b(1:2)=0;
   for i=1:ngates
    a=sacf(x+1,i);
-   eval('ss=@(s) racf(s,x,a,b)');
-   %ss=@(s) racf(s,x,a,b);
-   s=fminsearch(ss,s,optimset('display','off'));
+   %s=fminsearch(@(s) racf(s,x,a,b),s,optimset('display','off'));
    sacf(x+1,i)=racf(s,x);
   end
  else
