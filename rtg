@@ -26,11 +26,14 @@ done
 usage="Usage: rtg [-v] [-s KSTVL2PZ]"
 term=0
 jvm="-nodesktop"
-while getopts jts: flag
+while getopts ojts: flag
 do
  case $flag in
   t) term=1;;
   j) jvm="-nojvm";;
+  o) OCTAVE_PATH=$MATLABPATH
+     export OCTAVE_PATH
+     comm="octave-cli --persist --eval rtg";;
   s) EISCATSITE="$OPTARG"
      export EISCATSITE;;
   ?) echo $usage
@@ -38,7 +41,9 @@ do
  esac
 done
 shift `expr $OPTIND - 1`
-comm="matlab2013b $jvm -nosplash -r rtg"
+if [ -z "$OCTAVE_PATH" ];then 
+ comm="matlab2013b $jvm -nosplash -r rtg"
+fi
 if [ $term -eq 0 ]
 then
  XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
