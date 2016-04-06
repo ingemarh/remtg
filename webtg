@@ -4,21 +4,6 @@ null=">/dev/null"
 if [ -z "$matlab" ]; then
  matlab=matlab
 fi
-ndumps="60"
-usage="Usage: webtg [-v] [-d dir] [-s KSTVL2PZ] [-n dumps/secs] [start] | stop"
-while getopts vd:s:n: flag
-do
- case $flag in
-  v) null=;;
-  d) rtdir="$OPTARG";;
-  s) EISCATSITE="$OPTARG"
-     export EISCATSITE;;
-  n) ndumps="$OPTARG";;
-  ?) echo $usage
-     exit 2;;
- esac
-done
-shift `expr $OPTIND - 1`
 #find remtg directory
 filename=$0
 while [ -h $filename ]; do
@@ -33,8 +18,26 @@ while [ -h $filename ]; do
 done
 MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
+ndumps="60"
+usage="Usage: webtg [-o] [-v] [-d dir] [-s KSTVL2PZ] [-n dumps/secs] [start] | stop"
+while getopts ovd:s:n: flag
+do
+ case $flag in
+  v) null=;;
+  d) rtdir="$OPTARG";;
+  s) EISCATSITE="$OPTARG"
+     export EISCATSITE;;
+  n) ndumps="$OPTARG";;
+  o) matlab="octave-cli"
+     OCTAVE_PATH=$MATLABPATH
+     export OCTAVE_PATH;;
+  ?) echo $usage
+     exit 2;;
+ esac
+done
+shift `expr $OPTIND - 1`
 if [ "$*" = "stop" ];then
- /bin/ps -u kstdev -u eiscat | awk '/webtg/ && ! /awk/ {print "ps  -fu kstdev -u eiscat | grep " $1 " | grep matlab"}' | /bin/sh | awk '{print $2}' | xargs kill -9 >/dev/null
+ /bin/ps -u kstdev -u eiscat | awk '/webtg/ && ! /awk/ {print "ps  -fu kstdev -u eiscat | grep " $1 " | grep $matlab"}' | /bin/sh | awk '{print $2}' | xargs kill -9 >/dev/null
 elif [ "$*" = "start" ] || [ "$*" = "" ];then
  SHELL=/bin/sh
 
@@ -45,7 +48,11 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  WTG="rtdir='$rtdir',webtg=$ndumps"
  export MATLABPATH SHELL TMP WTG
  unset DISPLAY
- $matlab -nodisplay -r wtg $null </dev/null
+ if [ -z "$OCTAVE_PATH" ];then
+  $matlab -nodisplay -r wtg $null </dev/null
+ else
+  $matlab -W --eval wtg $null </dev/null
+ fi
 else
  echo $usage
  exit 1
