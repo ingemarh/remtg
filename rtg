@@ -33,7 +33,7 @@ do
   j) jvm="-nojvm";;
   o) OCTAVE_PATH=$MATLABPATH
      export OCTAVE_PATH
-     comm="octave-cli --persist --eval rtg";;
+     comm="octave --no-gui --persist --eval rtg";;
   s) EISCATSITE="$OPTARG"
      export EISCATSITE;;
   ?) echo $usage

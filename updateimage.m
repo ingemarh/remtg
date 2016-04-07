@@ -20,8 +20,8 @@ if ~strcmp(local.name,'Octave') && length(j)==1 && isempty(find(size(get(j,'cdat
 else
  zlim=smart_caxis(z,0.001);
  z=(z-zlim(1))/diff(zlim);
- setcurrent(fig,a)
- j=imagesc(x,y,z);
+ %setcurrent(fig,a)
+ j=imagesc(x,y,z,'parent',a);
  zoom(fig,'on')
  set(a,'ydir','normal','clim',[0 1])
  set(get(a,'title'),'verticalalignment','middle')

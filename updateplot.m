@@ -34,12 +34,12 @@ if length(j)==np && length(get(j(end),'ydata'))==size(y1,1)
  if bval(8)~=3, set(a,'ylimmode','auto'), end
  if bval(8)==1, set(a,'xlim',[min(min(x1)) max(max(x1))]), end
 else
- setcurrent(fig,a)
+ %setcurrent(fig,a)
  if narg==6
-  plot(x1,y1,x2,y2)
+  plot(x1,y1,x2,y2,'parent',a)
   x1=[x1(:);x2(:)];
  else
-  plot(x1,y1)
+  plot(x1,y1,'parent',a)
  end
  zoom(fig,'on')
  set(a,'xlim',[min(min(x1)) max(max(x1))])

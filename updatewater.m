@@ -9,8 +9,8 @@ if length(j)==1 && sum(size(get(j,'zdata')))-sum(size(z))==5
  if bval(8)==1, set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)]), end
  caxis(a,'auto');
 else
- setcurrent(fig,a)
- waterfall(x,y,z);
+ %setcurrent(fig,a)
+ waterfall(x,y,z,'parent',a);
  zoom(fig,'on')
  set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)],'view',[-10 50])
  set(get(a,'title'),'verticalalignment','middle')

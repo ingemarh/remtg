@@ -10,6 +10,7 @@ if ~ishandle(fig)
  end
 end
 ax=sort(findobj(fig,'type','axes','tag',[]));
+if strcmp(local.name,'Octave'), ax=flipud(ax); end
 h=findobj(findobj(fig,'type','axes','tag','suptitle'),'type','text');
 if nargin<4, name='EISCAT rtg'; end
 if nargin<5, head='EISCAT rtg'; end
