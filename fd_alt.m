@@ -12,6 +12,7 @@ if nbits==1
  else
   r0=r0-(slen/2+1-maxlag/2)*lagincr;
  end
+ frac=maxlag;
 else
  weight=[1/6/frac (1:(frac-1))/(frac-1/3) 1]; %boxcar filter at dt
  sacf=reshape(dd_data(sig+(1:ngates*maxlag)),ngates,maxlag).';

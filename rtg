@@ -42,7 +42,7 @@ do
 done
 shift `expr $OPTIND - 1`
 if [ -z "$OCTAVE_PATH" ];then 
- comm="matlab2013b $jvm -nosplash -r rtg"
+ comm="matlab $jvm -nosplash -r rtg"
 fi
 if [ $term -eq 0 ]
 then
