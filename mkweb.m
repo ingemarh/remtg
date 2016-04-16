@@ -40,7 +40,7 @@ fid=fopen(fname,'w');
 fprintf(fid,'%s',sms);
 fclose(fid);
 files=[files ' ' fname];
-if bval(5)==2
+if bval(5)==3
  if bval(4)==0
   global d_ExpInfo d_parbl
   [dum,d]=strtok(d_ExpInfo); d=[dir strtok(d)];
@@ -64,7 +64,7 @@ if site==6
 end
 [i,d]=unix('ps | grep curl | grep -v grep');
 if i
- file=[];
+ file='';
  while ~isempty(files)
   [i,files]=strtok(files);
   file=[file ' -F file=@' i];
