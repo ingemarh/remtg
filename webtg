@@ -18,6 +18,10 @@ while [ -h $filename ]; do
 done
 MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
+TMP=$HOME/tmp
+if [ ! -d $TMP ];then
+ mkdir $TMP
+fi
 ndumps="60"
 usage="Usage: webtg [-o] [-v] [-d dir] [-s KSTVL2PZ] [-n dumps/secs] [start] | stop"
 while getopts ovd:s:n: flag
@@ -29,8 +33,9 @@ do
      export EISCATSITE;;
   n) ndumps="$OPTARG";;
   o) matlab="octave"
+     TMPDIR=$TMP
      OCTAVE_PATH=$MATLABPATH
-     export OCTAVE_PATH;;
+     export OCTAVE_PATH TMPDIR;;
   ?) echo $usage
      exit 2;;
  esac
@@ -41,14 +46,10 @@ if [ "$*" = "stop" ];then
 elif [ "$*" = "start" ] || [ "$*" = "" ];then
  SHELL=/bin/sh
 
- TMP=$HOME/tmp
- if [ ! -d $TMP ];then
-  mkdir $TMP
- fi
  WTG="rtdir='$rtdir',webtg=$ndumps"
  export MATLABPATH SHELL TMP WTG
- unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
+  unset DISPLAY
   $matlab -nodisplay -r wtg $null </dev/null
  else
   $matlab -W --eval wtg $null </dev/null

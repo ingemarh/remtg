@@ -22,7 +22,11 @@ for i=sort(figs)
    if any(get(i,'PaperPosition')-d)
     set(i,'PaperPosition',d,'PaperOrientation','portrait')
    end
-   print(i,['-d' jpg],'-noui',flag,fname)
+   if strcmp(local.name,'Octave')
+    print(i,['-d' jpg],flag,fname)
+   else
+    print(i,['-d' jpg],'-noui',flag,fname)
+   end
    files=[files ' ' fname '.png'];
    fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'],reloadfix,get(i,'name'));
   catch
@@ -41,6 +45,11 @@ if local.x
  set(heads,'visible','off'), set(heads,'visible','on')
 else
  close all
+end
+if bval(5)==2
+ files
+ sitecode
+ return
 end
 if site==6
  [i,d]=unix('ps | grep cp | grep -v grep');

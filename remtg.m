@@ -16,7 +16,7 @@ if isempty(bval)
  end
  bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
  if findstr('rtg',xwn), bval(5)=1;
- elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1]) 1 1];
+ elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1 2]) 1]; err=0;
  end
 end
 if isempty(butts) || ~ishandle(butts(1))
