@@ -32,7 +32,7 @@ do
   s) EISCATSITE="$OPTARG"
      export EISCATSITE;;
   n) ndumps="$OPTARG";;
-  o) matlab="octave"
+  o) matlab="octave-cli"
      TMPDIR=$TMP
      OCTAVE_PATH=$MATLABPATH
      export OCTAVE_PATH TMPDIR;;
@@ -48,11 +48,11 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
 
  WTG="rtdir='$rtdir',webtg=$ndumps"
  export MATLABPATH SHELL TMP WTG
+ unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
-  unset DISPLAY
   $matlab -nodisplay -r wtg $null </dev/null
  else
-  $matlab -W --eval wtg $null </dev/null
+  $matlab -Wq wtg.m $null </dev/null
  fi
 else
  echo $usage

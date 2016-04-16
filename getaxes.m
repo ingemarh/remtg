@@ -23,6 +23,9 @@ if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
   set(get(ax(i),'title'),'verticalalignment','middle')
  end
  h=suptitle(head); set(h,'interpreter','none')
+ if strcmp(local.name,'Octave') && strcmp(graphics_toolkit,'gnuplot')
+  set(h,'position',get(h,'position')-[0 100 0])
+ end
  if s1==0, set(gca,'visible','off'), end
  s1=6*min([max([1 ceil(s1)]) 4])+4;
  pos=[0 14.8-s1/2 20 s1];

@@ -19,7 +19,7 @@ if isempty(bval)
  elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1 2]) 1]; err=0;
  end
 end
-if isempty(butts) || ~ishandle(butts(1))
+if bval(5)<2 && (isempty(butts) || ~ishandle(butts(1)))
  rtgbuttons(10)
  if exist('err','var'), return, end
 end
@@ -98,13 +98,15 @@ if exist('amplim','var') && ~isempty(amplim)
  end
 end
 noch=size(psig,1);
-if noch==0 && strcmp(get(butts(7),'visible'),'on')
- set(butts([7 11]),'visible','off')
- set(butts(6),'visible','on')
-elseif noch>0 && strcmp(get(butts(7),'visible'),'off')
- set(butts([7 11]),'visible','on')
- set(butts(6),'visible','off','value',1)
- bval(6)=1;
+if bval(5)<2
+ if noch==0 && strcmp(get(butts(7),'visible'),'on')
+  set(butts([7 11]),'visible','off')
+  set(butts(6),'visible','on')
+ elseif noch>0 && strcmp(get(butts(7),'visible'),'off')
+  set(butts([7 11]),'visible','on')
+  set(butts(6),'visible','off','value',1)
+  bval(6)=1;
+ end
 end
 if ~exist('tcal','var')
  tcal=d_parbl(21)*ones(noch,1);

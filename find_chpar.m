@@ -16,7 +16,7 @@ while ~isempty(infodir) && isempty(def_file) && infodir(end).isdir
   def_file=fullfile(infodir,defile);
   chpar=strtok(chpar,'_');
  else
-  idir=infodir, infodir=dir(idir), infodir(1:2)=[];
+  idir=infodir; infodir=dir(idir); infodir(1:2)=[];
   for i=length(infodir):-1:1, if ~infodir(i).isdir, infodir(i)=[]; end, end
  end
 end

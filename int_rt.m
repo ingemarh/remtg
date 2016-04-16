@@ -75,7 +75,7 @@ while i<bval(2)
  d_raw=[];
  if strfind(filename,'.mat.bz2')
   tfile=[tempname '.mat'];
-  unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
+  s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
   load(tfile), delete(tfile)
  else
   obytes=nbytes;

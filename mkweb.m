@@ -23,7 +23,7 @@ for i=sort(figs)
     set(i,'PaperPosition',d,'PaperOrientation','portrait')
    end
    if strcmp(local.name,'Octave')
-    print(i,['-d' jpg],flag,fname)
+    print(i,'-dpng',fname)
    else
     print(i,['-d' jpg],'-noui',flag,fname)
    end
@@ -40,16 +40,21 @@ fid=fopen(fname,'w');
 fprintf(fid,'%s',sms);
 fclose(fid);
 files=[files ' ' fname];
+if bval(5)==2
+ if bval(4)==0
+  global d_ExpInfo d_parbl
+  [dum,d]=strtok(d_ExpInfo); d=[dir strtok(d)];
+  if ~exist(d), mkdir(d); end
+  d=fullfile(d,sprintf('%d%02d%02d_%02d%02d%02.0f_%d',d_parbl(1:7))), mkdir(d);
+  dum=unix(['mv ' files ' ' d]);
+ end
+ return
+end
 if local.x
  heads=findobj(findobj(figs,'type','axes','tag','suptitle'),'type','text');
  set(heads,'visible','off'), set(heads,'visible','on')
 else
  close all
-end
-if bval(5)==2
- files
- sitecode
- return
 end
 if site==6
  [i,d]=unix('ps | grep cp | grep -v grep');

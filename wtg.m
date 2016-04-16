@@ -2,6 +2,7 @@ rtg_startup
 global rtdir webtg
 dum=getenv('WTG');
 eval(dum)
+set(0, 'defaultfigurevisible', 'off')
 if getenv('EISCATSITE')
  webtg(2)=1;
 else
