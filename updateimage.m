@@ -21,6 +21,9 @@ else
  zlim=smart_caxis(z,0.001);
  z=(z-zlim(1))/diff(zlim);
  %setcurrent(fig,a)
+ if strcmp(local.name,'Octave') && strcmp(graphics_toolkit,'gnuplot')
+  x=x([1 end]); y=y([1 end]);
+ end
  j=imagesc(x,y,z,'parent',a);
  zoom(fig,'on')
  set(a,'ydir','normal','clim',[0 1])
