@@ -1,6 +1,6 @@
 function mkweb(sms)
 global site lastweb bval figs local sitecode
-if bval(4)>0 && exist('lastweb','var') && now-lastweb<30/86400, return, end
+if bval(4)>0 && ~isempty(lastweb) && now-lastweb<30/86400, return, end
 if local.x
  jpg='png'; flag='-r72';
 else
@@ -50,7 +50,9 @@ if bval(5)==3
  end
  return
 end
-if local.x
+
+if strcmp(local.name,'Octave')
+elseif local.x
  heads=findobj(findobj(figs,'type','axes','tag','suptitle'),'type','text');
  set(heads,'visible','off'), set(heads,'visible','on')
 else
@@ -62,6 +64,10 @@ if site==6
   unix(['cp ' files ' /net/aurora/www/ht/rtg/']);
  end
 end
+%if site==4
+%unix(['scp -q ' files ' palver:/var/www/rtg/']); 
+%end
+
 [i,d]=unix('ps | grep curl | grep -v grep');
 if i
  file='';
