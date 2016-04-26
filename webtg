@@ -52,7 +52,7 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
   $matlab -nodisplay -r wtg $null </dev/null
- elif [ $matlab == "octave" ]; then
+ elif [ $matlab = "octave" ]; then
   $matlab -q -p $OCTAVE_PATH --eval wtg
  else
   $matlab -Wq --eval wtg
