@@ -1,5 +1,5 @@
 function [i,filename,nbytes,err]=int_rt
-global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode
+global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode local
 %d=[]; fn=[];
 if ~exist('odate','var'), odate=[]; end
 dd_data=0; acc_parbl=0; err=0; d_ExpInfo='Unknown exp'; d_parbl=[]; nbytes=0; obytes=0; i=0;
@@ -32,6 +32,7 @@ while i<bval(2)
     s=s+strcmp(fname,odate);
    end
    filename=fliplr(strtok(fliplr(fname)));
+   if local.ver<4, filename(end)=[]; end
    s=2-exist(filename,'file');
   end
   odate=fname;

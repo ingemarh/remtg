@@ -23,8 +23,8 @@ if [ ! -d $TMP ];then
  mkdir $TMP
 fi
 ndumps="60"
-usage="Usage: webtg [-o] [-v] [-d dir] [-s KSTVL2PZ] [-n dumps/secs] [start] | stop"
-while getopts ovd:s:n: flag
+usage="Usage: webtg [-o] [-O] [-v] [-d dir] [-s KSTVL2PZ] [-n dumps/secs] [start] | stop"
+while getopts oOvd:s:n: flag
 do
  case $flag in
   v) null=;;
@@ -36,6 +36,7 @@ do
      TMPDIR=$TMP
      OCTAVE_PATH=$MATLABPATH
      export OCTAVE_PATH TMPDIR;;
+  O) matlab="octave";;
   ?) echo $usage
      exit 2;;
  esac
@@ -51,6 +52,8 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
   $matlab -nodisplay -r wtg $null </dev/null
+ elif [ $matlab == "octave" ]; then
+  $matlab -q -p $OCTAVE_PATH --eval wtg
  else
   $matlab -Wq --eval wtg
  fi
