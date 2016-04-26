@@ -8,10 +8,17 @@ defile='rtg_def'; dm=[defile '.m']; def_file=[];
 [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
 idir=fileparts(fileparts(filename));
 [i,sdir,sext]=fileparts(idir);
-idir=fullfile(idir,[sdir sext '_information']);
+idir1=[idir '_information']; idir=fullfile(idir,[sdir sext '_information']),
 infodir=dir(idir);
+if isempty(infodir)
+ idir=idir1; infodir=dir(idir);
+end
 while ~isempty(infodir) && isempty(def_file) && infodir(end).isdir
  infodir=fullfile(idir,infodir(end).name);
+ idir1=dir(infodir);
+ if idir1(end).isdir
+  infodir=fullfile(infodir,idir1(end).name);
+ end 
  if exist(fullfile(infodir,dm))
   def_file=fullfile(infodir,defile);
   chpar=strtok(chpar,'_');
