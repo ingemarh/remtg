@@ -61,6 +61,7 @@ if bval(4)>0
 else
  set(t1,'visible','off')
 end
+if local.ver<=3, delete(t1), end
 
 % default chpar values
 psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN; tail=.7;
@@ -71,7 +72,13 @@ end
 
 chpar=find_chpar(filename);
 try
-if ~isempty(def_file), run(def_file); end
+if ~isempty(def_file)
+ if local.ver>3
+  run(def_file);
+ else
+  run([def_file '.m']);
+ end
+end
 head=[chpar head];
 if exist('rawlim','var') && ~isempty(rawlim)
  nrp=size(rawlim,1); nraw=0;

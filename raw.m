@@ -1,9 +1,9 @@
 function t1=raw(fig,name,head,xlim,amp)
 if nargin>4
- global d_raw bval
+ global d_raw bval local
  rd=real(d_raw); id=imag(d_raw);
 else
- global rd id bval
+ global rd id bval local
 end
 i=[1 1;2 1;3 1;2 2];
 lrd=length(rd); n=1;
@@ -28,6 +28,7 @@ for i=a7'
   set(i,'xlim',xlim(n,:))
   set(get(i,'title'),'verticalalignment','middle')
  end
- zoom(fig,'on'), n=n+ndel;
+ if local.ver>3, zoom(fig,'on'), end
+ n=n+ndel;
 end
 t1=get(a7(1),'title');

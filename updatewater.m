@@ -11,7 +11,7 @@ if length(j)==1 && sum(size(get(j,'zdata')))-sum(size(z))==5
 else
  %setcurrent(fig,a)
  waterfall(x,y,z,'parent',a);
- zoom(fig,'on')
+ if local.ver>3, zoom(fig,'on'), end
  set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)],'view',[-10 50])
  set(get(a,'title'),'verticalalignment','middle')
 end

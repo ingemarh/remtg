@@ -23,14 +23,16 @@ if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
   ax(i,1)=subplot(ceil(s1),s2,i);
   set(get(ax(i),'title'),'verticalalignment','middle')
  end
- h=suptitle(head); set(h,'interpreter','none')
- if strcmp(local.name,'Octave') && strcmp(graphics_toolkit,'gnuplot')
-  set(h,'position',get(h,'position')-[0 300 0])
+ if local.ver>3
+  h=suptitle(head); set(h,'interpreter','none')
+  if strcmp(local.name,'Octave') && strcmp(graphics_toolkit,'gnuplot')
+   set(h,'position',get(h,'position')-[0 300 0])
+  end
+  if s1==0, set(gca,'visible','off'), end
+  s1=6*min([max([1 ceil(s1)]) 4])+4;
+  pos=[0 14.8-s1/2 20 s1];
+  set(fig,'PaperPosition',pos,'name',name,'UserData',pos)
  end
- if s1==0, set(gca,'visible','off'), end
- s1=6*min([max([1 ceil(s1)]) 4])+4;
- pos=[0 14.8-s1/2 20 s1];
- set(fig,'PaperPosition',pos,'name',name,'UserData',pos)
 elseif nargin>3
  set(h,'string',head)
  set(fig,'name',name)

@@ -8,38 +8,47 @@ else
 end
 sitex=lower(sitecode.mini(site));
 dir=tempdir;
-files=[dir sitex '.html'];
+files=fullfile(dir,[sitex '.html']);
 fid=fopen(files,'w');
 fprintf(fid,'<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\n</head>\n',char(sitecode.web(site)));
 %figs=sort(get(0,'children'));
 reloadfix=fix(10000*rand(1));
 for i=sort(figs)
  ffig=[sitex num2str(i)];
- fname=[dir ffig];
- d=get(i,'UserData');
+ fname=fullfile(dir,ffig);
+ if local.ver>3, d=get(i,'UserData');
+ else, d=0; end
  if ~isempty(d)
   try
-   if any(get(i,'PaperPosition')-d)
-    set(i,'PaperPosition',d,'PaperOrientation','portrait')
-   end
-   if strcmp(local.name,'Octave')
-    print(i,'-dpng','-r72',fname)
+   if local.ver>3
+    if any(get(i,'PaperPosition')-d)
+     set(i,'PaperPosition',d,'PaperOrientation','portrait')
+    end
+    if strcmp(local.name,'Octave')
+     print(i,'-dpng','-r72',fname)
+    else
+     print(i,['-d' jpg],'-noui',flag,fname)
+    end
+    files=[files ' ' fname '.png'];
+    fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'],reloadfix,get(i,'name'));
    else
-    print(i,['-d' jpg],'-noui',flag,fname)
+    set(0,'currentfigure',i)
+    fname=[fname '.png'];
+    print(fname,'-dpng')
+    files=[files ' ' fname];
+    fprintf(fid,'<IMG SRC="%s?%d"><P>\n',[ffig '.png'],reloadfix);
    end
-   files=[files ' ' fname '.png'];
-   fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'],reloadfix,get(i,'name'));
   catch
    disp(lasterr)
   end
  end
 end
 fclose(fid);
-fname=[dir sitex 'sms.txt'];
+fname=fullfile(dir,[sitex 'sms.txt']);
 fid=fopen(fname,'w');
 fprintf(fid,'%s',sms);
 fclose(fid);
-files=[files ' ' fname];
+files=[files ' ' fname],
 if bval(5)==3
  if bval(4)==0
   global d_ExpInfo d_parbl

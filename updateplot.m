@@ -1,5 +1,5 @@
 function updateplot(fig,a,x1,y1,x2,y2)
-global bval tdev selax
+global bval tdev selax local
 narg=nargin;
 if ~isempty(selax) && all(selax.fig==[fig a])
  %stack=dbstack
@@ -41,7 +41,7 @@ else
  else
   plot(x1,y1,'parent',a)
  end
- zoom(fig,'on')
+ if local.ver>3, zoom(fig,'on'), end
  set(a,'xlim',[min(min(x1)) max(max(x1))])
  set(get(a,'title'),'verticalalignment','middle')
 end
