@@ -20,11 +20,12 @@ if ~strcmp(local.name,'Octave') && length(j)==1 && isempty(find(size(get(j,'cdat
 else
  zlim=smart_caxis(z,0.001);
  z=(z-zlim(1))/diff(zlim);
- %setcurrent(fig,a)
  if strcmp(local.name,'Octave') && (local.ver<=3 || strcmp(graphics_toolkit,'gnuplot'))
   x=x([1 end]); y=y([1 end]);
+  setcurrent(fig,a); j=imagesc(x,y,z);
+ else
+  j=imagesc(x,y,z,'parent',a),
  end
- j=imagesc(x,y,z,'parent',a);
  if local.ver>3, zoom(fig,'on'), end
  set(a,'ydir','normal','clim',[0 1])
  set(get(a,'title'),'verticalalignment','middle')

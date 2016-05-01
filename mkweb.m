@@ -48,7 +48,7 @@ fname=fullfile(dir,[sitex 'sms.txt']);
 fid=fopen(fname,'w');
 fprintf(fid,'%s',sms);
 fclose(fid);
-files=[files ' ' fname],
+files=[files ' ' fname];
 if bval(5)==3
  if bval(4)==0
   global d_ExpInfo d_parbl

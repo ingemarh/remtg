@@ -31,6 +31,8 @@ try
  end
 catch
  local.ver=3; local.name='Octave'; local.x=0;
+set(0,'defaultAxesFontName','unifont')
+set(0,'defaultTextFontName','unifont')
 end
 if strcmp(local.name,'Octave')
  [dum,a]=strtok(fliplr(which('rtg')),filesep);

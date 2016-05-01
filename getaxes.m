@@ -16,7 +16,7 @@ if ~isempty(h), h=findobj(h,'type','text'); end
 if nargin<4, name='EISCAT rtg'; end
 if nargin<5, head='EISCAT rtg'; end
 if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
- if ~isempty(ax), delete(ax), end
+ %if ~isempty(ax), delete(ax), end
  ax=0;
  set(0,'currentfigure',fig)
  for i=1:prod([s1 s2])
