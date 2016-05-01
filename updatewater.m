@@ -1,5 +1,5 @@
 function updatewater(fig,a,x,y,z)
-global bval
+global bval local
 j=findobj(a,'type','patch');
 if length(j)==1 && sum(size(get(j,'zdata')))-sum(size(z))==5
  z0=zeros(size(z,1),1);
@@ -9,9 +9,13 @@ if length(j)==1 && sum(size(get(j,'zdata')))-sum(size(z))==5
  if bval(8)==1, set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)]), end
  caxis(a,'auto');
 else
- %setcurrent(fig,a)
- waterfall(x,y,z,'parent',a);
- if local.ver>3, zoom(fig,'on'), end
+ if local.ver>3
+  waterfall(x,y,z,'parent',a);
+  zoom(fig,'on')
+ else
+  setcurrent(fig,a)
+  waterfall(x,y,z);
+ end
  set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)],'view',[-10 50])
  set(get(a,'title'),'verticalalignment','middle')
 end

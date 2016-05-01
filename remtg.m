@@ -14,7 +14,7 @@ if isempty(bval)
  if isempty(site), site=5; err=1;
  elseif site==4 && ~isempty(findstr(xwn,'VHF')), site=3;
  end
- bval=[1 1 1 isempty(rtdir)*site 1 1 0 1 0 0 0];
+ bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
  if findstr('rtg',xwn), bval(5)=1;
  elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1 2]) 1]; err=0;
  end
