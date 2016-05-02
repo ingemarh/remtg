@@ -1,4 +1,3 @@
-set(0,'defaultAxesFontSize',12)
 set(0,'defaultTextFontSize',12)
 set(0,'defaultAxesColorOrder',[1 0 0;0 1 0;0 0 1;0 0 0;1 0 1;0 1 1;1 1 0;.5 .5 .5])
 set(0,'defaultAxesColor','none')
@@ -14,6 +13,7 @@ try
  if local.ver>=1, local.ver=0.9+local.ver/100; end
  local.ver=local.ver+str2num(matver);
  local.name=matvers(1).Name;
+ set(0,'defaultAxesFontSize',12)
  set(0,'defaultFigureMenuBar','none')
  set(0,'defaultFigureNumberTitle','off')
  set(0,'defaultFigurePaperType','A4')
@@ -31,8 +31,7 @@ try
  end
 catch
  local.ver=3; local.name='Octave'; local.x=0;
-set(0,'defaultAxesFontName','unifont')
-set(0,'defaultTextFontName','unifont')
+ set(0,'defaultTextFontName','dejavu')
 end
 if strcmp(local.name,'Octave')
  [dum,a]=strtok(fliplr(which('rtg')),filesep);
