@@ -1,5 +1,5 @@
 function [i,filename,nbytes,err]=int_rt
-global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode local
+global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode local webtg
 %d=[]; fn=[];
 if ~exist('odate','var'), odate=[]; end
 dd_data=0; acc_parbl=0; err=0; d_ExpInfo='Unknown exp'; d_parbl=[]; nbytes=0; obytes=0; i=0;
@@ -63,7 +63,7 @@ while i<bval(2)
      end
     end
    end
-   if isempty(d)
+   if isempty(d) || (~isempty(webtg) && webtg(3))
     disp('End of data!'), err=1; i=i-1; odate=[]; filename=[]; return
    end
   end
