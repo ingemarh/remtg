@@ -4,8 +4,9 @@ if strcmp(d_ExpInfo,old_ExpInfo) && ~isempty(def_file)
  chpar=old_chpar; clear(def_file), return
 end
 expdir=fullfile(filesep,'kst','exp');
-defile='rtg_def'; dm=[defile '.m']; def_file=[];
 [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
+if isempty(old_ExpInfo) && ~isempty(def_file), return, end
+defile='rtg_def'; dm=[defile '.m']; def_file=[];
 idir=fileparts(fileparts(filename));
 [i,sdir,sext]=fileparts(idir);
 idir1=[idir '_information']; idir=fullfile(idir,[sdir sext '_information']);

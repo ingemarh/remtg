@@ -1,5 +1,5 @@
 rtg_startup
-global rtdir webtg
+global rtdir webtg def_file
 dum=getenv('WTG');
 eval(dum)
 set(0, 'defaultfigurevisible', 'off')
