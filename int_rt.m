@@ -64,7 +64,7 @@ while i<bval(2)
     end
    end
    if isempty(d) || (~isempty(webtg) && webtg(3))
-    disp('End of data!'), err=1; i=i-1; odate=[]; filename=[]; return
+    disp('End of data!'), err=1; i=i-1; odate=[]; return %filename=[]; return
    end
   end
   filename=fullfile(rtdir,d(1).name);
