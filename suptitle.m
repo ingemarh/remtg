@@ -66,7 +66,7 @@ h = findobj(fig,'Type','axes');  % Change suggested by Stacy J. Hills
 max_y=0;
 min_y=1;
 
-oldtitle =0;
+oldtitle =[];
 for i=1:length(h),
 	if (~strcmp(get(h(i),'Tag'),'suptitle')),
 		pos=get(h(i),'position');
@@ -89,7 +89,7 @@ end
 
 np = get(fig,'nextplot');
 set(fig,'nextplot','add');
-if (oldtitle),
+if ~isempty(oldtitle)
 	delete(oldtitle);
 end
 ha=axes('position',[0 1 1 1],'visible','off','Tag','suptitle');

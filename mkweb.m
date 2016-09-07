@@ -1,5 +1,5 @@
 function mkweb(sms)
-global site lastweb bval figs local sitecode
+global site lastweb bval figs local sitecode pldirs
 if bval(4)>0 && ~isempty(lastweb) && now-lastweb<30/86400, return, end
 if local.x
  jpg='png'; flag='-r72';
@@ -54,7 +54,8 @@ if bval(5)==3
   global d_ExpInfo d_parbl
   [dum,d]=strtok(d_ExpInfo); d=[dir strtok(d)];
   if ~exist(d), mkdir(d); end
-  d=fullfile(d,sprintf('%d%02d%02d_%02d%02d%02.0f_%d',d_parbl(1:7))), mkdir(d);
+  d=fullfile(d,sprintf('%d%02d%02d_%02d%02d%02.0f_%d',d_parbl(1:7))); mkdir(d);
+  pldirs{end+1}=d;
   dum=unix(['mv ' files ' ' d]);
  end
  return

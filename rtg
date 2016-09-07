@@ -1,4 +1,11 @@
 #!/bin/bash -l
+if [ -z "$matlab" ]; then
+ matlab=matlab
+fi
+prog=`which $matlab`
+if [ $? -ne 0 ]; then
+ prog=octave
+fi
 #find remtg directory
 filename=$0
 while [ -h $filename ]; do
@@ -31,10 +38,7 @@ do
  case $flag in
   t) term=1;;
   j) jvm="-nojvm";;
-  o) OCTAVE_PATH=$MATLABPATH
-     TMPDIR=$TMP
-     export OCTAVE_PATH TMPDIR
-     comm="octave --no-gui --persist --eval rtg";;
+  o) prog=octave;;
   s) EISCATSITE="$OPTARG"
      export EISCATSITE;;
   ?) echo $usage
@@ -42,7 +46,12 @@ do
  esac
 done
 shift `expr $OPTIND - 1`
-if [ -z "$OCTAVE_PATH" ];then 
+if [ $prog = octave ];then
+ OCTAVE_PATH=$MATLABPATH
+ TMPDIR=$TMP
+ export OCTAVE_PATH TMPDIR
+ comm="octave --no-gui --persist --eval rtg"
+else 
  comm="matlab $jvm -nosplash -r rtg"
 fi
 if [ $term -eq 0 ]

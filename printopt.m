@@ -1,31 +1,38 @@
-function [pcmd,dev] = printopt
+function [pcmd,dev] = printopt(varargin)
 %PRINTOPT Printer defaults.
-%	PRINTOPT is an M-file that you or your system manager can
+%	PRINTOPT is a MATLAB file that you or your system manager can
 %	edit to indicate your default printer type and destination.
 %
 %	[PCMD,DEV] = PRINTOPT returns two strings, PCMD and DEV.
 %	PCMD is a string containing the print command that
 %	PRINT uses to spool a file to the printer. Its default is:
 %
-%	   Unix:      lpr -s -r
+%	   Unix:      lpr -r
 %	   Windows:   COPY /B LPT1:
-%	   Macintosh: Print -Mps
-%	   VMS:       PRINT/DELETE
+%	   Macintosh: lpr -r (Mac OS X 10.2 and higher)
+%                     Print -Mps (Mac OS X 10.1)
 %
-%   Note: SGI and Solaris 2 users who do not use BSD printing,
-%   i.e. lpr, need to edit this file and uncomment the line
-%   to specify 'lp -c'.
+%   Note: Solaris users who do not use BSD printing, i.e. lpr,
+%   need to  edit this file and uncomment the line to specify 'lp -c'.
 %
 %	DEV is a string containing the default device option for 
 %	the PRINT command. Its default is:
 %
-%	   Unix & VMS: -dps2
-%	   Windows:    -dwin
-%	   Macintosh:  -dps2
+%	   Unix:      -dps2
+%	   Windows:   -dwin
+%	   Macintosh: -dps2
 %
 %	See also PRINT.
 
-% Intialize options to empty matrices
+
+%   Copyright 1984-2011 The MathWorks, Inc.
+%   The MathWorks, Inc. grants permission for Licensee to modify
+%   this file.  Licensee's use of such modified file is subject
+%   to the terms and conditions of The MathWorks, Inc. Software License
+%   Booklet.
+%   
+
+% Initialize options to empty matrices
 pcmd = []; dev = [];
 
 % This file automatically defaults to the dev and pcmd shown above
@@ -42,34 +49,43 @@ pcmd = []; dev = [];
 % The code below this line automatically computes the defaults 
 % promised in the table above unless they have been overridden.
 
-cname = computer;
-
 if isempty(pcmd)
 
-	% For Unix
-	pcmd = 'lpr -s -r';
+    % For Unix and Mac OS X 10.2+
+    pcmd = 'lpr -s -r';
 
-	% For Windows
-	if strcmp(cname(1:2),'PC')
-	    pcmd = 'COPY /B $filename$ $portname$';        
-	end
+    % For Windows
+    if ispc
+        def_printer = system_dependent('getdefaultprinter');
+        if ~isempty(def_printer) && ~strcmp(def_printer,'FILE:')
+            pcmd = ['COPY /B %s ' def_printer];
+        else
+            pcmd = 'COPY /B %s LPT1:'; 
+        end
+    end
 
 
-	% For Macintosh
-	if strcmp(cname(1:3), 'MAC'), pcmd = 'Print -Mps'; end
-
-	% For SGI
-	%if strcmp(cname(1:3),'SGI'), pcmd = 'lp -c'; end
-
-	% For Solaris
-	if strcmp(cname,'SOL2'), pcmd = 'lp -c'; end
+    % For Solaris
+    %cname = computer;
+    %if strcmp(cname(1:3),'SOL'), pcmd = 'lp -c'; end
 end
 
 if isempty(dev)
 
-	% For Unix, VAX/VMS, and Macintosh
-	dev = '-noui -dps2c';
-
-	% For Windows
-	if strcmp(cname(1:2),'PC'), dev = '-dwin'; end
+    % For Windows
+    if ispc
+       dev = '-dwin'; 
+    else
+    % For Unix, and Macintosh
+       if nargin 
+          usingMATLABClasses = (graphicsversion(varargin{1}, 'handlegraphics') ~= 1); 
+       else 
+          usingMATLABClasses = feature('HGUsingMATLABClasses');
+       end
+       if ~usingMATLABClasses
+           dev = '-dps2';
+       else
+           dev = '-dprn'; 
+       end
+    end
 end

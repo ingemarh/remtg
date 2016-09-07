@@ -24,7 +24,7 @@ else
   x=x([1 end]); y=y([1 end]);
   setcurrent(fig,a); j=imagesc(x,y,z);
  else
-  j=imagesc(x,y,z,'parent',a),
+  j=imagesc(x,y,z,'parent',a);
  end
  if local.ver>3, zoom(fig,'on'), end
  set(a,'ydir','normal','clim',[0 1])

@@ -1,6 +1,6 @@
 rtg_startup
-global rtdir webtg def_file
-dum=getenv('WTG');
+global rtdir webtg def_file pldirs
+dum=getenv('WTG'); pldirs={};
 eval(dum)
 set(0, 'defaultfigurevisible', 'off')
 if getenv('EISCATSITE')
@@ -18,4 +18,5 @@ while ~remtg
   break
  end
 end
+mkmov(pldirs)
 exit
