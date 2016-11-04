@@ -18,5 +18,5 @@ while ~remtg
   break
  end
 end
-mkmov(pldirs)
+mkmov(pldirs,webtg(1))
 exit

@@ -50,9 +50,9 @@ if [ $prog = octave ];then
  OCTAVE_PATH=$MATLABPATH
  TMPDIR=$TMP
  export OCTAVE_PATH TMPDIR
- comm="octave --no-gui --persist --eval rtg"
+ comm="$prog --no-gui --persist --eval rtg"
 else 
- comm="matlab $jvm -nosplash -r rtg"
+ comm="$prog $jvm -nosplash -r rtg"
 fi
 if [ $term -eq 0 ]
 then

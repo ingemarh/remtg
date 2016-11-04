@@ -22,7 +22,11 @@ if sgating>1
 end
 waterlim=[5 8];
 if bval(11)==1 && ngates>waterlim(2) && r0>0
- h=qfit(fig,ax,sacf,lag,dt,r0); return
+ [h,pars]=qfit(fig,ax,sacf,lag,dt*sgating,r0+(sgating-1)*dt/2);
+ if ~isempty(selax) && all(selax.fig==[fig ax])
+  selax.pars=pars;
+ end
+ return
 elseif bval(11)==1 && nargin>4 && (site==5 || site==6)
  [s,w]=max(sacf(1,:));
  par=qfit(fig,ax,sacf(:,w),lag,0,1e-2);

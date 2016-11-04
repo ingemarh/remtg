@@ -1,4 +1,4 @@
-function h=qfit(fig,ax,sacf,lag,dt,r0)
+function [h,pars]=qfit(fig,ax,sacf,lag,dt,r0)
 global d_parbl el gating site tp radcon
 ngates=size(sacf,2);
 nlags=size(sacf,1);
@@ -8,7 +8,9 @@ re=6370; a=r/re; a=re*sqrt(1+a.*(a+2*sin(el/57.2957795)))-re;
 
 pt=max([d_parbl(8) 1]);
 qf=[]; al=[]; ran=[];
+Tlim=[150 3000];
 a1=log(log(90)); a2=log(log(2000)); da=log(log(93))-a1;
+a1=log(log(80)); a2=log(log(90)); da=log(log(80.5))-a1; Tlim=[1 500]; %pmse
 alt=round(a1/da):a2/da;
 la=round(log(log(a))/da);
 for j=alt
@@ -46,8 +48,8 @@ f0=f0r(site); c=3e8;
 const=radcon(site)*ran.^2/pt/tp*diff(lag(1:2));
 
 ti=mi.*(.38+1../(qf(:,2)+.4)*3.23e5./(qf(:,4)*f0)).^2;
-ti(find(ti<150))=150;
-ti(find(ti>3000))=3000;
+ti(find(ti<Tlim(1)))=Tlim(1);
+ti(find(ti>Tlim(2)))=Tlim(2);
 te=ti.*qf(:,2);
 ne=const.*qf(:,1).*(1+qf(:,2));
 a21=7.52e5*(f0/c)^2*te./ne+1;
@@ -56,6 +58,7 @@ v=-qf(:,3)*c/2/f0;
 v(find(v<-1000))=-1000;
 v(find(v>1000))=1000;
 
+pars=[al ne te ti v];
 if site==5 || site==6
  h=[te ti v]; return
 end

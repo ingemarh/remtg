@@ -1,6 +1,7 @@
-function odir=mkmov(pldirs)
-if ~isempty(pldirs)
+function odir=mkmov(pldirs,ndumps)
+if ~isempty(pldirs) && ~unix('which ffmpeg') && unix('ffmpeg -v error -buildconf | grep libx264')
  np=length(pldirs);
+ rate=1; if ndumps<30, rate=3; end
  [path,name,ext]=fileparts(pldirs{1});
  odir=sprintf('%s_%s_%d',path,name,np);
  mkdir(odir);
@@ -11,7 +12,7 @@ if ~isempty(pldirs)
    for i=1:np
     movefile(fullfile(pldirs{i},fn.name),fullfile(odir,sprintf('%08d.png',i)));
    end
-   [dum1,dum2]=unix(sprintf('ffmpeg -r 1 -i %s/%%08d.png -v error -vcodec libx264 -y -an %s/%s.mp4',odir,odir,name));
+   [dum1,dum2]=unix(sprintf('ffmpeg -r %d -i %s/%%08d.png -v error -vcodec libx264 -y -an %s/%s.mp4',rate,odir,odir,name));
    for i=1:np
     delete(fullfile(odir,sprintf('%08d.png',i)));
    end
