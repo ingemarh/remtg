@@ -3,7 +3,7 @@ global rtdir webtg def_file pldirs
 dum=getenv('WTG'); pldirs={};
 eval(dum)
 set(0, 'defaultfigurevisible', 'off')
-if getenv('EISCATSITE')
+if length(getenv('EISCATSITE'))==1
  webtg(2)=2;
 else
  webtg(2)=3;

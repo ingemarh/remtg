@@ -1,9 +1,9 @@
 function odir=mkmov(pldirs,ndumps)
-if ~isempty(pldirs) && ~unix('which ffmpeg') && unix('ffmpeg -v error -buildconf | grep libx264')
+if ~isempty(pldirs) && ~unix('which ffmpeg') && ~unix('ffmpeg -v error -buildconf | grep libx264')
  np=length(pldirs);
- rate=1; if ndumps<30, rate=3; end
- [path,name,ext]=fileparts(pldirs{1});
- odir=sprintf('%s_%s_%d',path,name,np);
+ rate=3; if ndumps<30, rate=10; end
+ [dpath,name,ext]=fileparts(pldirs{1});
+ odir=sprintf('%s_%s_%d',dpath,name,np);
  mkdir(odir);
  f=dir(pldirs{1});
  for fn=f'
@@ -25,4 +25,5 @@ if ~isempty(pldirs) && ~unix('which ffmpeg') && unix('ffmpeg -v error -buildconf
  for i=1:np
   rmdir(pldirs{i});
  end
+ rmdir(dpath);
 end

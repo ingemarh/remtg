@@ -1,6 +1,7 @@
 function [i,filename,nbytes,err]=int_rt
 global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode local webtg
 %d=[]; fn=[];
+filename=[];
 if ~exist('odate','var'), odate=[]; end
 dd_data=0; acc_parbl=0; err=0; d_ExpInfo='Unknown exp'; d_parbl=[]; nbytes=0; obytes=0; i=0;
 while i<bval(2)
@@ -64,7 +65,7 @@ while i<bval(2)
     end
    end
    if isempty(d) || (~isempty(webtg) && webtg(3))
-    disp('End of data!'), err=1; i=i-1; odate=[]; return %filename=[]; return
+    disp('End of data!'), err=1; i=i-1; odate=[]; return
    end
   end
   filename=fullfile(rtdir,d(1).name);
@@ -98,8 +99,10 @@ while i<bval(2)
   setbval
   if bval(1)==0, return, end
  end
- if isempty(rtdir) && i<bval(2)
-  fprintf('\r %d/%d PIs done ',i,bval(2))
+ if isempty(rtdir)
+  if i<bval(2)
+   fprintf('\r %d/%d PIs done ',i,bval(2))
+  end
+  pause(.1)
  end
- pause(.1)
 end
