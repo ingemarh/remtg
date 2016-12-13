@@ -44,7 +44,7 @@ while i<bval(2)
   end
   nbytes=str2num(nbytes);
  else
-  ext='*.mat'; if isunix, ext=[ext '*']; end
+  ext='*.mat'; if strcmp(local.name,'Octave') || isunix, ext=[ext '*']; end
   if ~strcmp(odate,rtdir)
    d=dir(fullfile(rtdir,ext));
    if isempty(d)
@@ -76,8 +76,12 @@ while i<bval(2)
  end
  d_raw=[];
  if strfind(filename,'.mat.bz2')
-  tfile=[tempname '.mat'];
-  s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
+  if strcmp(local.name,'Octave')
+   tfile=bunzip2(filename,tempdir); tfile=tfile{1};
+  else
+   tfile=[tempname '.mat'];
+   s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
+  end
   load(tfile), delete(tfile)
  else
   obytes=nbytes;
