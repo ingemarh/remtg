@@ -2,7 +2,7 @@ function datasel
 global rtdir bval butts d odate
 v=get(butts(4),'value')-2;
 if v==0
- if exist(rtdir,'dir'), ndir=rtdir;
+ if ~isempty(rtdir) && exist(rtdir,'dir'), ndir=rtdir;
  elseif exist(fullfile(filesep,'data'),'dir'), ndir=fullfile(filesep,'data');
  elseif exist(fullfile(filesep,'data1'),'dir'), ndir=fullfile(filesep,'data1');
  else, ndir=pwd; end
