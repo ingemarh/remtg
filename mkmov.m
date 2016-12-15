@@ -1,5 +1,5 @@
 function odir=mkmov(pldirs,ndumps)
-if ~isempty(pldirs) && ~unix('which ffmpeg') && ~unix('ffmpeg -v error -buildconf | grep libx264')
+if ~isempty(pldirs) && ~unix('which ffmpeg') && ~unix('ffmpeg -v error -buildconf | grep enable-libvpx')
  np=length(pldirs);
  rate=3; if ndumps<30, rate=10; end
  [dpath,name,ext]=fileparts(pldirs{1});
@@ -12,7 +12,7 @@ if ~isempty(pldirs) && ~unix('which ffmpeg') && ~unix('ffmpeg -v error -buildcon
    for i=1:np
     movefile(fullfile(pldirs{i},fn.name),fullfile(odir,sprintf('%08d.png',i)));
    end
-   [dum1,dum2]=unix(sprintf('ffmpeg -r %d -i %s/%%08d.png -v error -vcodec libx264 -y -an %s/%s.mp4',rate,odir,odir,name));
+   [dum1,dum2]=unix(sprintf('ffmpeg -r %d -i %s/%%08d.png -v error -vcodec libvpx -qmax 50 -y -dn -an %s/%s.webm',rate,odir,odir,name));
    for i=1:np
     delete(fullfile(odir,sprintf('%08d.png',i)));
    end

@@ -27,12 +27,9 @@ done
 MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
 TMP=$HOME/tmp
-if [ ! -d $TMP ];then
- mkdir $TMP
-fi
 ndumps="60"
-usage="Usage: webtg [-o] [-O] [-v] [-d dir] [-s KSTVL2PZ] [-D def] [-n dumps/secs] [start] | stop"
-while getopts oOvd:D:s:n: flag
+usage="Usage: webtg [-o] [-O] [-v] [-t] [-d dir] [-s KSTVL2PZ] [-D def] [-n dumps/secs] [start] | stop"
+while getopts oOvtd:D:s:n: flag
 do
  case $flag in
   v) null=;;
@@ -43,11 +40,15 @@ do
   n) ndumps="$OPTARG";;
   o) matlab="octave-cli";;
   O) matlab="octave";;
+  t) TMP="$PWD";;
   ?) echo $usage
      exit 2;;
  esac
 done
 shift `expr $OPTIND - 1`
+if [ ! -d $TMP ];then
+ mkdir $TMP
+fi
 if [ `echo $matlab | grep octave` ];then
  TMPDIR=$TMP
  OCTAVE_PATH=$MATLABPATH
