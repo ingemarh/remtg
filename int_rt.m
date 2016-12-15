@@ -77,7 +77,9 @@ while i<bval(2)
  d_raw=[];
  if strfind(filename,'.mat.bz2')
   if strcmp(local.name,'Octave')
-   tfile=bunzip2(filename,tempdir); tfile=tfile{1};
+   tfile=[tempname '.mat'];
+   copyfile(filename,[tfile '.bz2']);
+   bunzip2([tfile '.bz2']);
   else
    tfile=[tempname '.mat'];
    s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
