@@ -1,0 +1,118 @@
+#!/bin/sh
+
+wd=/data/webrtg
+wwwreq="rtgreg.txt"
+locreq="rtgreq_done.txt"
+wwwsite="http://www.eiscat.se/schedule"
+export PATH=$PATH:/usr/local/bin
+export EISCATSITE=web
+
+fsiz() {
+	filesize=`ls -l $1 | awk '{print $5}'`
+	#return `ls -l $1 | awk '{print $5}'`
+}
+mail_it() {
+	mailx -s "$resdir movies" -r "RTG <ingemar@eiscat.se>" $* <<!
+Enclosed you find the requested plots for $resdir.
+EISCAT
+!
+}
+
+cd $wd
+if [ "$1" ]
+then
+ echo "Doing from command line"
+ eval $1
+ echo $dirs
+ echo $ndumps
+ echo $maxfsize
+ echo $REMOTE_ADDR
+else
+ if ! wget $wwwsite/$wwwreq -O $wwwreq 2>/dev/null
+ then
+ echo "Could not reach HQ"
+  exit 0
+ elif cmp -s $wwwreq $locreq
+ then
+ #echo "All already done"
+  exit 0
+ else
+  QUERY_STRING=`comm -23 $wwwreq $locreq | head -n1`
+ fi
+ fsiz $wwwreq
+ nsiz=$filesize
+ fsiz $locreq
+ if [ -z "$QUERY_STRING" ] || [ $nsiz -lt $filesize ]
+ then
+  echo "New list"
+  cp $wwwreq $locreq
+  exit 0
+ fi
+ echo $QUERY_STRING >> $locreq
+ eval $QUERY_STRING
+fi
+
+
+atpos=`expr index "$resultpath" "@"`
+if [ -z $resultpath ] || [ $atpos -eq 0 ]
+then
+ echo "Nowhere to send results"
+ exit 1
+fi
+rundir=`date +%y%m%dw%H%M`
+if [ -d $rundir ]
+then
+ rm -rf $rundir
+fi
+mkdir $rundir
+cd $rundir
+for tar in $dirs
+do
+ wget -O - "$tar" 2>/dev/null | tar xf -
+done
+datapath=`ls -d */* |head -1`
+if [ -z $datapath ]
+then
+ echo "No data defined"
+ exit 1
+fi
+maxsize=3000000
+if [ $maxfsize ]
+then
+ maxsize=$(($maxfsize*730000)) #uuencoding maxes file ~27% bigger 
+fi
+ 
+inp=`ls`
+/opt/remtg/webtg -t -n $ndumps -d $datapath
+rm -r $inp
+resdir=`ls`
+cd $resdir
+
+flist=""
+for fil in `ls`
+do
+ fsiz $fil
+ if [ $filesize -gt $maxsize ]
+ then
+  split -db $maxsize $fil $fil.
+  flist="$flist `ls $fil.??`"
+ else
+  flist="$flist $fil"
+ fi
+done
+nsiz=0
+matt=""
+for fil in $flist
+do
+ fsiz $fil
+ if [ $((nsiz+filesize)) -gt $maxsize ] && [ $nsiz -ne 0 ]
+ then
+  mail_it $matt $resultpath
+  sleep 30
+  matt=""
+  nsiz=0
+ fi
+ matt="$matt -a $fil"
+ nsiz=$((nsiz+filesize))
+done
+mail_it $matt $resultpath
