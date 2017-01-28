@@ -10,7 +10,7 @@ if ~ishandle(fig)
  end
 end
 ax=findobj(fig,'type','axes','tag',[]);
-a[i,j]=sort(abs(ax)); ax=ax(j);
+[i,j]=sort(abs(ax)); ax=ax(j);
 h=findobj(fig,'type','axes','tag','suptitle');
 if ~isempty(h), h=findobj(h,'type','text'); end
 if nargin<4, name='EISCAT rtg'; end
