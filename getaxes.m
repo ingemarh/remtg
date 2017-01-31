@@ -9,8 +9,7 @@ if ~ishandle(fig)
   close(fig),figure(fig); % Matlab R13 bug
  end
 end
-ax=findobj(fig,'type','axes','tag',[]);
-[i,j]=sort(abs(ax)); ax=ax(j);
+ax=flipud(findobj(fig,'type','axes','tag',''));
 h=findobj(fig,'type','axes','tag','suptitle');
 if ~isempty(h), h=findobj(h,'type','text'); end
 if nargin<4, name='EISCAT rtg'; end
