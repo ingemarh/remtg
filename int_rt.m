@@ -1,5 +1,5 @@
 function [i,filename,nbytes,err]=int_rt
-global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode local webtg
+global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode local webtg h5 h5d
 %d=[]; fn=[];
 filename=[];
 if ~exist('odate','var'), odate=[]; end
@@ -43,6 +43,15 @@ while i<bval(2)
    disp('End of data!'), err=1; i=i-1; odate=[]; return
   end
   nbytes=str2num(nbytes);
+ elseif h5
+  if isempty(h5d)
+   d(1)=[];
+   if isempty(d)
+    disp('No data!'), err=1; i=i-1; odate=[]; return
+   end
+   h5d=h5info(fullfile(rtdir,d(1).name)); h5d=h5d.Groups(1).Groups;
+  end
+  filename=fullfile(rtdir,d(1).name); odate=h5d(1).Name; h5d(1)=[];
  else
   ext='*.mat'; if strcmp(local.name,'Octave') || isunix, ext=[ext '*']; end
   if ~strcmp(odate,rtdir)
@@ -71,23 +80,34 @@ while i<bval(2)
   filename=fullfile(rtdir,d(1).name);
   nbytes=d(1).bytes; d(1)=[]; odate=rtdir;
  end
- if obytes && nbytes~=obytes
-  j=j-1; odate=[]; return
- end
- d_raw=[];
- if strfind(filename,'.mat.bz2')
-  if strcmp(local.name,'Octave')
-   tfile=[tempname '.mat'];
-   copyfile(filename,[tfile '.bz2']);
-   bunzip2([tfile '.bz2']);
-  else
-   tfile=[tempname '.mat'];
-   s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
+ if h5
+  try,
+   d_raw=h5read(filename,[odate '/L1']); d_raw=complex(d_raw.r,d_raw.i);
+  catch
+   d_raw=[];
   end
-  load(tfile), delete(tfile)
+  d_data=h5read(filename,[odate '/L2']); d_data=complex(d_data.r,d_data.i);
+  d_parbl=h5read(filename,[odate '/Parameters']);
+  d_ExpInfo=['kst0 ' char(h5read(filename,'/MetaData/ExperimentName'))];
  else
-  obytes=nbytes;
-  load(filename)
+  if obytes && nbytes~=obytes
+   j=j-1; odate=[]; return
+  end
+  d_raw=[];
+  if strfind(filename,'.mat.bz2')
+   if strcmp(local.name,'Octave')
+    tfile=[tempname '.mat'];
+    copyfile(filename,[tfile '.bz2']);
+    bunzip2([tfile '.bz2']);
+   else
+    tfile=[tempname '.mat'];
+    s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
+   end
+   load(tfile), delete(tfile)
+  else
+   obytes=nbytes;
+   load(filename)
+  end
  end
  if length(d_parbl)==128
   d_parbl=nd2eros4(d_parbl,d_data);
