@@ -3,6 +3,7 @@ global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode l
 %d=[]; fn=[];
 filename=[];
 if ~exist('odate','var'), odate=[]; end
+if isempty(odate), h5=0; end
 dd_data=0; acc_parbl=0; err=0; d_ExpInfo='Unknown exp'; d_parbl=[]; nbytes=0; obytes=0; i=0;
 while i<bval(2)
  i=i+1;
@@ -43,55 +44,83 @@ while i<bval(2)
    disp('End of data!'), err=1; i=i-1; odate=[]; return
   end
   nbytes=str2num(nbytes);
- elseif h5
-  if isempty(h5d)
-   d(1)=[];
-   if isempty(d)
-    disp('No data!'), err=1; i=i-1; odate=[]; return
-   end
-   h5d=h5info(fullfile(rtdir,d(1).name)); h5d=h5d.Groups(1).Groups;
-  end
-  filename=fullfile(rtdir,d(1).name); odate=h5d(1).Name; h5d(1)=[];
  else
   ext='*.mat'; if strcmp(local.name,'Octave') || isunix, ext=[ext '*']; end
   if ~strcmp(odate,rtdir)
    d=dir(fullfile(rtdir,ext));
    if isempty(d)
+    h5data
+   end
+   if isempty(d)
     disp('No data!'), err=1; i=i-1; odate=[]; return
    end
   end
-  if isempty(d)
-   if rtdir(end)==filesep, rtdir(end)=[]; end
-   [j,s]=fileparts(rtdir); df='%04d%02d%02d_%02d'; s=sscanf(s,df,4);
-   if length(s)==4
-    s=datevec(datenum([s' 0 0])+1.01/24);
-    s=fullfile(j,sprintf(df,s(1:4)));
-    if exist(s,'dir')
-     d=dir(fullfile(s,ext));
-     if ~isempty(d)
-      rtdir=s;
+  if h5
+   if isempty(h5d)
+    d(1)=[];
+    if isempty(d)
+     disp('No data!'), err=1; i=i-1; odate=[]; return
+    end
+    h5data
+   end
+   filename=fullfile(rtdir,d(1).name); dump=h5d(1,:); h5d(1,:)=[]; odate=rtdir;
+  else
+   if isempty(d)
+    if rtdir(end)==filesep, rtdir(end)=[]; end
+    [j,s]=fileparts(rtdir); df='%04d%02d%02d_%02d'; s=sscanf(s,df,4);
+    if length(s)==4
+     s=datevec(datenum([s' 0 0])+1.01/24);
+     s=fullfile(j,sprintf(df,s(1:4)));
+     if exist(s,'dir')
+      d=dir(fullfile(s,ext));
+      if ~isempty(d)
+       rtdir=s;
+      end
      end
     end
+    if isempty(d) || (~isempty(webtg) && webtg(3))
+     disp('End of data!'), err=1; i=i-1; odate=[]; return
+    end
    end
-   if isempty(d) || (~isempty(webtg) && webtg(3))
-    disp('End of data!'), err=1; i=i-1; odate=[]; return
-   end
+   filename=fullfile(rtdir,d(1).name);
+   nbytes=d(1).bytes; d(1)=[]; odate=rtdir;
   end
-  filename=fullfile(rtdir,d(1).name);
-  nbytes=d(1).bytes; d(1)=[]; odate=rtdir;
  end
  if h5
-  try,
-   d_raw=h5read(filename,[odate '/L1']); d_raw=complex(d_raw.r,d_raw.i);
-  catch
-   d_raw=[];
+  if strcmp(local.name,'Octave') %very ugly, but don't want to dwell time now
+   cmd=sprintf('h5ls -dS %s%s/L2 | awk ''NR>2''',filename,dump);
+   [err,j]=system(cmd);
+   j=str2num(j); d_data=complex(j(:,1),j(:,2));
+   [j,cmd]=system(sprintf('h5ls %s%s/L1 2>/dev/null',filename,dump));
+   if ~cmd
+    d_raw=h5read(filename,[dump '/L1']);
+   else
+    d_raw=[];
+   end
+  else
+   d_data=h5read(filename,[dump '/L2']); d_data=complex(d_data.r,d_data.i);
+   try,
+    d_raw=h5read(filename,[dump '/L1']); d_raw=complex(d_raw.r,d_raw.i);
+   catch
+    d_raw=[];
+   end
   end
-  d_data=h5read(filename,[odate '/L2']); d_data=complex(d_data.r,d_data.i);
-  d_parbl=h5read(filename,[odate '/Parameters']);
-  d_ExpInfo=['kst0 ' char(h5read(filename,'/MetaData/ExperimentName'))];
+  if obytes && length(d_data)~=obytes
+   disp('End of data!'), err=1; i=i-1; odate=[]; return
+  else
+   obytes=length(d_data);
+  end
+  if strcmp(local.name,'Octave') %very ugly, but don't want to dwell time now
+   cmd=sprintf('h5ls -dS %s/MetaData/ExperimentName',filename);
+   [err,j]=system([cmd ' | awk -F''"'' ''$0=$2''']);
+   d_ExpInfo=['kst0 ' j];
+  else
+   d_ExpInfo=['kst0 ' char(h5read(filename,'/MetaData/ExperimentName'))];
+  end
+  d_parbl=h5read(filename,[dump '/Parameters']);
  else
   if obytes && nbytes~=obytes
-   j=j-1; odate=[]; return
+   i=i-1; odate=[]; return
   end
   d_raw=[];
   if strfind(filename,'.mat.bz2')

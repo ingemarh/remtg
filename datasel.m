@@ -1,6 +1,6 @@
 function datasel
-global rtdir bval butts d odate h5 h5d
-v=get(butts(4),'value')-2; h5=0;
+global rtdir bval butts d odate h5 h5d local
+v=get(butts(4),'value')-2;
 if v==0
  if ~isempty(rtdir) && exist(rtdir,'dir'), ndir=rtdir;
  elseif exist(fullfile(filesep,'data'),'dir'), ndir=fullfile(filesep,'data');
@@ -12,11 +12,11 @@ if v==0
   rtdir=ndir;
   d=dir(fullfile(rtdir,'*.mat*')); odate=rtdir;
   if isempty(d)
-   d=dir(fullfile(rtdir,'*.hdf5'));
-   h5=1; h5d=h5info(fullfile(rtdir,d(1).name)); h5d=h5d.Groups(1).Groups;
-  end
-  while ~isempty(d) && isempty(strfind(d(1).name,startfile))
-   d(1)=[];
+   h5data
+  else
+   while ~isempty(d) && isempty(strfind(d(1).name,startfile))
+    d(1)=[];
+   end
   end
   set(butts(5),'visible','off','value',0)
   setbval(0,1)
