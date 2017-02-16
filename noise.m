@@ -30,7 +30,8 @@ if ~isempty(cle)
  yt(p1)=btic(1);
  if p2~=p1, yt(p2)=btic(2); elseif btic(2)~=btic(1), yt=[yt(1:p1) btic(2) yt((p1+1):end)]; end
  set(ax,'ytick',sort(yt));
- tsys(find(tsys<0 | tsys>1000))=NaN;
+ tsys(find(tsys<0))=NaN;
+ %tsys(find(tsys<0 | tsys>1000))=NaN;
 else
  tsys=NaN*ones(size(blev));
 end

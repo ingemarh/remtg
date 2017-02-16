@@ -5,7 +5,7 @@ slen=round(slen/lagincr);
 frac=round(slen/nbits);
 if nbits==1
  sacf=reshape(dd_data(sig+(1:ngates*(maxlag+1))),ngates,maxlag+1).';
- weight=[1 ([(maxlag-1):-1:1 1/6])/(maxlag-1/3)];
+ weight=[1 ([maxlag:-1:1 1/6])/((maxlag+1)-1/3)];
  sacf=sacf./(weight(1:maxlag+1)'*ones(1,ngates));
  if r0==0
   r0=(1-ngates)/2*lagincr*frac;
