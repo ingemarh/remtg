@@ -17,6 +17,6 @@ else
   waterfall(x,y,z);
  end
  set(a,'xlim',[min(x) max(x)],'ylim',[min(y) max(y)],'view',[-10 50])
- set(get(a,'title'),'verticalalignment','middle')
+ set(get(a,'title'),'verticalalignment','baseline','fontweight','normal')
 end
 set(a,'visible','on')
