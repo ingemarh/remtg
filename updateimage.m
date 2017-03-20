@@ -28,7 +28,7 @@ else
  end
  if local.ver>3, zoom(fig,'on'), end
  set(a,'ydir','normal','clim',[0 1])
- set(get(a,'title'),'verticalalignment','baseline','fontweight','normal')
+ set(get(a,'title'),'verticalalignment','baseline')
 end
 set(j,'userdata',zlim,'alphadata',double(~isnan(z)))
 set(a,'visible','on')

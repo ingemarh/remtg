@@ -52,7 +52,7 @@ else
   end
  end
  set(a,'xlim',[min(min(x1)) max(max(x1))])
- set(get(a,'title'),'verticalalignment','baseline','fontweight','normal')
+ set(get(a,'title'),'verticalalignment','baseline')
 end
 set(a,'visible','on')
 if mktd
