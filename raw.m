@@ -26,7 +26,7 @@ for i=a7'
   setcurrent(fig,i)
   plot(x,rd,x,id)
   set(i,'xlim',xlim(n,:))
-  set(get(i,'title'),'verticalalignment','middle')
+  set(get(i,'title'),'verticalalignment','baseline')
  end
  if local.ver>3, zoom(fig,'on'), end
  n=n+ndel;

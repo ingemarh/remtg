@@ -19,7 +19,7 @@ if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
  set(0,'currentfigure',fig)
  for i=1:prod([s1 s2])
   ax(i,1)=subplot(ceil(s1),s2,i);
-  set(get(ax(i),'title'),'verticalalignment','middle')
+  set(get(ax(i),'title'),'verticalalignment','baseline')
  end
  if local.ver>3
   h=suptitle(head); set(h,'interpreter','none')
