@@ -137,7 +137,7 @@ for ch=1:noch
   bax=ax(1+any(isfinite(psig(ch,:))));
   [tsys,blev]=noise(ch+20,bax,bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc,tcal(ch));
   sms=sprintf('%s\n%s',sms,get(get(bax,'title'),'string'));
-  tsys(find(isnan(tsys)))=tnormal(site);
+  tsys(find(~isfinite(tsys)))=tnormal(site);
   cax=2;
  elseif exist('blev')
   blev=blev(1); cax=1;
