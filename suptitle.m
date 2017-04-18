@@ -7,19 +7,16 @@ function hout=suptitle(str,fig)
 % Drea Thomas 6/15/95 drea@mathworks.com
 if nargin<2, fig=gcf; end
 
-% Warning: If the figure or axis units are non-default, this
-% will break.
-
 % Parameters used to position the supertitle.
 
 % Amount of the figure window devoted to subplots
-plotregion = .92;
+plotregion = .94;
 
 % Y position of title in normalized coordinates
-titleypos  = .95;
+titleypos  = .96;
 
 % Fontsize for supertitle
-fs = get(fig,'defaultaxesfontsize')+4;
+fs = get(fig,'defaultaxesfontsize')+2;
 
 % Fudge factor to adjust y spacing between subplots
 fudge=1;
@@ -44,24 +41,7 @@ figunits = get(fig,'units');
 
 % Determine the bounding rectange for all the plots
 
-% h = findobj('Type','axes');   
-
-% findobj is a 4.2 thing.. if you don't have 4.2 comment out
-% the next line and uncomment the following block.
-	
 h = findobj(fig,'Type','axes');  % Change suggested by Stacy J. Hills
-
-% If you don't have 4.2, use this code instead
-%ch = get(fig,'children');
-%h=[];
-%for i=1:length(ch),
-%  if strcmp(get(ch(i),'type'),'axes'),
-%    h=[h,ch(i)];
-%  end
-%end
-
-	
-
 
 max_y=0;
 min_y=1;
@@ -99,6 +79,3 @@ axes(haold);
 if nargout,
 	hout=ht;
 end
-
-
-
