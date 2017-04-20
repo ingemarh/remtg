@@ -33,8 +33,8 @@ if local.ver>3.4
  set(groot,'defaultUicontrolFontSize',10)
  set(groot,'defaultAxesxMinorTick','on')
  set(groot,'defaultAxesyMinorTick','on')
- set(groot,'defaultTextFontName','Helvetica-Narrow')
- set(groot,'defaultAxesFontName','Helvetica-Narrow')
+ set(groot,'defaultTextFontName','Helvetica')
+ set(groot,'defaultAxesFontName','Helvetica')
  d=get(groot,'ScreenSize');
  local.x=prod(d)-1;
  if local.ver>=7.5 && ~usejava('jvm')
