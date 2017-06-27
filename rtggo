@@ -12,7 +12,8 @@ fsiz() {
 	#return `ls -l $1 | awk '{print $5}'`
 }
 mail_it() {
-	mailx -s "$resdir movies" -r "RTG <ingemar@eiscat.se>" $* <<!
+#	mailx -s "$resdir movies" -r "RTG <ingemar@eiscat.se>" $* <<!
+	mutt -s "$resdir movies" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
 Enclosed you find the requested plots for $resdir.
 EISCAT
 !
@@ -107,7 +108,7 @@ do
  fsiz $fil
  if [ $((nsiz+filesize)) -gt $maxsize ] && [ $nsiz -ne 0 ]
  then
-  mail_it $matt $resultpath
+  mail_it $matt -- $resultpath
   sleep 30
   matt=""
   nsiz=0
@@ -115,4 +116,4 @@ do
  matt="$matt -a $fil"
  nsiz=$((nsiz+filesize))
 done
-mail_it $matt $resultpath
+mail_it $matt -- $resultpath
