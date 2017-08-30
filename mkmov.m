@@ -8,13 +8,10 @@ if ~isempty(pldirs) && ~unix('which ffmpeg') && ~unix('ffmpeg -v error -buildcon
  f=dir(pldirs{1});
  for fn=f'
   [path,name,ext]=fileparts(fn.name);
-  if strcmp(ext,'.png') 
+  if strcmp(ext,'.png')
+   [dum1,dum2]=unix(sprintf('ffmpeg -r %d -pattern_type glob -i ''%s/*/%s.png'' -v error -vcodec libvpx -qmax 50 -y -dn -an %s/%s.webm',rate,dpath,name,odir,name));
    for i=1:np
-    movefile(fullfile(pldirs{i},fn.name),fullfile(odir,sprintf('%08d.png',i)));
-   end
-   [dum1,dum2]=unix(sprintf('ffmpeg -r %d -i %s/%%08d.png -v error -vcodec libvpx -qmax 50 -y -dn -an %s/%s.webm',rate,odir,odir,name));
-   for i=1:np
-    delete(fullfile(odir,sprintf('%08d.png',i)));
+    delete(fullfile(pldirs{i},fn.name));
    end
   elseif strcmp(ext,'.txt') || strcmp(ext,'.html') 
    for i=1:np

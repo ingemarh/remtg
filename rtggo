@@ -13,7 +13,7 @@ fsiz() {
 }
 mail_it() {
 #	mailx -s "$resdir movies" -r "RTG <ingemar@eiscat.se>" $* <<!
-	mutt -s "$resdir movies" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
+	mutt -e "set crypt_use_gpgme=no" -s "$resdir movies" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
 Enclosed you find the requested plots for $resdir.
 EISCAT
 !

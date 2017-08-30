@@ -15,8 +15,11 @@ if isempty(bval)
  elseif site==4 && ~isempty(findstr(xwn,'VHF')), site=3;
  end
  bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
- if findstr('rtg',xwn), bval(5)=1;
- elseif ~isempty(webtg), bval([2 3 5 10])=[webtg([1 1 2]) 1]; err=0;
+ if findstr('rtg',xwn)
+  bval(5)=1;
+ elseif ~isempty(webtg)
+  bval([2 3 5 10])=[webtg([1 1 2]) 1]; err=0;
+  if strcmp(local.name,'Octave') && strcmp(graphics_toolkit,'gnuplot'), bval(10)=0; end
  end
 end
 if bval(5)<2 && (isempty(butts) || ~ishandle(butts(1)))
@@ -137,6 +140,7 @@ for ch=1:noch
   bax=ax(1+any(isfinite(psig(ch,:))));
   [tsys,blev]=noise(ch+20,bax,bsamp(ch,:),csamp(ch,:),back(ch,:),cal(ch,:),loopc,tcal(ch));
   sms=sprintf('%s\n%s',sms,get(get(bax,'title'),'string'));
+  blev(find(~blev))=1;
   tsys(find(~isfinite(tsys)))=tnormal(site);
   cax=2;
  elseif exist('blev')

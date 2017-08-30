@@ -1,8 +1,8 @@
 function updateimage(fig,a,x,y,z)
 global bval local
 j=findobj(a,'type','image');
-%if isempty(find(z<0))
-% z=log(z);
+%if all(~isfinite(z))
+% return
 %else
  z=asinh(z/2); % almost log
 %end
@@ -36,6 +36,10 @@ end
 
 function zlim=smart_caxis(z,a)
 zs=sort(z(find(isfinite(z))));
-n=ceil(a*length(zs));
-zlim=[zs(n+1) zs(end-n)];
+if isempty(zs)
+ zlim=[0 0];
+else
+ n=ceil(a*length(zs));
+ zlim=[zs(n+1) zs(end-n)];
+end
 end
