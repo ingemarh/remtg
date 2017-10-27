@@ -20,7 +20,7 @@ if sgating>1
  ngates=floor(ngates/sgating);
  sacf=reshape(sum(reshape(sacf(:,1:(ngates*sgating))',sgating,ngates,nlags)),ngates,nlags)';
 end
-waterlim=[5 8];
+waterlim=[6 8];
 if bval(11)==1 && ngates>waterlim(2) && r0>0
  [h,pars]=qfit(fig,ax,sacf,lag,dt*sgating,r0+(sgating-1)*dt/2);
  if ~isempty(selax) && all(selax.fig==[fig ax])
