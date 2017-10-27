@@ -19,8 +19,8 @@ if ~isempty(pldirs) && ~unix('which ffmpeg') && ~unix('ffmpeg -v error -buildcon
    end
   end
  end
- for i=1:np
-  rmdir(pldirs{i});
- end
- rmdir(dpath);
+ %for i=1:np
+ % rmdir(pldirs{i});
+ %end
+ rmdir(dpath,'s');
 end

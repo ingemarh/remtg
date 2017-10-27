@@ -86,6 +86,7 @@ fi
 inp=`ls`
 /opt/remtg/webtg -t -n $ndumps -d $datapath
 rm -r $inp
+rmdir data #Matlab 2017b bug?
 resdir=`ls`
 cd $resdir
 
