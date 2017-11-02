@@ -15,9 +15,9 @@ if ~isempty(pldirs)
    if strcmp(prog,'ffmpeg')
     [dum1,dum2]=unix(sprintf('%s -r %d -pattern_type glob -i ''%s/*/%s.png'' -v error -vcodec libvpx -qmax 50 -y -dn -an %s/%s.webm',prog,rate,dpath,name,odir,name));
    else
-    d=pwd; cd(dpath); unix(sprintf('ls */%s.png > list.txt',name));
+    unix(sprintf('find %s -name %s.png > list.txt',dpath,name));
     [dum1,dum2]=unix(sprintf('mencoder mf://@list.txt -mf fps=%d:type=png -ovc copy -oac copy -o %s/%s.avi',rate,odir,name));
-    delete('list.txt'); cd(d)
+    delete('list.txt');
    end
    for i=1:np
     delete(fullfile(pldirs{i},fn.name));
