@@ -20,6 +20,7 @@ EISCAT
 }
 
 cd $wd
+rtgdef=""
 if [ "$1" ]
 then
  echo "Doing from command line"
@@ -28,6 +29,7 @@ then
  echo $ndumps
  echo $maxfsize
  echo $REMOTE_ADDR
+ echo $rtgdef
 else
  if ! wget $wwwsite/$wwwreq -O $wwwreq 2>/dev/null
  then
@@ -53,7 +55,6 @@ else
  eval $QUERY_STRING
 fi
 
-
 atpos=`expr index "$resultpath" "@"`
 if [ -z $resultpath ] || [ $atpos -eq 0 ]
 then
@@ -67,6 +68,13 @@ then
 fi
 mkdir $rundir
 cd $rundir
+if [ -n "$rtgdef" ]
+then
+ echo $rtgdef | tr '#' '\n' > rtgd.m
+ def="-D rtgd.m"
+else
+ def=""
+fi
 for tar in $dirs
 do
  wget -O - "$tar" 2>/dev/null | tar xf -
@@ -84,7 +92,7 @@ then
 fi
  
 inp=`ls`
-/opt/remtg/webtg -t -n $ndumps -d $datapath
+/opt/remtg/webtg -t -n $ndumps -d $datapath $def
 rm -r $inp
 rmdir data #Matlab 2017b bug?
 resdir=`ls`
