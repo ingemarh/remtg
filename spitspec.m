@@ -1,5 +1,5 @@
 function h=spitspec(fig,ax,sacf,lag,dt,r0)
-global bval d_parbl gating el site combine combhold maxsize_acf selax
+global bval d_parbl gating el site combine combhold maxsize_acf selax webtg
 if nargin<6, r0=0; end
 if ~isempty(selax) && all(selax.fig==[fig ax])
  selax.sacf=sacf; selax.lag=lag;
@@ -31,6 +31,10 @@ elseif bval(11)==1 && nargin>4 && (site==5 || site==6)
  [s,w]=max(sacf(1,:));
  par=qfit(fig,ax,sacf(:,w),lag,0,1e-2);
 end 
+if ~isempty(webtg) && ~isempty(selax)
+ h=[];
+ return
+end
 fsc=1000;
 if bval(7)~=1
  [s,w]=acf2spec(sacf,lag);

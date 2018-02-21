@@ -1,5 +1,5 @@
 function ax=getaxes(fig,s1,s2,name,head)
-global figs local
+global figs local selax
 if ~ishandle(fig)
  figure(fig)
  if local.x
@@ -8,6 +8,11 @@ if ~ishandle(fig)
  elseif local.ver==6.5
   close(fig),figure(fig); % Matlab R13 bug
  end
+end
+if ~isempty(selax) && isfield(selax,'wtg')
+ [selax.fig,selax.sp,fun]=strread(selax.wtg,'%d,%d,%s');
+ selax.fun=fun{1};
+ selax=rmfield(selax,'wtg');
 end
 ax=flipud(findobj(fig,'type','axes','tag',''));
 h=findobj(fig,'type','axes','tag','suptitle');
@@ -20,6 +25,10 @@ if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
  for i=1:prod([s1 s2])
   ax(i,1)=subplot(ceil(s1),s2,i);
   set(get(ax(i),'title'),'verticalalignment','baseline')
+ end
+ if isfield(selax,'sp') && fig==selax.fig
+  selax.fig(2)=ax(selax.sp);
+  selax=rmfield(selax,'sp');
  end
  if local.ver>3
   h=suptitle(head); set(h,'interpreter','none')

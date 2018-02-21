@@ -1,6 +1,7 @@
 #!/bin/sh
 rtdir=
 def=
+slx=
 null=">/dev/null"
 if [ -z "$matlab" ]; then
  matlab=matlab
@@ -28,13 +29,14 @@ MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
 TMP=$HOME/tmp
 ndumps="60"
-usage="Usage: webtg [-o] [-O] [-v] [-t] [-d dir] [-s KSTVL2PZ] [-D def] [-n dumps/secs] [start] | stop"
-while getopts oOvtd:D:s:n: flag
+usage="Usage: webtg [-o] [-O] [-v] [-t] [-d dir] [-s KSTVL2PZ] [-D def] [-x fig,subplot,routine] [-n dumps/secs] [start] | stop"
+while getopts oOvtd:D:s:n:x: flag
 do
  case $flag in
   v) null=;;
   d) rtdir="$OPTARG";;
   D) def="$OPTARG";;
+  x) slx="$OPTARG";;
   s) EISCATSITE="$OPTARG"
      export EISCATSITE;;
   n) ndumps="$OPTARG";;
@@ -59,7 +61,7 @@ if [ "$*" = "stop" ];then
 elif [ "$*" = "start" ] || [ "$*" = "" ];then
  SHELL=/bin/sh
 
- WTG="rtdir='$rtdir',webtg=$ndumps,def_file='$def'"
+ WTG="rtdir='$rtdir',webtg=$ndumps,def_file='$def',selax.wtg='$slx'"
  export MATLABPATH SHELL TMP WTG
  unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
