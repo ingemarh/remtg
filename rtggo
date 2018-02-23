@@ -82,13 +82,13 @@ else
 fi
 if [ -n "$selfig" ] && [ -n "$selsub" ] &&  [ -n "$selfun" ] && [ -n "$selfunn" ]
 then
- echo $selfun | uudecode -o $selfunn
+ echo $selfun | base64 -d > $selfunn
  if [ `file -b $selfunn` != "ASCII text" ]
  then
-  7z x $selnam
-  selnam=${selnam%%.*}
+  7z x $selfunn
+  selfunn=${selfunn%%.*}
  fi
- selax="-x $selfig,$selsub,$selnam"
+ selax="-x $selfig,$selsub,$selfunn"
 else
  selax=""
 fi
