@@ -21,6 +21,7 @@ EISCAT
 
 cd $wd
 rtgdef=""
+selfig=""
 if [ "$1" ]
 then
  echo "Doing from command line"
@@ -30,6 +31,10 @@ then
  echo $maxfsize
  echo $REMOTE_ADDR
  echo $rtgdef
+ echo $selfig
+ echo $selsub
+ echo $selfun
+ echo $selfunn
 else
  if ! wget $wwwsite/$wwwreq -O $wwwreq 2>/dev/null
  then
@@ -75,6 +80,18 @@ then
 else
  def=""
 fi
+if [ -n "$selfig" ] && [ -n "$selsub" ] &&  [ -n "$selfun" ] && [ -n "$selfunn" ]
+then
+ echo $selfun | uudecode -o $selfunn
+ if [ `file -b $selfunn` != "ASCII text" ]
+ then
+  7z x $selnam
+  selnam=${selnam%%.*}
+ fi
+ selax="-x $selfig,$selsub,$selnam"
+else
+ selax=""
+fi
 for tar in $dirs
 do
  wget -O - "$tar" 2>/dev/null | tar xf -
@@ -92,7 +109,7 @@ then
 fi
  
 inp=`ls`
-/opt/remtg/webtg -t -n $ndumps -d $datapath $def
+/opt/remtg/webtg -t -n $ndumps -d $datapath $def $selax
 rm -r $inp
 rmdir data #Matlab 2017b bug?
 resdir=`ls`
