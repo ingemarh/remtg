@@ -13,7 +13,11 @@ if webtg(1)<0
 else
  webtg(3)=0;
 end
-if isempty(selax.wtg), selax=[]; end
+if isempty(selax.wtg)
+ selax=[];
+else
+ webtg(2)=0;
+end
 while ~remtg
  if strfind(lasterr,'Error occurred while evaluating listener callback.')
   break
