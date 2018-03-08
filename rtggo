@@ -83,9 +83,16 @@ fi
 if [ -n "$selfig" ] && [ -n "$selsub" ] &&  [ -n "$selfun" ] && [ -n "$selfunn" ]
 then
  echo $selfun | base64 -d > $selfunn
- if [ `file -b $selfunn` != "ASCII text" ]
+ if [ "`file -b $selfunn`" != "ASCII text" ]
  then
-  7z x $selfunn
+  7z x $selfunn >/dev/null
+  rm $selfunn
+  t=`ls`
+  if [ `ls -1 | wc -l` = 1 ] && [ "${t##*.}" = "tar" ]
+  then
+   tar xf $t
+   rm $t
+  fi
   selfunn=${selfunn%%.*}
  fi
  selax="-x $selfig,$selsub,$selfunn"
@@ -113,7 +120,10 @@ inp=`ls`
 rm -r $inp
 rmdir data #Matlab 2017b bug?
 resdir=`ls`
-cd $resdir
+if [ -d $resdir ]
+then
+ cd $resdir
+fi
 
 flist=""
 for fil in `ls`

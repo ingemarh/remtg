@@ -18,7 +18,7 @@ while i<bval(2)
     if jj>0
      pause(1)
     else
-     web(sprintf('http://www.eiscat.com/rtg/rtg.cgi?%s',sitecode.mini(bval(4))))
+     web(sprintf('http://www.eiscat.se/rtg/rtg.cgi?%s',sitecode.mini(bval(4))))
      disp('No data!'), err=1; i=i-1; odate=[]; return
     end
    end
