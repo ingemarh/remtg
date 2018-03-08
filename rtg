@@ -50,7 +50,7 @@ if [[ $prog =~ .*octave ]];then
  OCTAVE_PATH=$MATLABPATH
  TMPDIR=$TMP
  export OCTAVE_PATH TMPDIR
- comm="$prog --no-gui --persist --eval rtg"
+ comm="$prog --no-gui --persist --path `pwd` --eval rtg"
 else 
  comm="$prog $jvm -nosplash -r rtg"
 fi
@@ -58,7 +58,6 @@ if [ $term -eq 0 ]
 then
  XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
  export MATLABPATH SHELL XTERM_WM_NAME TMP
- echo $comm
  exec $comm
 else
  XTERM_WM_NAME=rtg$EISCATSITE
