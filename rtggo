@@ -35,6 +35,7 @@ then
  echo $selsub
  echo $selfun
  echo $selfunn
+ verb=" -v"
 else
  if ! wget $wwwsite/$wwwreq -O $wwwreq 2>/dev/null
  then
@@ -58,6 +59,7 @@ else
  fi
  echo $QUERY_STRING >> $locreq
  eval $QUERY_STRING
+ verb=""
 fi
 
 atpos=`expr index "$resultpath" "@"`
@@ -116,7 +118,7 @@ then
 fi
  
 inp=`ls`
-/opt/remtg/webtg -t -n $ndumps -d $datapath $def $selax
+/opt/remtg/webtg $verb -t -n $ndumps -d $datapath $def $selax
 rm -r $inp
 rmdir data #Matlab 2017b bug?
 resdir=`ls`

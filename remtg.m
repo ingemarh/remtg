@@ -39,7 +39,7 @@ else
  setbval(0,1)
  filename=[];
 end
-rd=real(dd_data); id=imag(dd_data); id(find(~id))=NaN;
+rd=real(dd_data); id=imag(dd_data); id(find(id==0))=NaN;
 site=d_parbl(41); intt=d_parbl(7);
 tim=datestr(datenum(round(d_parbl(1:6))),31); tim=[tim(1:13) tim(15:19)];
 if site==14, txpow=d_parbl(65); else, txpow=d_parbl(8)/1000; end
