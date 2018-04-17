@@ -1,6 +1,6 @@
 #!/bin/bash -l
 if [ -z "$matlab" ]; then
- matlab=$matlab
+ matlab=matlab
 fi
 prog=`which $matlab`
 if [ $? -ne 0 ]; then
