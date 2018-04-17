@@ -8,6 +8,10 @@ for varno=1:length(varargin)
   s=ones(size(vartemp));
   s=s(:)*(1:mr*mc);
   [a,b]=size(varargout{varno});
-  varargout{varno}=varargout{varno}+j*reshape(s-1,b,a).';
+  if mc>mr
+   varargout{varno}=varargout{varno}+j*reshape(s-1,b,a).';
+  else 
+   varargout{varno}=varargout{varno}+j*(s-1);
+  end
  end
 end

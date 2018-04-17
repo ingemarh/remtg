@@ -1,14 +1,14 @@
 function err=remtg
 % Main rtg routine err=remtg
 global dd_data d_ExpInfo d_parbl rd id bval butts rtdir tdev tdim site gating el radcon figs webtg d_raw local def_file sitecode combine combhold tail maxsize_acf selax
-tnormal=[50 50 300 90 40 40 30 50]; tdev=[];
+tnormal=[50 50 300 90 40 40 30 50 200]; tdev=[];
 if isempty(bval)
- radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11];
- sitecode.web={'ESR 32m','ESR 42m','Troms&oslash; VHF','Troms&oslash; UHF','Kiruna','Sodankyl&auml;','Hot','ESR 32p'};
- sitecode.long={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Hot','ESR 32p'};
- sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Hot','32p'};
- sitecode.mini='L2VTKSHP';
- sitecode.low='llvurr p';
+ radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11 3e11];
+ sitecode.web={'ESR 32m','ESR 42m','Troms&oslash; VHF','Troms&oslash; UHF','Kiruna','Sodankyl&auml;','Hot','ESR 32p','QuJing'};
+ sitecode.long={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Hot','ESR 32p','QuJing'};
+ sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Hot','32p','Quj'};
+ sitecode.mini='L2VTKSHPQ';
+ sitecode.low='llvurr pq';
  site=findstr(sitecode.mini,getenv('EISCATSITE'));
  xwn=getenv('XTERM_WM_NAME');
  if isempty(site), site=5; err=1;
@@ -39,7 +39,7 @@ else
  setbval(0,1)
  filename=[];
 end
-rd=real(dd_data); id=imag(dd_data); id(find(~id))=NaN;
+rd=real(dd_data); id=imag(dd_data); id(find(id==0))=NaN;
 site=d_parbl(41); intt=d_parbl(7);
 tim=datestr(datenum(round(d_parbl(1:6))),31); tim=[tim(1:13) tim(15:19)];
 if site==14, txpow=d_parbl(65); else, txpow=d_parbl(8)/1000; end

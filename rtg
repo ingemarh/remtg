@@ -1,6 +1,6 @@
 #!/bin/bash -l
 if [ -z "$matlab" ]; then
- matlab=matlab
+ matlab=$matlab
 fi
 prog=`which $matlab`
 if [ $? -ne 0 ]; then
@@ -46,11 +46,11 @@ do
  esac
 done
 shift `expr $OPTIND - 1`
-if [ $prog = octave ];then
+if [[ $prog =~ .*octave ]];then
  OCTAVE_PATH=$MATLABPATH
  TMPDIR=$TMP
  export OCTAVE_PATH TMPDIR
- comm="$prog --no-gui --persist --eval rtg"
+ comm="$prog --no-gui --persist --path `pwd` --eval rtg"
 else 
  comm="$prog $jvm -nosplash -r rtg"
 fi

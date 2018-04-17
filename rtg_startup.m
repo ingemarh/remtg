@@ -52,6 +52,7 @@ set(groot,'defaultAxesColor','none')
 if strcmp(local.name,'Octave')
  [dum,a]=strtok(fliplr(which('rtg')),filesep);
  addpath(fullfile(fliplr(a),'private'))
+ warning('off','Octave:missing-glyph')
 end
 if local.x
  matver=get(groot,'defaultFigurePosition');

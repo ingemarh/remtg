@@ -20,6 +20,8 @@ EISCAT
 }
 
 cd $wd
+rtgdef=""
+selfig=""
 if [ "$1" ]
 then
  echo "Doing from command line"
@@ -28,6 +30,12 @@ then
  echo $ndumps
  echo $maxfsize
  echo $REMOTE_ADDR
+ echo $rtgdef
+ echo $selfig
+ echo $selsub
+ echo $selfun
+ echo $selfunn
+ verb=" -v"
 else
  if ! wget $wwwsite/$wwwreq -O $wwwreq 2>/dev/null
  then
@@ -51,8 +59,8 @@ else
  fi
  echo $QUERY_STRING >> $locreq
  eval $QUERY_STRING
+ verb=""
 fi
-
 
 atpos=`expr index "$resultpath" "@"`
 if [ -z $resultpath ] || [ $atpos -eq 0 ]
@@ -67,6 +75,32 @@ then
 fi
 mkdir $rundir
 cd $rundir
+if [ -n "$rtgdef" ]
+then
+ echo $rtgdef | tr '#' '\n' > rtgd.m
+ def="-D rtgd.m"
+else
+ def=""
+fi
+if [ -n "$selfig" ] && [ -n "$selsub" ] &&  [ -n "$selfun" ] && [ -n "$selfunn" ]
+then
+ echo $selfun | base64 -d > $selfunn
+ if [ "`file -b $selfunn`" != "ASCII text" ]
+ then
+  7z x $selfunn >/dev/null
+  rm $selfunn
+  t=`ls`
+  if [ `ls -1 | wc -l` = 1 ] && [ "${t##*.}" = "tar" ]
+  then
+   tar xf $t
+   rm $t
+  fi
+  selfunn=${selfunn%%.*}
+ fi
+ selax="-x $selfig,$selsub,$selfunn"
+else
+ selax=""
+fi
 for tar in $dirs
 do
  wget -O - "$tar" 2>/dev/null | tar xf -
@@ -84,10 +118,14 @@ then
 fi
  
 inp=`ls`
-/opt/remtg/webtg -t -n $ndumps -d $datapath
+/opt/remtg/webtg $verb -t -n $ndumps -d $datapath $def $selax
 rm -r $inp
+rmdir data #Matlab 2017b bug?
 resdir=`ls`
-cd $resdir
+if [ -d $resdir ]
+then
+ cd $resdir
+fi
 
 flist=""
 for fil in `ls`
