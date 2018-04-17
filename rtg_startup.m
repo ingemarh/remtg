@@ -3,7 +3,12 @@ format short g
 myb(128)
 global local
 try
- matvers=ver; matver=matvers.Version;
+ try
+  matvers=ver('MATLAB');
+ catch
+  matvers=ver;
+ end
+ matver=matvers.Version;
  d=strfind(matver,'.'); matver(d(2:end))=[];
  [matver,d]=strtok(matver,'.');
  local.ver=str2num(d(2:end))/10;
