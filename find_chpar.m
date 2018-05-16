@@ -42,6 +42,7 @@ while ~isempty(chpar) && isempty(def_file)
   def_file=def_file(1:end-2);
  elseif exist(['rtg_' chpar])
   def_file=which(['rtg_' chpar]);
+  def_file=def_file(1:end-2);
  else
   chpar(end)=[];
  end

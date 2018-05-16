@@ -27,7 +27,7 @@ if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
   set(get(ax(i),'title'),'verticalalignment','baseline')
  end
  if isfield(selax,'sp') && fig==selax.fig
-  selax.fig(2)=ax(selax.sp);
+  selax.axes=ax(selax.sp);
   selax=rmfield(selax,'sp');
  end
  if local.ver>3

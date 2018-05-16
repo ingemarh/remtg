@@ -6,12 +6,12 @@ else
 end
 a=waitforbuttonpress;
 if t==0
- global selax
+ global selax local
  if ~isempty(selax)
-  set(selax.fig(2),'FontWeight','normal')
+  set(selax.axes,'FontWeight','normal')
  end
  if a, clear selax, return, end
- selax.fig=[gcf gca];
+ selax.fig=gcf; selax.axes=gca;
  set(gca,'FontWeight','bold')
  [o,p]=uigetfile('*.m','Special threatment function');
  selax.fun=fullfile(p,o);

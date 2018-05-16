@@ -1,7 +1,7 @@
 function updateplot(fig,a,x1,y1,x2,y2)
 global bval tdev selax local
 narg=nargin;
-if ~isempty(selax) && all(selax.fig-[fig a]==0)
+if ~isempty(selax) && selax.fig==fig && selax.axes==a
  %stack=dbstack
  %if ~strcmp(stack(2).name,'spitspec')
   selax.x1=x1; selax.y1=y1;

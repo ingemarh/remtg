@@ -50,7 +50,7 @@ if [[ $prog =~ .*octave ]];then
  OCTAVE_PATH=$MATLABPATH
  TMPDIR=$TMP
  export OCTAVE_PATH TMPDIR
- comm="$prog --no-gui --persist --path `pwd` --eval rtg"
+ comm="$prog --no-gui --persist --eval rtg"
 else 
  comm="$prog $jvm -nosplash -r rtg"
 fi
