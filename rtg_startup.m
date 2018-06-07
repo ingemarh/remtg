@@ -3,11 +3,8 @@ format short g
 myb(128)
 global local
 try
- try
-  matvers=ver('MATLAB');
- catch
-  matvers=ver;
- end
+ matvers=ver('MATLAB');
+ if isempty(matvers), matvers=ver; end
  matver=matvers.Version;
  d=strfind(matver,'.'); matver(d(2:end))=[];
  [matver,d]=strtok(matver,'.');
