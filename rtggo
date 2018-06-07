@@ -13,8 +13,8 @@ fsiz() {
 }
 mail_it() {
 #	mailx -s "$resdir movies" -r "RTG <ingemar@eiscat.se>" $* <<!
-	mutt -e "set crypt_use_gpgme=no" -s "$resdir movies" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
-Enclosed you find the requested plots for $resdir.
+	mutt -e "set crypt_use_gpgme=no" -s "RTG $rundir output files" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
+Enclosed you find result files for your RTG@$rundir process.
 EISCAT
 !
 }
@@ -75,13 +75,6 @@ then
 fi
 mkdir $rundir
 cd $rundir
-if [ -n "$rtgdef" ]
-then
- echo $rtgdef | tr '#' '\n' > rtgd.m
- def="-D rtgd.m"
-else
- def=""
-fi
 if [ -n "$selfig" ] && [ -n "$selsub" ] &&  [ -n "$selfun" ] && [ -n "$selfunn" ]
 then
  echo $selfun | base64 -d > $selfunn
@@ -100,6 +93,13 @@ then
  selax="-x $selfig,$selsub,$selfunn"
 else
  selax=""
+fi
+if [ -n "$rtgdef" ]
+then
+ echo $rtgdef | tr '#' '\n' > rtgd.m
+ def="-D rtgd.m"
+else
+ def=""
 fi
 for tar in $dirs
 do

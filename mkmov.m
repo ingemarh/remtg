@@ -1,8 +1,8 @@
 function odir=mkmov(pldirs,ndumps)
-prog='ffmpeg';
-if unix(['which ' prog]) || unix([prog ' -v error -buildconf | grep enable-libvpx']), prog='mencoder'; end
-if unix(['which ' prog]), return, end
 if ~isempty(pldirs)
+ prog='ffmpeg';
+ if unix(['which ' prog]) || unix([prog ' -v error -buildconf | grep enable-libvpx']), prog='mencoder'; end
+ if unix(['which ' prog]), return, end
  np=length(pldirs);
  rate=3; if ndumps<30, rate=10; end
  [dpath,name,ext]=fileparts(pldirs{1});
