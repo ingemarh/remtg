@@ -1,5 +1,5 @@
 function mkweb(sms)
-global site lastweb bval figs local sitecode pldirs
+global site lastweb bval figs local sitecode pldirs upload
 if bval(4)>0 && ~isempty(lastweb) && now-lastweb<30/86400, return, end
 if local.x
  jpg='png'; flag='-r72';
@@ -8,11 +8,16 @@ else
 end
 sitex=lower(sitecode.mini(site));
 dir=tempdir;
-files=fullfile(dir,[sitex '.html']);
-fid=fopen(files,'w');
-fprintf(fid,'<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\n</head>\n',char(sitecode.web(site)));
+
+if(upload)
+    files=fullfile(dir,[sitex '.html']);
+    fid=fopen(files,'w');
+    fprintf(fid,['<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\' ...
+                 'n</head>\n'],char(sitecode.web(site)));
+    reloadfix=fix(10000*rand(1));
+end
+
 %figs=sort(get(0,'children'));
-reloadfix=fix(10000*rand(1));
 for i=sort(figs)
  ffig=[sitex num2str(i)];
  fname=fullfile(dir,ffig);
@@ -25,30 +30,43 @@ for i=sort(figs)
      set(i,'PaperPosition',d,'PaperOrientation','portrait')
     end
     if strcmp(local.name,'Octave')
+        keyboard
      print(i,'-dpng','-r72',fname)
     else
      print(i,['-d' jpg],'-noui',flag,fname)
     end
     files=[files ' ' fname '.png'];
-    fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'],reloadfix,get(i,'name'));
+    if(upload)
+        fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'], ...
+                reloadfix,get(i,'name'));
+    end
    else
     set(0,'currentfigure',i)
     fname=[fname '.png'];
     print(fname,'-dpng')
     files=[files ' ' fname];
-    fprintf(fid,'<IMG SRC="%s?%d"><P>\n',[ffig '.png'],reloadfix);
+    if(upload)
+        fprintf(fid,'<IMG SRC="%s?%d"><P>\n',[ffig '.png'], ...
+                reloadfix);
+    end
    end
   catch
    disp(lasterr)
   end
  end
 end
-fclose(fid);
+
+if(upload)
+    fclose(fid);
+end
+
 fname=fullfile(dir,[sitex 'sms.txt']);
 fid=fopen(fname,'w');
 fprintf(fid,'%s',sms);
 fclose(fid);
 files=[files ' ' fname];
+
+
 if bval(5)==3
  if bval(4)==0
   global d_ExpInfo d_parbl
@@ -68,23 +86,28 @@ elseif local.x
 else
  close all
 end
+
 if site==6
  [i,d]=unix('ps | grep cp | grep -v grep');
  if i
   unix(['cp ' files ' /net/aurora/www/ht/rtg/']);
  end
 end
+
 %if site==4
 %unix(['scp -q ' files ' palver:/var/www/rtg/']); 
 %end
 
-[i,d]=unix('ps | grep curl | grep -v grep');
-if i
- file='';
- while ~isempty(files)
-  [i,files]=strtok(files);
-  file=[file ' -F file=@' i];
- end
- [status,cmdout]=unix(['curl -s ' file ' http://www.eiscat.se/raw/rtg/upload.cgi']);
+% RTG upload to www.eiscat.se
+if(upload)
+    [i,d]=unix('ps | grep curl | grep -v grep');
+    if i
+        file='';
+        while ~isempty(files)
+            [i,files]=strtok(files);
+            file=[file ' -F file=@' i];
+        end
+        [status,cmdout]=unix(['curl -s ' file ' http://www.eiscat.se/raw/rtg/upload.cgi']);
+    end
+    lastweb=now;
 end
-lastweb=now;

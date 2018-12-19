@@ -18,6 +18,7 @@ while i<bval(2)
     if jj>0
      pause(1)
     else
+        %Fixme: Open URL only available in matlab, not octave?
      web(sprintf('http://www.eiscat.se/rtg/rtg.cgi?%s',sitecode.mini(bval(4))))
      disp('No data!'), err=1; i=i-1; odate=[]; return
     end
@@ -125,11 +126,11 @@ while i<bval(2)
   d_raw=[];
   if strfind(filename,'.mat.bz2')
    if strcmp(local.name,'Octave')
-    tfile=[tempname '.mat'];
+    tfile=[tempname(tempdir) '.mat'];
     copyfile(filename,[tfile '.bz2']);
     bunzip2([tfile '.bz2']);
    else
-    tfile=[tempname '.mat'];
+    tfile=[tempname(tempdir) '.mat'];
     s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
    end
    load(tfile), delete(tfile)
