@@ -19,4 +19,4 @@ VOLUME	["/srv/data","/srv/info", "/var/tmp"]
 # Define program to run
 WORKDIR  "/var/tmp"
 ENTRYPOINT ["/opt/remtg/movieg"]
-CMD ["/srv/data", "/srv/info/rtg_def.m"]
+CMD ["/srv/data","/srv/info/rtg_def.m"]
