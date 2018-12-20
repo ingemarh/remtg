@@ -65,14 +65,12 @@ else
  set(t1,'visible','off')
 end
 if local.ver<=3, set(t1,'string',[head '  ' get(t1,'string')]), end
-
 % default chpar values
 psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN; tail=.7;
 maxsize_acf=[256 256];
 if site==5 || site==6
  tail=0;
 end
-
 chpar=find_chpar(filename);
 try
 if ~isempty(def_file)
@@ -250,7 +248,6 @@ if ~isempty(tdev)
  tdim.data=[tdev tdim.data(:,1:(ntim-1))];
  tdim.time=[datenum(d_parbl(1:6)) tdim.time(1:(ntim-1))];
  if bval(10)
-     %crashes after this fig...   
   timedev(30,ntim,thead,head)
  end
 end
