@@ -64,10 +64,14 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  WTG="rtdir='$rtdir',webtg=$ndumps,def_file='$def',selax.wtg='$slx'"
  export MATLABPATH SHELL TMP WTG
  unset DISPLAY
+
+ echo $matlab
+ 
  if [ -z "$OCTAVE_PATH" ];then
-  $matlab -nodisplay -r wtg $null </dev/null
- elif [ $matlab = "octave" ]; then
-  $matlab -q -p $OCTAVE_PATH --eval wtg
+     echo Yes
+     $matlab -nodisplay -r wtg $null </dev/null
+ elif [ $(echo $matlab | grep "octave") ]; then
+   $matlab -q -p $OCTAVE_PATH --eval wtg
  else
   $matlab -Wq --eval wtg
  fi

@@ -1,13 +1,16 @@
 function mkweb(sms)
 global site lastweb bval figs local sitecode pldirs upload
+
 if bval(4)>0 && ~isempty(lastweb) && now-lastweb<30/86400, return, end
 if local.x
  jpg='png'; flag='-r72';
 else
  jpg='png256'; flag='-painters';
 end
+
 sitex=lower(sitecode.mini(site));
 dir=tempdir;
+files='';
 
 if(upload)
     files=fullfile(dir,[sitex '.html']);
@@ -30,8 +33,11 @@ for i=sort(figs)
      set(i,'PaperPosition',d,'PaperOrientation','portrait')
     end
     if strcmp(local.name,'Octave')
-        keyboard
-     print(i,'-dpng','-r72',fname)
+        try
+            print(i,'-dpng','-r72',fname)
+        catch
+            disp('Something went wrong')
+        end
     else
      print(i,['-d' jpg],'-noui',flag,fname)
     end

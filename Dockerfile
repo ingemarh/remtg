@@ -11,8 +11,7 @@ RUN apt-get -y install epstool fig2dev ffmpeg
 
 # Copy software
 COPY *.m /opt/remtg/
-COPY webtg /opt/remtg/
-
+COPY movieg /opt/remtg/
 
 # Create mount points
 VOLUME	["/srv/data","/srv/info", "/var/tmp"]

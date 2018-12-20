@@ -216,19 +216,26 @@ for ch=1:noch
    bacfact=1;
   end
   if strcmp(styp,'rem')
-   rempulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf*bacfact,sigdt(ch,s),kperc);
+   rempulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s), ...
+            siglen(ch,s),bacf*bacfact,sigdt(ch,s),kperc);
   elseif strcmp(styp,'alt')
-   altpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
+   altpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s), ...
+            siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   elseif strcmp(styp,'long')
-   longpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),bacf*bacfact,sigdt(ch,s),s0,kperc);
+   longpulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s), ...
+             siglen(ch,s),bacf*bacfact,sigdt(ch,s),s0,kperc);
   elseif strcmp(styp,'puls2')
-   pulspulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc,transp);
+   pulspulse(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s), ...
+             siglen(ch,s),npulses(ch,s),sigdt(ch,s),slagincr(ch,s),swlag(ch,s),lag00,w00,s0,kperc,transp);
   elseif strcmp(styp,'fft')
-   fftpulse(ch+20,axs,sig(ch,s),nffts(ch,s),sigdt(ch,s),kperc,siglen(ch,s),sgates(ch,s),s0);
+   fftpulse(ch+20,axs,sig(ch,s),nffts(ch,s),sigdt(ch,s),kperc, ...
+            siglen(ch,s),sgates(ch,s),s0);
   elseif strcmp(styp,'fdalt')
-   fd_alt(ch+20,axs,sig(ch,s),sgates(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc,sig0(ch,s))
+   fd_alt(ch+20,axs,sig(ch,s),sgates(ch,s),maxlag(ch,s),siglen(ch, ...
+                                                     s),nbits(ch,s),sigdt(ch,s),s0,kperc,sig0(ch,s))
   elseif strcmp(styp,'myalt')
-   myalt(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch,s),nbits(ch,s),sigdt(ch,s),s0,kperc)
+   myalt(ch+20,axs,sig(ch,s),sigsamp(ch,s),maxlag(ch,s),siglen(ch, ...
+                                                     s),nbits(ch,s),sigdt(ch,s),s0,kperc)
   else
    set(axs,'visible','off')
   end
@@ -243,6 +250,7 @@ if ~isempty(tdev)
  tdim.data=[tdev tdim.data(:,1:(ntim-1))];
  tdim.time=[datenum(d_parbl(1:6)) tdim.time(1:(ntim-1))];
  if bval(10)
+     %crashes after this fig...   
   timedev(30,ntim,thead,head)
  end
 end
