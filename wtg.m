@@ -1,6 +1,6 @@
 rtg_startup
 global rtdir webtg def_file pldirs selax upload
-upload=0; %default
+upload=1; %default
 dum=getenv('WTG'); pldirs={};
 eval(dum)
 set(0, 'defaultfigurevisible', 'off')
