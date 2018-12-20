@@ -33,11 +33,7 @@ for i=sort(figs)
      set(i,'PaperPosition',d,'PaperOrientation','portrait')
     end
     if strcmp(local.name,'Octave')
-        try
-            print(i,'-dpng','-r72',fname)
-        catch
-            disp('Something went wrong')
-        end
+        print(i,'-dpng','-r72',fname)
     else
      print(i,['-d' jpg],'-noui',flag,fname)
     end
