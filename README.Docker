@@ -1,0 +1,26 @@
+Running rtg on Docker
+
+A Dockerfile is provided to build a distributable Docker image of the software.
+
+1. Building the Docker image
+
+It should be sufficient to build a Docker image using the included Dockerfile.
+ $docker build .
+
+A version tag can be attached, for example
+ $docker build --tag eiscat/remtg:latest .
+
+2. Running the Docker image
+Three directories must be mounted into the image as Docker volumes.
+
+Purpose									Mount point in container
+------------------------------------------------------------------------------------------------
+-data directory, containing Eiscat Level 2 data (mat.bz2 files)         /srv/data
+-info directory, containing rtg_def.m for the experiment in question	/srv/info
+-output directory							/var/tmp	
+
+Minimal required arguments are thus:
+ $docker run -v <DATA_DIR>:/srv/data -v <INFO_DIR>:/srv/info -v <RESULT_DIR>:/var/tmp <TAG>
+
+Usage example: 
+ $docker run -it --name remtg -v /archive/2018/manda_zenith_4.00v_SW@vhf/20180814_21:/srv/data -v /archive/2018/manda_zenith_4.00v_SW@vhf/manda_zenith_4.00v_SW@vhf_information/20180814/194026:/srv/info -v /home/eiscat/tmp/remtg:/var/tmp eiscat/remtg

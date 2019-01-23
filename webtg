@@ -26,7 +26,6 @@ while [ -h $filename ]; do
         fi
 done
 MATLABPATH=`dirname $filename`
-#echo $MATLABPATH
 TMP=$HOME/tmp
 ndumps="60"
 usage="Usage: webtg [-o] [-O] [-v] [-t] [-d dir] [-s KSTVL2PZ] [-D def] [-x fig,subplot,routine] [-n dumps/secs] [start] | stop"
@@ -65,9 +64,9 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  export MATLABPATH SHELL TMP WTG
  unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
-  $matlab -nodisplay -r wtg $null </dev/null
- elif [ $matlab = "octave" ]; then
-  $matlab -q -p $OCTAVE_PATH --eval wtg
+     $matlab -nodisplay -r wtg $null </dev/null
+ elif [ $(echo $matlab | grep "octave") ]; then
+   $matlab -q -p $OCTAVE_PATH --eval wtg
  else
   $matlab -Wq --eval wtg
  fi
