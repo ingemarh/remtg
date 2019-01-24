@@ -29,8 +29,8 @@ export TMP
 # Path for octave fcn 'tempdir'
 export TMPDIR=$TMP
 # webtg inputs
-export WTG="rtdir='$RTDIR';,webtg=$NDUMPS;,def_file='$DEF';,selax.wtg='';,upload=0;"
+export WTG="rtdir='$RTDIR';webtg=$NDUMPS;def_file='$DEF';selax.wtg='';"
 # disable FLTK graphics (important)
-unset DISPLAY
+unset DISPLAY EISCATSITE
 # Run wtg
 octave-cli -q -p $OCTAVE_PATH --eval wtg
