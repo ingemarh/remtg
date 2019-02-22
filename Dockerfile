@@ -3,7 +3,7 @@ FROM debian:stable
 LABEL MAINTAINER Carl-Fredrik Enell (carl-fredrik.enell@eiscat.se)
 
 # Install octave and dependencies
-RUN apt-get update
+RUN apt-get -y update
 RUN apt-get -y upgrade
 RUN apt-get -y install octave
 RUN apt-get -y install bzip2 procps curl
