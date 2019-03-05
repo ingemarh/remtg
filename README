@@ -1,6 +1,6 @@
 The EISCAT Real Time Graph, is a Matlab/Octave(qt) based plotting package for the raw data on-site as well as from disk. The plotting is set up from an experiment specific definition file. For all Common and most Special Programmes there exist such a file. The RTG program searches in two locations for this file: In its directory (or private/) for a name rtg_expname.m and in the experiment directory for the name expname/rtg_def.m. If this file is not available, a default plot of the whole dump will appear, which can be separated into several blocks by mouse clicks. As proper documentation is lacking, the best way to write your own definition file is to copy one from a similar experiment and make careful modifications.
 
-For offline purposes RTG is capbable of reading the new hdf5 EISCAT format as well as making overview movies of the data. The movie generator is the ffmpeg program and this has to be available on the system. Also for Octave to read hdf5 files, the hdfoct package has to be installed: https://github.com/stegro/hdf5oct.git
+For offline purposes RTG is capable of reading the new hdf5 EISCAT format as well as making overview movies of the data. The movie generator is the ffmpeg program and this has to be available on the system. Also for Octave to read hdf5 files, the hdfoct package has to be installed: https://github.com/stegro/hdf5oct.git
 
 Other packages that might be useful is ffmpeg or mencoder, to make compile the output plots into time-lapse movies.
 
