@@ -4,33 +4,21 @@
 # Paths in Docker container
 OCTAVE_PATH=/opt/remtg
 TMP=/var/tmp
-#
+RTDIR=/srv/data
+DEF=${RTDIR}/rtg_def.m
+# Default value
 NDUMPS=60
 
-### Parse arguments
-USAGE="Usage: $0 <datadir> <def_file>."
-# Data directory
-RTDIR=$1
-if [ "x$RTDIR" == "x" ]; then
-   echo $USAGE
-   exit 0
-fi	
-
-# Full path to rtg_def.m
-DEF=$2
-if [ "x$DEF" == "x" ]; then
-   echo $USAGE
-   exit 0
-fi	
-
 ### Main
+
 # Path for octave fcn 'tempname'
 export TMP
 # Path for octave fcn 'tempdir'
 export TMPDIR=$TMP
-# webtg inputs
-export WTG="rtdir='$RTDIR';,webtg=$NDUMPS;,def_file='$DEF';,selax.wtg='';,upload=0;"
+
 # disable FLTK graphics (important)
 unset DISPLAY
+
 # Run wtg
+export WTG="rtdir='$RTDIR';,webtg=$NDUMPS;,def_file='$DEF';,selax.wtg='';,upload=0;"
 octave-cli -q -p $OCTAVE_PATH --eval wtg
