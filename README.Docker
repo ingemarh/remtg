@@ -22,4 +22,4 @@ Minimal required arguments are thus:
 
 Usage example (modify source input and output paths on host):
  
- $docker run -it --name remtg --mount type=bind,source=./test-input,destination=/srv/data   --mount type=bind,source=tmp/remtg,dest=/var/tmp eiscat/remtg_volume
+ $docker run --rm --name remtg --mount type=bind,source=$HOME/test-input,destination=/srv/data   --mount type=bind,source=$HOME/tmp/remtg,dest=/var/tmp eiscat/remtg_volume
