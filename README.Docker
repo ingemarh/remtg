@@ -9,17 +9,19 @@ It should be sufficient to build a Docker image using the included Dockerfile.
  $docker build --tag eiscat/remtg_volume:latest .
 
 2. Running the Docker image
-Three directories must be mounted into the image as Docker volumes.
+Two directories must be mounted into the container.
 
 Purpose									Mount point in container
 ------------------------------------------------------------------------------------------------
 -data directory, containing Eiscat Level 2 data (mat.bz2 files)         /srv/data
 and rtg_def.m for the experiment in question
+
 -output directory							/var/tmp	
+------------------------------------------------------------------------------------------------
 
 Minimal required arguments are thus:
  $docker run -v <DATA_DIR>:/srv/data -v <RESULT_DIR>:/var/tmp <TAG>
 
 Usage example (modify source input and output paths on host):
  
- $docker run --rm --name remtg --mount type=bind,source=$HOME/test-input,destination=/srv/data   --mount type=bind,source=$HOME/tmp/remtg,dest=/var/tmp eiscat/remtg_volume
+ $docker run --rm --name remtg --mount type=bind,source=$HOME/test-input,destination=/srv/data --mount type=bind,source=$HOME/tmp/remtg,dest=/var/tmp eiscat/remtg_volume
