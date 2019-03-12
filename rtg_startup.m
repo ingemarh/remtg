@@ -1,6 +1,7 @@
 format compact
 format short g
 myb(128)
+addpath(fileparts(which('rtg_startup')))
 global local
 try
  matvers=ver('MATLAB');

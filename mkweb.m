@@ -8,10 +8,11 @@ else
 end
 sitex=lower(sitecode.mini(site));
 dir=tempdir;
+files='';
 files=fullfile(dir,[sitex '.html']);
 fid=fopen(files,'w');
-fprintf(fid,'<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\n</head>\n',char(sitecode.web(site)));
-%figs=sort(get(0,'children'));
+fprintf(fid,['<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\' ...
+             'n</head>\n'],char(sitecode.web(site)));
 reloadfix=fix(10000*rand(1));
 for i=sort(figs)
  ffig=[sitex num2str(i)];
@@ -30,13 +31,15 @@ for i=sort(figs)
      print(i,['-d' jpg],'-noui',flag,fname)
     end
     files=[files ' ' fname '.png'];
-    fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'],reloadfix,get(i,'name'));
+    fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'], ...
+            reloadfix,get(i,'name'));
    else
     set(0,'currentfigure',i)
     fname=[fname '.png'];
     print(fname,'-dpng')
     files=[files ' ' fname];
-    fprintf(fid,'<IMG SRC="%s?%d"><P>\n',[ffig '.png'],reloadfix);
+    fprintf(fid,'<IMG SRC="%s?%d"><P>\n',[ffig '.png'], ...
+            reloadfix);
    end
   catch
    disp(lasterr)
@@ -60,7 +63,6 @@ if bval(5)==3
  end
  return
 end
-
 if strcmp(local.name,'Octave')
 elseif local.x
  heads=findobj(findobj(figs,'type','axes','tag','suptitle'),'type','text');
@@ -68,6 +70,7 @@ elseif local.x
 else
  close all
 end
+
 if site==6
  [i,d]=unix('ps | grep cp | grep -v grep');
  if i
@@ -77,7 +80,7 @@ end
 %if site==4
 %unix(['scp -q ' files ' palver:/var/www/rtg/']); 
 %end
-
+% RTG upload to www.eiscat.se
 [i,d]=unix('ps | grep curl | grep -v grep');
 if i
  file='';

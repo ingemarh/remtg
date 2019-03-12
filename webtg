@@ -26,7 +26,6 @@ while [ -h $filename ]; do
         fi
 done
 MATLABPATH=`dirname $filename`
-#echo $MATLABPATH
 TMP=$HOME/tmp
 ndumps="60"
 usage="Usage: webtg [-o] [-O] [-v] [-t] [-d dir] [-s KSTVL2PZ] [-D def] [-x fig,subplot,routine] [-n dumps/secs] [start] | stop"
