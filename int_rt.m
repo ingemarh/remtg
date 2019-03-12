@@ -145,8 +145,12 @@ while i<bval(2)
  d_parbl=d_parbl(:).';
  acc_parbl=acc_parbl+d_parbl([7 8]);
  if bval(2)>30
-  setbval(min([30 round(bval(2)/d_parbl(7))]),2)
-  setbval(log(bval(2)),3)
+  if isempty(webtg)
+   setbval(min([30 round(bval(2)/d_parbl(7))]),2)
+   setbval(log(bval(2)),3)
+  else
+   setbval(round(webtg(1)/d_parbl(7)),2)
+  end
  end
  d_parbl(7)=acc_parbl(1);
  d_parbl(8)=acc_parbl(2)/i;
