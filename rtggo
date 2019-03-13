@@ -9,7 +9,6 @@ export EISCATSITE=web
 
 fsiz() {
 	filesize=`ls -l $1 | awk '{print $5}'`
-	#return `ls -l $1 | awk '{print $5}'`
 }
 mail_it() {
 #	mailx -s "$resdir movies" -r "RTG <ingemar@eiscat.se>" $* <<!
@@ -17,6 +16,22 @@ mail_it() {
 Enclosed you find result files for your RTG@$rundir process.
 EISCAT
 !
+}
+
+unpack() {
+ echo $1 | base64 -d > $2
+ if [ "`file -b $2`" != "ASCII text" ]
+ then
+  7z x $2 >/dev/null
+  rm $2
+  t=`ls`
+  if [ `ls -1 | wc -l` = 1 ] && [ "${t##*.}" = "tar" ]
+  then
+   tar xf $t
+   rm $t
+  fi
+  $2=${$2%%.*}
+ fi
 }
 
 cd $wd
@@ -31,6 +46,7 @@ then
  echo $maxfsize
  echo $REMOTE_ADDR
  echo $rtgdef
+ echo $rtgdefn
  echo $selfig
  echo $selsub
  echo $selfun
@@ -77,24 +93,16 @@ mkdir $rundir
 cd $rundir
 if [ -n "$selfig" ] && [ -n "$selsub" ] &&  [ -n "$selfun" ] && [ -n "$selfunn" ]
 then
- echo $selfun | base64 -d > $selfunn
- if [ "`file -b $selfunn`" != "ASCII text" ]
- then
-  7z x $selfunn >/dev/null
-  rm $selfunn
-  t=`ls`
-  if [ `ls -1 | wc -l` = 1 ] && [ "${t##*.}" = "tar" ]
-  then
-   tar xf $t
-   rm $t
-  fi
-  selfunn=${selfunn%%.*}
- fi
+ unpack $selfun $selfunn
  selax="-x $selfig,$selsub,$selfunn"
 else
  selax=""
 fi
-if [ -n "$rtgdef" ]
+if [ -n "$rtgdef" ] && [ -n $rtgdefn ]
+then
+ unpack $rtgdef $rtgdefn
+ def="-D $rtgdefn"
+elif [ -n "$rtgdef" ]
 then
  echo $rtgdef | tr '#' '\n' > rtgd.m
  def="-D rtgd.m"

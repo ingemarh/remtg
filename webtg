@@ -64,9 +64,9 @@ elif [ "$*" = "start" ] || [ "$*" = "" ];then
  export MATLABPATH SHELL TMP WTG
  unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
-     $matlab -nodisplay -r wtg $null </dev/null
- elif [ $(echo $matlab | grep "octave") ]; then
-   $matlab -q -p $OCTAVE_PATH --eval wtg
+  $matlab -nodisplay -r wtg $null </dev/null
+ elif [ $matlab = "octave" ]; then
+  $matlab -q -p $OCTAVE_PATH --eval wtg
  else
   $matlab -Wq --eval wtg
  fi
