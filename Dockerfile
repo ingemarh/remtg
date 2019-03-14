@@ -9,13 +9,11 @@ RUN apt-get -y upgrade
 RUN apt-get -y install octave
 RUN apt-get -y install bzip2 procps curl
 RUN apt-get -y install epstool fig2dev ffmpeg
+# TODO for completeness hdf5oct should be installed - no deb available
 
 # Copy software to container
 COPY *.m /opt/remtg/
 COPY movieg /opt/remtg/
-
-# Create mount point in container
-RUN mkdir /srv/data
 
 # Define program to run
 WORKDIR  "/var/tmp"

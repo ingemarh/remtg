@@ -3,9 +3,9 @@
 ### Settings
 # Paths in Docker container
 OCTAVE_PATH=/opt/remtg
-TMP=/var/tmp
-RTDIR=/srv/data
+RTDIR=/var/tmp
 DEF=${RTDIR}/rtg_def.m
+TMP=${RTDIR}/output
 # Default value
 NDUMPS=60
 
@@ -20,5 +20,7 @@ export TMPDIR=$TMP
 unset DISPLAY
 
 # Run wtg
+mkdir ${TMP}
 export WTG="rtdir='$RTDIR';,webtg=$NDUMPS;,def_file='$DEF';,selax.wtg='';,upload=0;"
 octave-cli -q -p $OCTAVE_PATH --eval wtg
+

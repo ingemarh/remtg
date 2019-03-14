@@ -48,7 +48,7 @@ set(groot,'defaultAxesColorOrder',[1 0 0;0 1 0;0 0 1;0 0 0;1 0 1;0 1 1;1 1 0;.5 
 set(groot,'defaultAxesColor','none')
 if strcmp(local.name,'Octave')
  [dum,a]=strtok(fliplr(which('rtg')),filesep);
- addpath(fullfile(fliplr(a),'private'))
+ % addpath(fullfile(fliplr(a),'private'))
  warning('off','Octave:missing-glyph')
 end
 if local.x
