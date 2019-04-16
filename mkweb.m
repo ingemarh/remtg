@@ -7,7 +7,7 @@ else
  jpg='png256'; flag='-painters';
 end
 sitex=lower(sitecode.mini(site));
-dir=tempdir;
+dir=local.tempdir;
 files='';
 files=fullfile(dir,[sitex '.html']);
 fid=fopen(files,'w');

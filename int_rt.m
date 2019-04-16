@@ -126,11 +126,11 @@ while i<bval(2)
   d_raw=[];
   if strfind(filename,'.mat.bz2')
    if strcmp(local.name,'Octave')
-    tfile=[tempname '.mat'];
+    tfile=[tempname(local.tempdir) '.mat'];
     copyfile(filename,[tfile '.bz2']);
     bunzip2([tfile '.bz2']);
    else
-    tfile=[tempname '.mat'];
+    tfile=[tempname(local.tempdir) '.mat'];
     s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
    end
    load(tfile), delete(tfile)

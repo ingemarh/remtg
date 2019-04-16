@@ -17,6 +17,9 @@ catch
  local.ver=3; local.name='Octave'; local.x=0;
  set(0,'defaultTextFontName','dejavu')
 end
+if ~isfield(local,'tempdir')
+ local.tempdir=tempdir;
+end
 if strcmp(local.name,'Octave') || local.ver<8.4
  groot=0;
 else
