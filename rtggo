@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 wd=/data/webrtg
 wwwreq="rtgreg.txt"
@@ -12,14 +12,16 @@ fsiz() {
 }
 mail_it() {
 #	mailx -s "$resdir movies" -r "RTG <ingemar@eiscat.se>" $* <<!
-	mutt -e "set crypt_use_gpgme=no" -s "RTG $rundir output files" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
+	#mutt -e "set crypt_use_gpgme=no" -s "RTG $rundir output files" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
+	mutt -F /home/eiscat/muttrc.webgup -e "set crypt_use_gpgme=no" -s "RTG $rundir output files" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
 Enclosed you find result files for your RTG@$rundir process.
 EISCAT
 !
 }
 
 unpack() {
- echo $1 | base64 -d > $2
+ funn=$2
+ echo $1 | base64 -d > $funn
  if [ "`file -b $2`" != "ASCII text" ]
  then
   7z x $2 >/dev/null
@@ -30,7 +32,7 @@ unpack() {
    tar xf $t
    rm $t
   fi
-  $2=${$2%%.*}
+  funn="${2%%.*}"
  fi
 }
 
@@ -94,14 +96,14 @@ cd $rundir
 if [ -n "$selfig" ] && [ -n "$selsub" ] &&  [ -n "$selfun" ] && [ -n "$selfunn" ]
 then
  unpack $selfun $selfunn
- selax="-x $selfig,$selsub,$selfunn"
+ selax="-x $selfig,$selsub,$funn"
 else
  selax=""
 fi
 if [ -n "$rtgdef" ] && [ -n $rtgdefn ]
 then
  unpack $rtgdef $rtgdefn
- def="-D $rtgdefn"
+ def="-D $funn"
 elif [ -n "$rtgdef" ]
 then
  echo $rtgdef | tr '#' '\n' > rtgd.m
