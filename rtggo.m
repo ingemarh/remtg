@@ -1,6 +1,7 @@
 %skript to run when starting without shell
 addpath(pwd)
 global local
-%local.tempdir=fullfile(getenv('HOME'),'tmp');
-%local.tempdir=fullfile(getenv('HOME'),'tmp');
+if ~ispc
+ local.tempdir=fullfile(getenv('HOME'),'tmp');
+end
 rtg_startup

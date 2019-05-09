@@ -22,9 +22,6 @@ MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
 umask 002
 TMP=$HOME/tmp
-if [ ! -d $TMP ];then
- mkdir $TMP
-fi
 SHELL=/bin/sh
 for utf in `env | grep UTF`
 do
