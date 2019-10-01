@@ -19,3 +19,6 @@ f=[sp(k+1:2*k,:);sp(1:k,:)];
 if nargin>1
  df=1/mean(diff(lag)); w=(-k:k-1)*df/(2*k); f=f/df;
 end
+
+function w=hamming(n)
+w=.54-.46*cos(2*pi*(0:n-1)'/(n-1));
