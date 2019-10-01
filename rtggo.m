@@ -6,6 +6,7 @@ if ~ispc
 end
 rtg_startup
 global rtdir selax webtg
-selax=[]; webtg=[1 3 0];
+selax=[]; webtg=[1 4 0];
+%change above the parameters if needed
 %may continue as follows in jupyter
 %rtdir='taro_CAPERmsp_1.00_SP@32m/20141202_06'; remtg;

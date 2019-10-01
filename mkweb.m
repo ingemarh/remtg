@@ -1,6 +1,6 @@
 function mkweb(sms)
 global site lastweb bval figs local sitecode pldirs
-if bval(4)>0 && ~isempty(lastweb) && now-lastweb<30/86400, return, end
+if bval(4)>0 && ~isempty(lastweb) && now-lastweb<30/86400 || bval(5)>3, return, end
 if local.x
  jpg='png'; flag='-r72';
 else
