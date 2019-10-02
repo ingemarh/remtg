@@ -84,6 +84,6 @@ if i
   [i,files]=strtok(files);
   file=[file ' -F file=@' i];
  end
- [status,cmdout]=unix(['curl -s ' file ' http://portal.eiscat.se/raw/rtg/upload.cgi']);
+ [status,cmdout]=unix(['curl -s ' file ' http://portal.eiscat.se/raw/rtg/upload.cgi &']);
 end
 lastweb=now;
