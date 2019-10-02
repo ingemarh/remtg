@@ -1,0 +1,4 @@
+The plotting is set up from an experiment specific definition file.
+For all Common and most Special Programmes there exist such a file.
+The RTG program searches in two locations for this file: In its directory (or private/)
+for a name rtg_expname.m and in the experiment directory for the name expname/rtg_def.m.

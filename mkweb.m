@@ -51,7 +51,7 @@ files=[files ' ' fname];
 if bval(5)==3
  if bval(4)==0
   global d_ExpInfo d_parbl
-  [dum,d]=strtok(d_ExpInfo); d=[dir strtok(d)];
+  [dum,d]=strtok(d_ExpInfo); d=fullfile(dir,strtok(d));
   if ~exist(d), mkdir(d); end
   d=fullfile(d,sprintf('%d%02d%02d_%02d%02d%02.0f_%g',d_parbl(1:7))); mkdir(d);
   pldirs{end+1}=d;
