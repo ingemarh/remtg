@@ -11,7 +11,7 @@ fsiz() {
 	filesize=`ls -l $1 | awk '{print $5}'`
 }
 mail_it() {
-#	mailx -s "$resdir movies" -r "RTG <ingemar@eiscat.se>" $* <<!
+#	s-nail -S 'smtp=smtp://www.eiscat.se' -s "$RTG $rundir output files" -r "RTG <ingemar@eiscat.se>" $* <<!
 	#mutt -e "set crypt_use_gpgme=no" -s "RTG $rundir output files" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
 	mutt -F /home/eiscat/muttrc.webgup -e "set crypt_use_gpgme=no" -s "RTG $rundir output files" -e "my_hdr From: RTG <ingemar@eiscat.se>" $* <<!
 Enclosed you find result files for your RTG@$rundir process.
