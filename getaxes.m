@@ -1,13 +1,16 @@
 function ax=getaxes(fig,s1,s2,name,head)
 global figs local selax
 if ~ishandle(fig)
- figure(fig)
+ figg=figure(fig);
  if local.x
   d=get(0,'defaultfigureposition');
-  set(fig,'position',[d(1:2)+[1 -1]*fig d(3:4)])
+  set(figg,'position',[d(1:2)+[1 -1]*fig d(3:4)])
  elseif local.ver==6.5
-  close(fig),figure(fig); % Matlab R13 bug
+  close(figg),figg=figure(fig); % Matlab R13 bug
  end
+ fig=figg;
+elseif ~strcmp(local.name,'Octave')
+ fig=findobj(0,'Number',fig);
 end
 if ~isempty(selax) && isfield(selax,'wtg')
  [selax.fig,selax.sp,fun]=strread(selax.wtg,'%d,%d,%s');
@@ -31,7 +34,7 @@ if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
   selax=rmfield(selax,'sp');
  end
  if local.ver>3
-  h=suptitle(head); set(h,'interpreter','none')
+  h=suptitle(head,fig); set(h,'interpreter','none')
   if strcmp(local.name,'Octave') && strcmp(graphics_toolkit,'gnuplot')
    set(h,'position',get(h,'position')-[0 300 0])
   end

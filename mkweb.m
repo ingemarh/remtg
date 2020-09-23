@@ -31,9 +31,13 @@ for i=sort(figs)
     files=[files ' ' fname '.png'];
     fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'],reloadfix,get(i,'name'));
    else
-    set(0,'currentfigure',i)
     fname=[fname '.png'];
-    print(fname,'-dpng')
+    if local.ver>3
+     print(i,fname,'-dpng')
+    else
+     set(0,'currentfigure',i)
+     print(fname,'-dpng')
+    end
     files=[files ' ' fname];
     fprintf(fid,'<IMG SRC="%s?%d"><P>\n',[ffig '.png'],reloadfix);
    end

@@ -23,8 +23,12 @@ for i=a7'
   if bval(8)==1, set(i,'xlim',xlim(n,:)), end
  else
   x=0:(lrd-1);
-  setcurrent(fig,i)
-  plot(x,rd,x,id)
+  if local.ver>3
+   plot(x,rd,x,id,'parent',i)
+  else
+   setcurrent(fig,i)
+   plot(x,rd,x,id)
+  end
   set(i,'xlim',xlim(n,:))
   set(get(i,'title'),'verticalalignment','baseline')
  end

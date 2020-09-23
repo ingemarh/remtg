@@ -5,7 +5,10 @@ function hout=suptitle(str,fig)
 %	after all subplot commands.
 
 % Drea Thomas 6/15/95 drea@mathworks.com
-if nargin<2, fig=gcf; end
+global local
+if nargin<2
+ fig=gcf;
+end
 
 % Parameters used to position the supertitle.
 
@@ -21,7 +24,6 @@ fs = get(fig,'defaultaxesfontsize')+2;
 % Fudge factor to adjust y spacing between subplots
 fudge=1;
 
-haold = gca;
 figunits = get(fig,'units');
 
 % Get the (approximate) difference between full height (plot + title
@@ -72,10 +74,20 @@ set(fig,'nextplot','add');
 if ~isempty(oldtitle)
 	delete(oldtitle);
 end
-ha=axes('position',[0 1 1 1],'visible','off','Tag','suptitle');
-ht=text(.5,titleypos-1,str);set(ht,'horizontalalignment','center','fontsize',fs);
+if strcmp(local.name,'Octave')
+ oax=gca;
+ ha=axes('position',[0 1 1 1],'visible','off','Tag','suptitle');
+ ht=text(.5,titleypos-1,str);set(ht,'horizontalalignment','center','fontsize',fs),
+ axes(oax)
+else
+ ha=axes(fig,'position',[0 1 1 1],'visible','off','Tag','suptitle');
+ ht=text(ha,.5,titleypos-1,str);set(ht,'horizontalalignment','center','fontsize',fs),
+end
 set(fig,'nextplot',np);
-axes(haold);
+if nargout,
+	hout=ht;
+end
+set(fig,'nextplot',np);
 if nargout,
 	hout=ht;
 end
