@@ -6,18 +6,9 @@ prog=`which $matlab`
 if [ $? -ne 0 ]; then
  prog=octave
 fi
+MSTART=rtg
 #find remtg directory
-filename=$0
-while [ -h $filename ]; do
-	lscmd=`ls -l $filename 2>/dev/null`
-	f1=`echo "$lscmd" | gawk '{ print $NF }'`
-	fp=`echo "$f1" | gawk '{ print index($1,"/") }'`
-	if [ $fp != "1" ];then
-		filename=`dirname $filename`/$f1
-	else
-		filename=$f1
-	fi
-done
+filename=`realpath $0`
 MATLABPATH=`dirname $filename`
 #echo $MATLABPATH
 umask 002
@@ -27,15 +18,14 @@ for utf in `env | grep UTF`
 do
  unset `echo $utf | awk -F = '{ print $1 }'`
 done
-usage="Usage: rtg [-v] [-s KSTVL2PZ]"
+usage="Usage: rtg [-o] [-s KSTVL2PZ] [-x]"
 term=0
-jvm="-nodesktop"
-while getopts ojts: flag
+while getopts otxs: flag
 do
  case $flag in
   t) term=1;;
-  j) jvm="-nojvm";;
   o) prog=octave;;
+  x) MSTART=;;
   s) EISCATSITE="$OPTARG"
      export EISCATSITE;;
   ?) echo $usage
@@ -46,19 +36,22 @@ shift `expr $OPTIND - 1`
 if [[ $prog =~ .*octave ]];then
  OCTAVE_PATH=$MATLABPATH
  TMPDIR=$TMP
- export OCTAVE_PATH TMPDIR
- comm="$prog --no-gui --persist --eval rtg"
+ export OCTAVE_PATH TMPDIR SHELL
+ if [ $MSTART ]; then MSTART="--eval $MSTART"; fi
+ comm="$prog --no-gui --persist $MSTART"
 else 
- comm="$prog $jvm -nosplash -r rtg"
+ export MATLABPATH TMP SHELL
+ if [ $MSTART ]; then MSTART="-r $MSTART"; fi
+ comm="$prog -nodesktop -nosplash $MSTART"
 fi
 if [ $term -eq 0 ]
 then
  XTERM_WM_NAME=`xprop -id $WINDOWID WM_NAME 2>/dev/null | sed 's/WM_NAME(STRING) =[ "]*\([^"]*\)["]/\1/'`
- export MATLABPATH SHELL XTERM_WM_NAME TMP
+ export XTERM_WM_NAME
  exec $comm
 else
  XTERM_WM_NAME=rtg$EISCATSITE
- export MATLABPATH SHELL XTERM_WM_NAME TMP
+ export XTERM_WM_NAME
  xterm -title rtg$EISCATSITE -bg white -fg blue -geometry 60x5-20+800 \
   -sb -sl 256 -fn fixed -e $comm &
 fi

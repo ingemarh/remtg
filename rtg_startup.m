@@ -1,7 +1,8 @@
 format compact
 format short g
+addpath(fileparts(mfilename('fullpath')))
 myb(128)
-addpath(fileparts(which('rtg_startup')))
+fprintf('EISCAT Real Time Graph vs %.1f\n',3.1)
 global local
 try
  matvers=ver('MATLAB');
@@ -13,11 +14,19 @@ try
  if local.ver>=1, local.ver=0.9+local.ver/100; end
  local.ver=local.ver+str2num(matver);
  local.name=matvers(1).Name;
+ TMP=getenv('TMP');
 catch
  local.ver=3; local.name='Octave'; local.x=0;
  set(0,'defaultTextFontName','dejavu')
+ TMP=getenv('TMPDIR');
 end
-if ~isfield(local,'tempdir'), local.tempdir=tempdir; end
+if ~isfield(local,'tempdir')
+ if ispc || ~isempty(TMP)
+  local.tempdir=tempdir;
+ else
+  local.tempdir=fullfile(getenv('HOME'),'tmp');
+ end
+end
 if ~exist(local.tempdir,'dir'), mkdir(local.tempdir); end
 if strcmp(local.name,'Octave') || local.ver<8.4
  groot=0;

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 rtdir=
 def=
 slx=
@@ -14,17 +14,7 @@ if [ $? -ne 0 ]; then
  fi
 fi
 #find remtg directory
-filename=$0
-while [ -h $filename ]; do
-        lscmd=`ls -l $filename 2>/dev/null`
-        f1=`echo "$lscmd" | awk '{ print $NF }'`
-        fp=`echo "$f1" | awk '{ print index($1,"/") }'`
-        if [ $fp != "1" ];then
-                filename=`dirname $filename`/$f1
-        else
-                filename=$f1
-        fi
-done
+filename=`realpath $0`
 MATLABPATH=`dirname $filename`
 TMP=$HOME/tmp
 ndumps="60"
@@ -59,16 +49,15 @@ if [ "$*" = "stop" ];then
  /bin/ps -u kstdev -u eiscat | awk '/webtg/ && ! /awk/ {print "ps  -fu kstdev -u eiscat | grep " $1 " | grep $matlab"}' | /bin/sh | awk '{print $2}' | xargs kill -9 >/dev/null
 elif [ "$*" = "start" ] || [ "$*" = "" ];then
  SHELL=/bin/sh
-
- WTG="rtdir='$rtdir',webtg=$ndumps,def_file='$def',selax.wtg='$slx'"
- export MATLABPATH SHELL TMP WTG
+ WTG="rtg_startup,wtg('$rtdir',$ndumps,'$def','$slx'),exit"
+ export MATLABPATH SHELL TMP
  unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
-  $matlab -nodisplay -r wtg $null </dev/null
+  $matlab -nodisplay <<< "$WT" $null
  elif [ $matlab = "octave" ]; then
-  $matlab -q -p $OCTAVE_PATH --eval wtg
+  $matlab -q -p $OCTAVE_PATH <<< "$WT"
  else
-  $matlab -Wq --eval wtg
+  $matlab -Wq <<< "$WT"
  fi
 else
  echo $usage

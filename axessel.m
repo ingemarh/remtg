@@ -1,16 +1,12 @@
 function axessel(t)
+global figs
 %if t==0
 % disp('Press on the plot to threat specially, any other key disables')
 %else
 % disp('Press on the figure for printing')
 %end
 %a=waitforbuttonpress; Doesn't work anymore, so for now:
- figs=findobj('Type','Figure');
- if ~isnumeric(figs)
-  figs=get(figs,'Number');
-  if length(figs)>1, figs=cell2mat(figs); end
- end
- for i=figs' 
+ for i=figs
   fprintf('%d: %s\n',i,get(i,'Name'))
  end
  set(0,'currentfigure',input('Select figure no: '))
@@ -23,7 +19,7 @@ if t==0
  selax.fig=gcf;
   ax=findobj(gcf,'type','axes','box','on');
   for i=1:length(ax) 
-   fprintf('%d: %s (%d - %d)\n',i,get(get(ax(i),'Title'),'string'),get(ax(i),'xlim'))
+   fprintf('%d: %s (%g - %g)\n',i,get(get(ax(i),'Title'),'string'),get(ax(i),'xlim'))
   end
   i=input(sprintf('Select plot window (1-%d): ',length(ax)));
   selax.axes=ax(i);

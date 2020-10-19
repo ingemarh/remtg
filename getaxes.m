@@ -13,8 +13,12 @@ elseif ~strcmp(local.name,'Octave')
  fig=findobj(0,'Number',fig);
 end
 if ~isempty(selax) && isfield(selax,'wtg')
- [selax.fig,selax.sp,fun]=strread(selax.wtg,'%d,%d,%s');
- selax.fun=fun{1};
+ if isstring(selax.wtg)
+  [selax.fig,selax.sp,fun]=strread(selax.wtg,'%d,%d,%s');
+  selax.fun=fun{1};
+ else
+  selax.fig=selax.wtg{1}; selax.sp=selax.wtg{2}; selax.fun=selax.wtg{3};
+ end
  selax=rmfield(selax,'wtg');
 end
 ax=flipud(findobj(fig,'type','axes','tag',''));
@@ -47,4 +51,5 @@ elseif nargin>3
  set(h,'string',head)
  set(fig,'name',name)
 end
+if ~isnumeric(fig), fig=get(fig,'Number'); end
 if ~any(fig==figs), figs=[figs fig]; end
