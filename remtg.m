@@ -9,20 +9,20 @@ if isempty(bval)
  sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Hot','32p','Quj'};
  sitecode.mini='L2VTKSHPQ';
  sitecode.low='llvurr pq';
- site=findstr(sitecode.mini,getenv('EISCATSITE'));
+ site=strfind(sitecode.mini,getenv('EISCATSITE'));
  xwn=getenv('XTERM_WM_NAME');
  if isempty(site), site=5; err=1;
- elseif site==4 && ~isempty(findstr(xwn,'VHF')), site=3;
+ elseif site==4 && ~isempty(strfind(xwn,'VHF')), site=3;
  end
  bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
- if findstr('rtg',xwn)
+ if strfind('rtg',xwn)
   bval(5)=1;
  elseif ~isempty(webtg)
   bval([2 3 5 10])=[webtg([1 1 2]) 1]; err=0;
   if strcmp(local.name,'Octave') && strcmp(graphics_toolkit,'gnuplot'), bval(10)=0; end
  end
 end
-if bval(5)<2 && (isempty(butts) || ~ishandle(butts(1)))
+if bval(5)<2 && (isempty(butts) || ~isgraphics(butts(1)))
  rtgbuttons(10)
  if exist('err','var'), return, end
 end
@@ -48,7 +48,7 @@ head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,txpow,rem(d_parbl(10),360),d_pa
 sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(sitecode.long(site))];
 t1=raw(10,['Raw data' sitet],sms);
 if bval(4)>0
- if findstr(filename,'RT')
+ if strfind(filename,'RT')
   set(t1,'string','Not recording')
  else
   [s,df]=unix(['df -k ' filename]);
@@ -244,9 +244,8 @@ if ~isempty(tdev)
   timedev(30,ntim,thead,head)
  end
 end
-if ~isempty(selax) && exist(selax.fun,'file')
- clear(selax.fun)
- run(selax.fun)
+if ~isempty(selax) && isfield(selax,'fun')
+ clear(selax.fun), run(selax.fun)
 end
 catch
  disp(lasterr)

@@ -26,6 +26,7 @@ if ~isfield(local,'tempdir')
  else
   local.tempdir=fullfile(getenv('HOME'),'tmp');
  end
+ clear TMP
 end
 if ~exist(local.tempdir,'dir'), mkdir(local.tempdir); end
 if strcmp(local.name,'Octave') || local.ver<8.4
@@ -37,6 +38,7 @@ else
 end
 if local.ver>3.4
  set(groot,'defaultAxesFontSize',12)
+ set(groot,'defaultFigureVisible','on')
  set(groot,'defaultFigureMenuBar','none')
  set(groot,'defaultFigureNumberTitle','off')
  set(groot,'defaultFigurePaperType','A4')
@@ -69,4 +71,4 @@ if local.x
  matver=get(groot,'defaultFigurePosition');
  set(groot,'defaultFigurePosition',[d(3)/2 matver(2:4)])
 end
-clear matver d
+clear matver matvers d TMP

@@ -1,21 +1,22 @@
-global bval rtdir butts
+global bval rtdir
 rtg_startup
 if isempty(rtdir)
 %rtdir='../elin/decelin';
  bval=[];
 end
-if strcmp(local.name,'Octave') && (local.ver<=3 || strcmp(graphics_toolkit,'gnuplot'))
+if strcmp(local.name,'Octave') && (local.ver<=3 || ~strcmp(graphics_toolkit,'qt'))
 % Jupyter?
  global webtg selax
- webtg=[1 4 0]; selax=[];
  rtdir=input(sprintf('First data directory: '),'s');
- remtg
+ n=input(sprintf('integration dumps/secs: '));
+ webtg=[n 4 0]; bval=[];
+ remtg;
 else
  while 1
   while ~remtg
    while ~bval(1)
     pause(1)
-    if ~ishandle(butts(1))
+    if ~isgraphics(10)
      quit
     end
    end
@@ -23,7 +24,7 @@ else
   setbval(0,1)
   while ~bval(1)
    pause(1)
-   if ~ishandle(butts(1))
+   if ~isgraphics(10)
     quit
    end
   end

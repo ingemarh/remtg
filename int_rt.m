@@ -155,10 +155,7 @@ while i<bval(2)
  end
  d_parbl(7)=acc_parbl(1);
  d_parbl(8)=acc_parbl(2)/i;
- if ~isempty(butts) && ishandle(butts(1))
-  setbval
-  if bval(1)==0, return, end
- end
+ setbval, if bval(1)==0, return, end
  if isempty(rtdir)
   if i<bval(2)
    fprintf('\r %d/%d PIs done ',i,bval(2))

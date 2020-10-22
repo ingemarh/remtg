@@ -1,6 +1,6 @@
 function ax=getaxes(fig,s1,s2,name,head)
 global figs local selax
-if ~ishandle(fig)
+if ~isgraphics(fig)
  figg=figure(fig);
  if local.x
   d=get(0,'defaultfigureposition');
@@ -13,7 +13,7 @@ elseif ~strcmp(local.name,'Octave')
  fig=findobj(0,'Number',fig);
 end
 if ~isempty(selax) && isfield(selax,'wtg')
- if isstring(selax.wtg)
+ if ischar(selax.wtg)
   [selax.fig,selax.sp,fun]=strread(selax.wtg,'%d,%d,%s');
   selax.fun=fun{1};
  else

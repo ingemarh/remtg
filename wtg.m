@@ -5,16 +5,17 @@ function wtg(d,n,D,x)
 %         n integration dumps/secs
 %         D definition file
 %         x Plot selection text string fig,subplot,routine
-global rtdir webtg def_file selax pldirs
+global rtdir webtg def_file selax pldirs bval
 if nargin<4, x=[]; end
 if nargin<3, D=[]; end
 if nargin<2, n=[]; end
 if nargin<1, d=[]; end
 if isempty(d), d=pwd; end
 if isempty(n), n=60; end
-set(0,'defaultfigurevisible','off')
+set(groot,'defaultfigurevisible','off')
+if isgraphics(10), close(10), end
 pldirs={};
-rtdir=d;
+rtdir=d; bval=[];
 def_file=D;
 webtg=n;
 if length(getenv('EISCATSITE'))==1
@@ -39,3 +40,4 @@ while ~remtg
  end
 end
 mkmov(pldirs,webtg(1))
+end
