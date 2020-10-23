@@ -44,20 +44,22 @@ if [ `echo $matlab | grep octave` ];then
  TMPDIR=$TMP
  OCTAVE_PATH=$MATLABPATH
  export OCTAVE_PATH TMPDIR
+else
+ export MATLABPATH TMP
 fi
 if [ "$*" = "stop" ];then
  /bin/ps -u kstdev -u eiscat | awk '/webtg/ && ! /awk/ {print "ps  -fu kstdev -u eiscat | grep " $1 " | grep $matlab"}' | /bin/sh | awk '{print $2}' | xargs kill -9 >/dev/null
 elif [ "$*" = "start" ] || [ "$*" = "" ];then
+ WTG="wtg('$rtdir',$ndumps,'$def','$slx')"
  SHELL=/bin/sh
- WTG="rtg_startup,wtg('$rtdir',$ndumps,'$def','$slx'),exit"
- export MATLABPATH SHELL TMP
+ export SHELL
  unset DISPLAY
  if [ -z "$OCTAVE_PATH" ];then
-  $matlab -nodisplay <<< "$WT" $null
+  $matlab -nodisplay <<< "$WTG" $null
  elif [ $matlab = "octave" ]; then
-  $matlab -q -p $OCTAVE_PATH <<< "$WT"
+  $matlab -q -p $OCTAVE_PATH <<< "$WTG"
  else
-  $matlab -Wq <<< "$WT"
+  $matlab -Wq <<< "$WTG"
  fi
 else
  echo $usage

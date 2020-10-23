@@ -2,7 +2,7 @@ format compact
 format short g
 addpath(fileparts(mfilename('fullpath')))
 myb(128)
-fprintf('EISCAT Real Time Graph vs %.1f\n',3.1)
+fprintf('EISCAT Real Time Graph vs %.1f\n',3.2)
 global local
 try
  matvers=ver('MATLAB');
@@ -20,9 +20,11 @@ catch
  set(0,'defaultTextFontName','dejavu')
  TMP=getenv('TMPDIR');
 end
+local.userdir=pwd;
 if ~isfield(local,'tempdir')
  if ispc || ~isempty(TMP)
   local.tempdir=tempdir;
+  local.userdir=userpath;
  else
   local.tempdir=fullfile(getenv('HOME'),'tmp');
  end
