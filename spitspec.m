@@ -20,7 +20,7 @@ if sgating>1
  ngates=floor(ngates/sgating);
  sacf=reshape(sum(reshape(sacf(:,1:(ngates*sgating))',sgating,ngates,nlags)),ngates,nlags)';
 end
-waterlim=[6 8];
+waterlim=[4 6];
 if bval(11)==1 && ngates>waterlim(2) && r0>0
  [h,pars]=qfit(fig,ax,sacf,lag,dt*sgating,r0+(sgating-1)*dt/2);
  if ~isempty(selax) && selax.fig==fig && selax.axes==ax
@@ -50,7 +50,7 @@ else
  if max(lag)*fsc>1, fsc=1; end
  w=lag*fsc*1e3;
 end
-if ngates<waterlim(1)
+if isempty(combhold) && ngates<waterlim(1)
  updateplot(fig,ax,w,s);
  h=get(ax,'ylabel');
 else
@@ -61,8 +61,14 @@ else
   re=6370; r=r/re; r=re*sqrt(1+r.*(r+2*sin(el/57.2957795)))-re;
  end
  if ~isempty(combhold)
-  dr=diff(r(1:2)); n=round((r(1)-combhold.r(end))/dr)-1;
-  s=interp2(r,w',s,r,combhold.w');
+  if length(r)>1
+   dr=diff(r(1:2));
+  else
+   dr=diff(combhold.r(1:2));
+  end
+  %s=interp2(r,w',s,r,combhold.w');
+  s=interp1(w',s,combhold.w');
+  n=round((r(1)-combhold.r(end))/dr)-1;
   r=[combhold.r (1:n)*dr+combhold.r(end) r];
   s=[combhold.s NaN*ones(length(combhold.w),n) s];
   ngates=length(r); combhold=[];

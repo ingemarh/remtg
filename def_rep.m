@@ -11,6 +11,10 @@ for varno=1:length(varargin)
   if mc>mr
    varargout{varno}=varargout{varno}+j*reshape(s-1,b,a).';
   else 
+if any(size(varargout{varno})-size(j*(s-1)))
+%[size(varargout{varno}) size(j*(s-1))]
+s=reshape(s,a,b);
+end
    varargout{varno}=varargout{varno}+j*(s-1);
   end
  end
