@@ -10,7 +10,7 @@ if nargin<4, slx=[]; end
 if nargin<3, D=[]; end
 if nargin<2, n=[]; end
 if nargin<1, dd=[]; end
-if isempty(dd), dd=pwd; end
+%if isempty(dd), dd=pwd; end
 if isempty(n), n=60; end
 if isempty(local)
  rtg_startup
