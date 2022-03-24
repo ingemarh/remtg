@@ -63,8 +63,9 @@ set(groot,'defaultTextFontSize',12)
 set(groot,'defaultAxesColorOrder',[1 0 0;0 1 0;0 0 1;0 0 0;1 0 1;0 1 1;1 1 0;.5 .5 .5])
 set(groot,'defaultAxesColor','none')
 if strcmp(local.name,'Octave')
- [dum,a]=strtok(fliplr(which('rtg')),filesep);
- addpath(fullfile(fliplr(a),'private'))
+ [~,d]=strtok(fliplr(which('rtg')),filesep);
+ d=fullfile(fliplr(d),'private');
+ if exist(d,'dir'), addpath(d), end
  warning('off','Octave:missing-glyph')
 else
  warning('off','MATLAB:connector:connector:ConnectorNotRunning')
