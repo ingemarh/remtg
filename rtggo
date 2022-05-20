@@ -113,7 +113,8 @@ else
 fi
 for tar in $dirs
 do
- wget -O - "$tar" 2>/dev/null | tar xf -
+ curl -o - "$tar" 2>/dev/null | tar xf -
+ #wget -O - "$tar" 2>/dev/null | tar xf -
 done
 datapath=`ls -d */* |head -1`
 if [ -z $datapath ]

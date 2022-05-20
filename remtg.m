@@ -66,7 +66,7 @@ else
 end
 if local.ver<=3, set(t1,'string',[head '  ' get(t1,'string')]), end
 % default chpar values
-psig=[]; ntim=60; thead=[]; sigtyp=[]; bacspec=NaN; tail=.7;
+psig=nan(1,0); ntim=60; thead=[]; sigtyp=[]; bacspec=NaN; tail=.7;
 maxsize_acf=[256 256];
 if site==5 || site==6
  tail=0;
