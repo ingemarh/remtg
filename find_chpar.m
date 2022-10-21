@@ -30,7 +30,7 @@ while ~isempty(infodir) && isempty(def_file) && infodir(end).isdir
 end
 while ~isempty(chpar) && isempty(def_file)
  if isunix
-  [dum,inEI]=unix(['/bin/sh -c ''ls ' fullfile(expdir,'??',chpar,dm) ' 2>/dev/null''']);
+  [dum,inEI]=rtgix(['/bin/sh -c ''ls ' fullfile(expdir,'??',chpar,dm) ' 2>/dev/null''']);
  else
   dum=1;
  end

@@ -10,7 +10,7 @@ if strcmp(local.name,'Octave')
  if isempty(pkg('list','hf5oct'))
   pkg load hdf5oct
  end
- [err,j]=system(['h5ls ' fullfile(rtdir,d(1).name) '/Data | awk ''{print $1}''']);
+ [err,j]=rtgix(['h5ls ' fullfile(rtdir,d(1).name) '/Data | awk ''{print $1}''']);
  if err, return, end
  j=reshape(j,9,[])'; h5d=[repmat('/Data/',size(j,1),1) j(:,1:8)];
 else

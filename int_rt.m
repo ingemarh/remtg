@@ -31,7 +31,7 @@ while i<bval(2)
      disp('End of data!'), err=1; i=i-1; odate=[]; return
     end
     if bval(1)==0 || i>bval(2), return, end
-    [s,fname]=unix(['ls -l ' filename]); j=j+1; pause(1)
+    [s,fname]=rtgix(['ls -l ' filename]); j=j+1; pause(1)
     s=s+strcmp(fname,odate);
    end
    filename=fliplr(strtok(fliplr(fname)));
@@ -39,7 +39,7 @@ while i<bval(2)
    s=2-exist(filename,'file');
   end
   odate=fname;
-  [s,df]=unix(['ls -l ' filename]);
+  [s,df]=rtgix(['ls -l ' filename]);
   for j=1:5, [nbytes,df]=strtok(df); end
   if s || isempty(nbytes)
    disp('End of data!'), err=1; i=i-1; odate=[]; return
@@ -90,9 +90,9 @@ while i<bval(2)
  if h5
   if strcmp(local.name,'Octave') %very ugly, but don't want to dwell time now
    cmd=sprintf('h5ls -dS %s%s/L2 | awk ''NR>2''',filename,dump);
-   [err,j]=system(cmd);
+   [err,j]=rtgix(cmd);
    j=str2num(j); d_data=complex(j(:,1),j(:,2));
-   [j,cmd]=system(sprintf('h5ls %s%s/L1 2>/dev/null',filename,dump));
+   [j,cmd]=rtgix(sprintf('h5ls %s%s/L1 2>/dev/null',filename,dump));
    if ~cmd
     d_raw=h5read(filename,[dump '/L1']);
    else
@@ -113,7 +113,7 @@ while i<bval(2)
   end
   if strcmp(local.name,'Octave') %very ugly, but don't want to dwell time now
    cmd=sprintf('h5ls -dS %s/MetaData/ExperimentName',filename);
-   [err,j]=system([cmd ' | awk -F''"'' ''$0=$2''']);
+   [err,j]=rtgix([cmd ' | awk -F''"'' ''$0=$2''']);
    d_ExpInfo=['kst0 ' j];
   else
    d_ExpInfo=['kst0 ' char(h5read(filename,'/MetaData/ExperimentName'))];
@@ -131,7 +131,7 @@ while i<bval(2)
     bunzip2([tfile '.bz2']);
    else
     tfile=[tempname(local.tempdir) '.mat'];
-    s=unix(sprintf('bunzip2 -c %s >%s',filename,tfile));
+    s=rtgix(sprintf('bunzip2 -c %s >%s',filename,tfile));
    end
    load(tfile), delete(tfile)
   else

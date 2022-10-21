@@ -59,7 +59,7 @@ if bval(5)==3
   if ~exist(d), mkdir(d); end
   d=fullfile(d,sprintf('%d%02d%02d_%02d%02d%02.0f_%g',d_parbl(1:7))); mkdir(d);
   pldirs{end+1}=d;
-  dum=unix(['mv ' files ' ' d]);
+  dum=rtgix(['mv ' files ' ' d]);
  end
  return
 end
@@ -72,22 +72,22 @@ else
 end
 
 if site==6
- [i,d]=unix('ps | grep cp | grep -v grep');
+ [i,d]=rtgix('ps | grep cp | grep -v grep');
  if i
-  unix(['cp ' files ' /net/aurora/www/ht/rtg/']);
+  rtgix(['cp ' files ' /net/aurora/www/ht/rtg/']);
  end
 end
 if site==4 || site==3
- unix(['scp -q ' files ' palver5:/var/www/html/rtg/']); 
+ rtgix(['scp -q ' files ' palver5:/var/www/html/rtg/']); 
 end
 % RTG upload to www.eiscat.se
-[i,d]=unix('ps | grep curl | grep -v grep');
+[i,d]=rtgix('ps | grep curl | grep -v grep');
 if i
  file='';
  while ~isempty(files)
   [i,files]=strtok(files);
   file=[file ' -F file=@' i];
  end
- [status,cmdout]=unix(['curl -s ' file ' https://portal.eiscat.se/rtg/upload.cgi &']);
+ [status,cmdout]=rtgix(['curl -s ' file ' https://portal.eiscat.se/rtg/upload.cgi &']);
 end
 lastweb=now;

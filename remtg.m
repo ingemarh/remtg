@@ -51,7 +51,7 @@ if bval(4)>0
  if strfind(filename,'RT')
   set(t1,'string','Not recording')
  else
-  [s,df]=unix(['df -k ' filename]);
+  [s,df]=rtgix(['df -k ' filename]);
   for i=1:11, [d,df]=strtok(df); end
   if isempty(d)
    set(t1,'string',sprintf('Recording@%s',strtok(filename(2:end),'/')))
