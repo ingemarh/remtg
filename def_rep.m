@@ -4,7 +4,7 @@ for varno=1:length(varargin)
  vartemp=varargin{varno};
  varname=inputname(varno+3);
  varargout{varno}=repmat(vartemp,mc,mr);
- if strmatch(varname,{'txs' 'psig' 'back' 'cal' 'sig' 'sig0' 'bacspec' 'rawlim' 'amplim'},'exact')
+ if sum(strcmp(varname,{'txs' 'psig' 'back' 'cal' 'sig' 'sig0' 'bacspec' 'rawlim' 'amplim'}))
   s=ones(size(vartemp));
   s=s(:)*(1:mr*mc);
   [a,b]=size(varargout{varno});

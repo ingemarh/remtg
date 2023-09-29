@@ -6,12 +6,12 @@ if isempty(bval)
  radcon=[3e11 6e11 2e11 6e11 6e11 6e11 5e11 6e11 3e11];
  sitecode.web={'ESR 32m','ESR 42m','Troms&oslash; VHF','Troms&oslash; UHF','Kiruna','Sodankyl&auml;','Hot','ESR 32p','QuJing'};
  sitecode.long={'ESR 32m','ESR 42m','Tromso VHF','Tromso UHF','Kiruna','Sodankyla','Hot','ESR 32p','QuJing'};
- sitecode.short={'Old','Disk','32m','42m','VHF','UHF','Kir','Sod','Hot','32p','Quj'};
+ sitecode.short={'Old','Disk','32m','42m','VHF','UHF','32p'};
  sitecode.mini='L2VTKSHPQ';
  sitecode.low='llvurr pq';
  site=strfind(sitecode.mini,getenv('EISCATSITE'));
  xwn=getenv('XTERM_WM_NAME');
- if isempty(site), site=5; err=1;
+ if isempty(site), site=2; err=1;
  elseif site==4 && ~isempty(strfind(xwn,'VHF')), site=3;
  end
  bval=[1 1 1 isempty(rtdir)*site 0 1 0 1 0 0 0];
