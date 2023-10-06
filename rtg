@@ -42,7 +42,7 @@ if [[ $prog =~ .*octave ]];then
 else 
  export MATLABPATH TMP SHELL
  if [ $MSTART ]; then MSTART="-r $MSTART"; fi
- comm="$prog -nodesktop -nosplash $MSTART"
+ comm="$prog -nodesktop -nosplash $MSTART $*"
 fi
 if [ $term -eq 0 ]
 then

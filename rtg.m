@@ -17,7 +17,7 @@ else
    while ~bval(1)
     pause(1)
     if ~isgraphics(10)
-     rtquit
+     rtquit, return
     end
    end
   end
@@ -25,7 +25,7 @@ else
   while ~bval(1)
    pause(1)
    if ~isgraphics(10)
-    rtquit
+    rtquit, return
    end
   end
  end
