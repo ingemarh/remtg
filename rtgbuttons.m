@@ -12,7 +12,7 @@ butts(8)=uicontrol('Style','popupmenu','string','No|Ran|All','position',[275 0 5
 butts(9)=uicontrol('Style','togglebutton','string','B/W','position',[325 0 35 20],'value',bval(9),'callback','myb([],2)','tooltipstring','Grayscale');
 butts(10)=uicontrol('Style','togglebutton','string','Tdev','position',[360 0 35 20],'value',bval(10),'callback','setbval','tooltipstring','Lineplots vs time');
 butts(11)=uicontrol('Style','togglebutton','string','Phys','position',[240 0 35 20],'value',bval(11),'callback','setbval','tooltipstring','Physical parameters (prel)','visible','off');
-uicontrol('Style','pushbutton','string','Quit','position',[505 0 35 25],'value',0,'callback','quit');
+uicontrol('Style','pushbutton','string','Quit','position',[505 0 35 25],'value',0,'callback','rtquit');
 uicontrol('Style','pushbutton','string','Def','position',[0 35 35 20],'value',0,'tooltipstring','Force definition file','callback','[o,p]=uigetfile(''*.m'',''RTG definition file'');if o,if ~exist(''def_file''),global def_file,end,def_file=fullfile(p,o);end');
 uicontrol('Style','pushbutton','string','Sel','position',[0 55 35 20],'value',0,'tooltipstring','Select plot for special threatment','callback','axessel(0)');
 if local.ver>=7.5
