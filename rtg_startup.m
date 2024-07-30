@@ -45,7 +45,7 @@ if local.ver>3.4
  set(groot,'defaultFigureNumberTitle','off')
  set(groot,'defaultFigurePaperType','A4')
  set(groot,'defaultFigurePaperUnits','centimeters')
- set(groot,'defaultFigureRenderer','painters')
+ %set(groot,'defaultFigureRenderer','painters')
  set(groot,'defaultFigureSelectionHighlight','off')
  set(groot,'defaultFigureToolBar','figure')
  set(groot,'defaultUicontrolFontSize',10)
