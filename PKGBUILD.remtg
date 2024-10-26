@@ -1,0 +1,44 @@
+# Maintainer: Ingemar Häggström
+pkgname=rtg
+#pkgver=3.1
+#pkgrel=30
+pkgdesc="EISCAT Real Time Graph"
+arch=(all)
+url="doi://10.5281/zenodo.1479166"
+license=()
+depends=('bzip2' 'gzip')
+optdepends=('octave' 'ffmpeg')
+makedepends=()
+if false
+then
+  source=("remtg::git+ssh://git@git.eiscat.se/cvs/remtg.git")
+  sha512sums=('SKIP')
+  wd=remtg
+else
+  wd=".."
+fi
+pkgver=`git describe --tags | cut -d'-' -f 1 | sed 's/[a-z]//g;'` 
+pkgrel=`git describe --tags | cut -d'-' -f 2`
+
+package() {
+  cd $wd
+
+  for f in *.m *.png README
+  do
+    install -Dvm 644 "$f" -t "${pkgdir}/opt/remtg/lib"
+  done
+  for f in *.png
+  do
+    install -Dvm 644 "$f" -t "${pkgdir}/opt/remtg/lib"
+  done
+  for f in rtg webtg
+  do
+    install -Dvm 755 "$f" -t "${pkgdir}/opt/remtg/lib"
+    mkdir -p "${pkgdir}/usr/bin"
+    ln -sv "/opt/remtg/lib/$f" "${pkgdir}/usr/bin/$f"
+  done
+  for f in rtg_gen.sh
+  do
+    install -Dvm 755 "$f" -t "${pkgdir}/opt/remtg/bin"
+  done
+}

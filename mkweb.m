@@ -1,7 +1,7 @@
 function mkweb(sms)
 global site lastweb bval figs local sitecode pldirs
 if bval(4)>0 && ~isempty(lastweb) && now-lastweb<30/86400 || bval(5)>3, return, end
-if local.x
+if local.x | strcmp(local.name,'Octave')
  jpg='png'; flag='-r72';
 else
  jpg='png256'; flag='-painters';
@@ -23,11 +23,7 @@ for i=sort(figs)
     if any(get(i,'PaperPosition')-d)
      set(i,'PaperPosition',d,'PaperOrientation','portrait')
     end
-    if strcmp(local.name,'Octave')
-     print(i,'-dpng','-r72',fname)
-    else
-     print(i,['-d' jpg],'-noui',flag,fname)
-    end
+    print(i,['-d' jpg],flag,'-noui',fname)
     files=[files ' ' fname '.png'];
     fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'],reloadfix,get(i,'name'));
    else
