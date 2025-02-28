@@ -1,9 +1,9 @@
 function [i,filename,nbytes,err]=int_rt
-global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode local webtg h5 h5d
+global odate d dd_data butts bval rtdir d_ExpInfo d_parbl d_raw satch sitecode local webtg h5
 %d=[]; fn=[];
 filename=[];
 if ~exist('odate','var'), odate=[]; end
-if isempty(odate), h5=0; end
+if isempty(odate), h5=[]; end
 dd_data=0; acc_parbl=0; err=0; d_ExpInfo='Unknown exp'; d_parbl=[]; nbytes=0; obytes=0; i=0;
 while i<bval(2)
  i=i+1;
@@ -47,25 +47,19 @@ while i<bval(2)
   nbytes=str2num(nbytes);
  else
   ext='*.mat'; if strcmp(local.name,'Octave') || isunix, ext=[ext '*']; end
-  if ~strcmp(odate,rtdir)
-   d=dir(fullfile(rtdir,ext));
-   if isempty(d)
-    h5data
-   end
+  if ~isempty(h5) || isempty(dir(fullfile(rtdir,ext)))
+   h5data
    if isempty(d)
     disp('No data!'), err=1; i=i-1; odate=[]; return
    end
-  end
-  if h5
-   if isempty(h5d)
-    d(1)=[];
+   filename=fullfile(rtdir,d(h5(1)).name);
+  else
+   if ~strcmp(odate,rtdir)
+    d=dir(fullfile(rtdir,ext));
     if isempty(d)
      disp('No data!'), err=1; i=i-1; odate=[]; return
     end
-    h5data
    end
-   filename=fullfile(rtdir,d(1).name); dump=h5d(1,:); h5d(1,:)=[]; odate=rtdir;
-  else
    if isempty(d)
     if rtdir(end)==filesep, rtdir(end)=[]; end
     [j,s]=fileparts(rtdir); df='%04d%02d%02d_%02d'; s=sscanf(s,df,4);
@@ -87,50 +81,33 @@ while i<bval(2)
    nbytes=d(1).bytes; d(1)=[]; odate=rtdir;
   end
  end
- if h5
-  if strcmp(local.name,'Octave') %very ugly, but don't want to dwell time now
-   cmd=sprintf('h5ls -dS %s%s/L2 | awk ''NR>2''',filename,dump);
-   [err,j]=rtgix(cmd);
-   j=str2num(j); d_data=complex(j(:,1),j(:,2));
-   [j,cmd]=rtgix(sprintf('h5ls %s%s/L1 2>/dev/null',filename,dump));
-   if ~cmd
-    d_raw=h5read(filename,[dump '/L1']);
-   else
-    d_raw=[];
-   end
-  else
-   d_data=h5read(filename,[dump '/L2']); d_data=complex(d_data.r,d_data.i);
-   try,
-    d_raw=h5read(filename,[dump '/L1']); d_raw=complex(d_raw.r,d_raw.i);
-   catch
-    d_raw=[];
-   end
+ if ~isempty(h5)
+  d_parbl=h5read(filename,'/Data/ParBlock/ParBlock',[1,h5(2)],[h5(4),1]);
+  d_r=h5read(filename,'/Data/L2',[1,1,h5(2)],[h5(5),2,1]);
+  d_data=complex(d_r(:,1),d_r(:,2));
+  d_ExpInfo=char(h5read(filename,'/DataBase/ExperimentName'));
+  try,
+   d_r=h5read(filename,'/Data/L1',[1,1,h5(2)],[h5(6),2,1]);
+   d_raw=single(complex(d_r(:,1),d_r(:,2)));
+  catch
+   d_raw=[];
   end
   if obytes && length(d_data)~=obytes
    disp('End of data!'), err=1; i=i-1; odate=[]; return
   else
    obytes=length(d_data);
   end
-  if strcmp(local.name,'Octave') %very ugly, but don't want to dwell time now
-   cmd=sprintf('h5ls -dS %s/MetaData/ExperimentName',filename);
-   [err,j]=rtgix([cmd ' | awk -F''"'' ''$0=$2''']);
-   d_ExpInfo=['kst0 ' j];
-  else
-   d_ExpInfo=['kst0 ' char(h5read(filename,'/MetaData/ExperimentName'))];
-  end
-  d_parbl=h5read(filename,[dump '/Parameters']);
  else
   if obytes && nbytes~=obytes
    i=i-1; odate=[]; return
   end
   d_raw=[];
   if strfind(filename,'.mat.bz2')
+   tfile=[local.tfile '.mat'];
    if strcmp(local.name,'Octave')
-    tfile=[tempname(local.tempdir) '.mat'];
     copyfile(filename,[tfile '.bz2']);
     bunzip2([tfile '.bz2']);
    else
-    tfile=[tempname(local.tempdir) '.mat'];
     s=rtgix(sprintf('bunzip2 -c %s >%s',filename,tfile));
    end
    load(tfile), delete(tfile)

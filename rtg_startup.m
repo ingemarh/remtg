@@ -31,8 +31,12 @@ if ~isfield(local,'tempdir')
  clear TMP
 end
 if ~exist(local.tempdir,'dir'), mkdir(local.tempdir); end
+local.tfile=tempname(local.tempdir);
 if strcmp(local.name,'Octave') || local.ver<8.4
  groot=0;
+ confirm_recursive_rmdir(0)
+ warning('off','image: non-linear X, Y data is ignored')
+ warning('off','all')
 else
  set(groot,'defaultAxesTitleFontSizeMultiplier',1)
  set(groot,'defaultAxesLabelFontSizeMultiplier',1)

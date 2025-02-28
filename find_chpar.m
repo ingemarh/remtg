@@ -1,5 +1,5 @@
 function chpar=find_chpar(filename)
-global d_ExpInfo site old_ExpInfo def_file old_chpar
+global d_ExpInfo site old_ExpInfo def_file old_chpar h5 local
 if strcmp(d_ExpInfo,old_ExpInfo) && ~isempty(def_file)
  chpar=old_chpar; clear(def_file), return
 end
@@ -7,10 +7,31 @@ expdir=fullfile(filesep,'kst','exp');
 [i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
 if isempty(old_ExpInfo) && ~isempty(def_file), return, end
 defile='rtg_def'; dm=[defile '.m']; def_file=[];
-idir=fileparts(fileparts(filename));
-[i,sdir,sext]=fileparts(idir);
-idir1=[idir '_information']; idir=fullfile(idir,[sdir sext '_information']);
-infodir=dir(idir);
+idir=fileparts(filename);
+if ~isempty(h5)
+ d=dir(fullfile(idir,['*' num2str(h5(7)) '.tar.gz']));
+ if ~isempty(d)
+  filenames=untar(fullfile(idir,d.name),local.tfile);
+  if strcmp(local.name,'Octave')
+   d=find(~cellfun(@isempty,strfind(filenames,dm))); %Octave contains
+   idir=fullfile(local.tfile,fileparts(fileparts(fileparts(char(filenames(d))))));
+  else
+   d=find(contains(filenames,dm));
+   idir=fileparts(fileparts(fileparts(char(filenames(d)))));
+  end
+  if isempty(d)
+   idir=fileparts(idir);
+   [i,sdir,sext]=fileparts(idir);
+   idir1=[idir '_information']; idir=fullfile(idir,[sdir sext '_information']);
+  end
+  infodir=dir(idir);
+ end
+else
+ idir=fileparts(idir);
+ [i,sdir,sext]=fileparts(idir);
+ idir1=[idir '_information']; idir=fullfile(idir,[sdir sext '_information']);
+ infodir=dir(idir);
+end
 if isempty(infodir)
  idir=idir1; infodir=dir(idir);
 end
@@ -29,7 +50,7 @@ while ~isempty(infodir) && isempty(def_file) && infodir(end).isdir
  end
 end
 while ~isempty(chpar) && isempty(def_file)
- if isunix
+ if isunix && isempty(h5)
   [dum,inEI]=rtgix(['/bin/sh -c ''ls ' fullfile(expdir,'??',chpar,dm) ' 2>/dev/null''']);
  else
   dum=1;

@@ -79,6 +79,8 @@ if ~isempty(def_file)
  else
   run([def_file '.m']);
  end
+else
+ psig=[];
 end
 head=[chpar head];
 if exist('rawlim','var') && ~isempty(rawlim)

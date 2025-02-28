@@ -1,5 +1,5 @@
 function datasel
-global rtdir bval butts d odate h5 h5d local
+global rtdir bval butts d odate h5 local
 v=get(butts(4),'value')-2;
 if v==0
  if ~isempty(rtdir) && exist(rtdir,'dir'), ndir=rtdir;
@@ -10,7 +10,7 @@ if v==0
  if strcmp(getenv("EISCATSITE"),'Hub')
   [startfile,ndir,dum]=uigetfile(fullfile(ndir,'*.*'),'Pick a start file in directory');
  else
-  [startfile,ndir,dum]=uigetfile({'*.mat*','Pick a start file in directory';'*.mat.bz2','bzip2 files';'*hdf5','L2 file'});
+  [startfile,ndir,dum]=uigetfile({'*.mat*','Pick a start file in directory';'*hdf5','L1/2 hdf5 file'});
  end
  if ~isequal(startfile,0) && ~isequal(ndir,0)
   rtdir=ndir;
@@ -18,6 +18,7 @@ if v==0
   if isempty(d)
    h5data
   else
+   h5=[];
    while ~isempty(d) && isempty(strfind(d(1).name,startfile))
     d(1)=[];
    end
