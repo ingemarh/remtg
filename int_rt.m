@@ -98,7 +98,7 @@ while i<bval(2)
    obytes=length(d_data);
   end
  else
-  if obytes && nbytes~=obytes
+  if obytes && nbytes~=obytes && ~exist('i_averaged','var') && d_parbl(41)<9
    i=i-1; odate=[]; return
   end
   d_raw=[];
