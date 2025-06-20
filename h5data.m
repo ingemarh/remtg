@@ -17,7 +17,7 @@ if exist('startfile','var') || isempty(d)
  end
  odate=fullfile(rtdir,d(h5).name);
  h5(2)=0;
- hi=h5info(odate,'/Data/Time'); h5(3)=hi.Dataspace.Size(2);
+ hi=h5info(odate,'/Data/EndTime'); h5(3)=hi.Dataspace.Size;
  h5(4:6)=Inf;
  if strcmp(local.name,'Octave')
   hi=h5info(odate,'/Data/ParBlock/ParBlock'); h5(4)=hi.Dataspace.Size(1);
@@ -26,7 +26,7 @@ if exist('startfile','var') || isempty(d)
    hi=h5info(odate,'/Data/L1'); h5(6)=hi.Dataspace.Size(1);
   catch,end
  end
- h5(7)=h5read(odate,'/DataBase/InfoID');
+ h5(7)=h5read(odate,'/PortalDBReference/InfoID');
 end
 if h5(2)<h5(3)
  h5(2)=h5(2)+1;
@@ -34,7 +34,7 @@ else
  try
   h5(1)=h5(1)+1;
   odate=fullfile(rtdir,d(h5(1)).name);
-  hi=h5info(odate,'/Data/Time'); h5(3)=hi.Dataspace.Size(2);
+  hi=h5info(odate,'/Data/EndTime'); h5(3)=hi.Dataspace.Size(2);
   h5(2)=1;
  catch
   d=[];

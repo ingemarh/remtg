@@ -4,10 +4,13 @@ if strcmp(d_ExpInfo,old_ExpInfo) && ~isempty(def_file)
  chpar=old_chpar; clear(def_file), return
 end
 expdir=fullfile(filesep,'kst','exp');
-[i,chpar]=strtok(d_ExpInfo); chpar=strtok(chpar);
+[i,chpar]=strtok(d_ExpInfo);
+if isempty(chpar), chpar=i; end
+chpar=strtok(chpar);
 if isempty(old_ExpInfo) && ~isempty(def_file), return, end
 defile='rtg_def'; dm=[defile '.m']; def_file=[];
 idir=fileparts(filename);
+infodir=[]; idir1=idir;
 if ~isempty(h5)
  d=dir(fullfile(idir,['*' num2str(h5(7)) '.tar.gz']));
  if ~isempty(d)

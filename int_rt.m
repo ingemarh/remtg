@@ -85,7 +85,7 @@ while i<bval(2)
   d_parbl=h5read(filename,'/Data/ParBlock/ParBlock',[1,h5(2)],[h5(4),1]);
   d_r=h5read(filename,'/Data/L2',[1,1,h5(2)],[h5(5),2,1]);
   d_data=complex(d_r(:,1),d_r(:,2));
-  d_ExpInfo=char(h5read(filename,'/DataBase/ExperimentName'));
+  d_ExpInfo=char(h5read(filename,'/PortalDBReference/ExperimentName'));
   try,
    d_r=h5read(filename,'/Data/L1',[1,1,h5(2)],[h5(6),2,1]);
    d_raw=single(complex(d_r(:,1),d_r(:,2)));
