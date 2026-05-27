@@ -10,7 +10,7 @@ if isempty(bval)
  sitecode.mini='L2VTKSHPQ3WD';
  sitecode.low='llvurr pq3wd';
  site=strfind(sitecode.mini,getenv('EISCATSITE'));
- xwn=getenv('XTERM_WM_NAME');
+ xwn=getenv('WM_NAME');
  if isempty(site), site=2; err=1;
  elseif site==4 && ~isempty(strfind(xwn,'VHF')), site=3;
  end

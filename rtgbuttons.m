@@ -4,7 +4,7 @@ if nargin>0, getaxes(fig,0,0);, end
 butts(1)=uicontrol('Style','togglebutton','string','GO','position',[0 0 40 30],'value',bval(1),'callback','setbval','fontsize',14);
 butts(2)=uicontrol('Style','text','position',[120 0 20 20],'string',num2str(bval(2)),'value',bval(2));
 butts(3)=uicontrol('Style','slider','position',[40 0 80 20],'min',0,'max',log(30),'sliderstep',[.2 1],'value',log(bval(2)),'tooltipstring','Post integration','callback','pitext');
-butts(4)=uicontrol('Style','popupmenu','string',sitecode.short,'position',[145 0 60 20],'callback','datasel','tooltipstring','Data source','value',bval(4)+2);
+butts(4)=uicontrol('Style','popupmenu','string',sitecode.short,'position',[145 0 60 20],'callback','datasel','tooltipstring','Data source','value',min([bval(4) 5])+2);
 butts(5)=uicontrol('Style','togglebutton','string','www','position',[390 0 35 20],'value',bval(5),'callback','setbval','tooltipstring','Web publish');
 butts(6)=uicontrol('Style','popupmenu','string','1x1|2x1|3x1|2x2','position',[205 0 70 20],'value',bval(6),'callback','setbval','tooltipstring','Raw plots');
 butts(7)=uicontrol('Style','togglebutton','string','ACF','position',[205 0 35 20],'value',bval(7),'callback','setbval','tooltipstring','Show ACFs','visible','off');

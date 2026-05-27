@@ -11,7 +11,7 @@ while i<bval(2)
   rdir='/kst/exp/';
   s=1; j=1;
   while s
-   filename=[rdir 'latest@' lower(char(sitecode.short(2+bval(4)))) '.mat'];
+   filename=[rdir 'latest@' lower(char(sitecode.short(2+min([bval(4) 5])))) '.mat'];
    jj=9;
    while ~exist(filename,'file')
     jj=jj-1, 
