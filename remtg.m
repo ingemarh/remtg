@@ -42,7 +42,15 @@ end
 rd=real(dd_data); id=imag(dd_data); id(find(id==0))=NaN;
 site=d_parbl(41); intt=d_parbl(7);
 tim=datestr(datenum(round(d_parbl(1:6))),31); tim=[tim(1:13) tim(15:19)];
-if site==14, txpow=d_parbl(65); else, txpow=d_parbl(8)/1000; end
+if d_parbl(1)>2020 && site<9
+ if site==8 || site==3
+  txpow=d_parbl(70);
+ else
+  txpow=d_parbl(65);
+ end
+else
+ txpow=d_parbl(8)/1000;
+end
 head=sprintf(' %s %gs %.0fkW %.1f/%.1f',tim,intt,txpow,rem(d_parbl(10),360),d_parbl(9));
 %raw data
 sms=[d_ExpInfo head]; figs=[]; sitet=[' ' char(sitecode.long(site))];

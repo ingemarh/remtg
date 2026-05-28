@@ -1,7 +1,7 @@
 function mkweb(sms)
 global site lastweb bval figs local sitecode pldirs
 if bval(4)>0 && ~isempty(lastweb) && now-lastweb<30/86400 || bval(5)>3, return, end
-if local.x | strcmp(local.name,'Octave')
+if local.x
  jpg='png'; flag='-r72';
 else
  jpg='png256'; flag='-painters';
@@ -10,6 +10,9 @@ sitex=lower(sitecode.mini(site));
 dir=local.tempdir;
 files=fullfile(dir,[sitex '.html']);
 fid=fopen(files,'w');
+filesn=fullfile(dir,[sitex '.txt']);
+fidn=fopen(filesn,'w');
+files=[files ' ' filesn];
 fprintf(fid,'<head>\n<TITLE>EISCAT-%s Real Time Graph</TITLE>\n</head>\n',char(sitecode.web(site)));
 reloadfix=fix(10000*rand(1));
 for i=sort(figs)
@@ -23,9 +26,14 @@ for i=sort(figs)
     if any(get(i,'PaperPosition')-d)
      set(i,'PaperPosition',d,'PaperOrientation','portrait')
     end
-    print(i,['-d' jpg],flag,'-noui',fname)
+    if strcmp(local.name,'Octave')
+     print(i,'-dpng','-r72',fname)
+    else
+     print(i,['-d' jpg],'-noui',flag,fname)
+    end
     files=[files ' ' fname '.png'];
     fprintf(fid,'<IMG SRC="%s?%d" ALT="%s"><P>\n',[ffig '.png'],reloadfix,get(i,'name'));
+    fprintf(fidn,'%s?%d %s\n',[ffig '.png'],reloadfix,get(i,'name'));
    else
     fname=[fname '.png'];
     if local.ver>3
@@ -36,6 +44,7 @@ for i=sort(figs)
     end
     files=[files ' ' fname];
     fprintf(fid,'<IMG SRC="%s?%d"><P>\n',[ffig '.png'],reloadfix);
+    fprintf(fidn,'%s?%d %s\n',[ffig '.png'],reloadfix);
    end
   catch
    disp(lasterr)
@@ -43,6 +52,7 @@ for i=sort(figs)
  end
 end
 fclose(fid);
+fclose(fidn);
 fname=fullfile(dir,[sitex 'sms.txt']);
 fid=fopen(fname,'w');
 fprintf(fid,'%s',sms);
@@ -66,13 +76,6 @@ elseif local.x
 else
  close all
 end
-
-if site==6
- [i,d]=rtgix('ps | grep cp | grep -v grep');
- if i
-  rtgix(['cp ' files ' /net/aurora/www/ht/rtg/']);
- end
-end
 if site==4 || site==3
  rtgix(['scp -q ' files ' palver5:/var/www/html/rtg/']); 
 end
@@ -84,6 +87,8 @@ if i
   [i,files]=strtok(files);
   file=[file ' -F file=@' i];
  end
- [status,cmdout]=rtgix(['curl -s ' file ' https://portal.eiscat.se/rtg/upload.cgi &']);
+ %cmd=sprintf('curl -s %s https://portal.eiscat.se/rtg/upload.cgi &',file)
+ cmd=sprintf('curl -s %s https://portal.eiscat.se/getpng/%s &',file,upper(sitex));
+ [status,cmdout]=rtgix(cmd);
 end
 lastweb=now;
