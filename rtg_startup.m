@@ -64,7 +64,7 @@ if local.ver>3.4
  end
 end
 set(groot,'defaultTextFontSize',12)
-set(groot,'defaultAxesColorOrder',[1 0 0;0 1 0;0 0 1;0 0 0;1 0 1;0 1 1;1 1 0;.5 .5 .5])
+set(groot,'defaultAxesColorOrder',[1 0 0;0 1 0;0 0 1;0.44 0.44 0.44;1 0 1;0 1 1;1 1 0])
 set(groot,'defaultAxesColor','none')
 if strcmp(local.name,'Octave')
  [~,d]=strtok(fliplr(which('rtg')),filesep);

@@ -1,10 +1,12 @@
 function ax=getaxes(fig,s1,s2,name,head)
 global figs local selax
+persistent ysize
 if ~isgraphics(fig)
  figg=figure(fig);
  if local.x
   d=get(0,'defaultfigureposition');
-  set(figg,'position',[d(1:2)+[1 -1]*fig d(3:4)])
+  ysize=min(d(4),600);
+  set(figg,'position',[d(1:2)+[1 -1]*fig min(d(3),800) ysize])
  elseif local.ver==6.5
   close(figg),figg=figure(fig); % Matlab R13 bug
  end
@@ -43,9 +45,11 @@ if isempty(ax) || length(ax)~=prod([s1 s2]) || isempty(h)
    set(h,'position',get(h,'position')-[0 300 0])
   end
   if s1==0, set(gca,'visible','off'), end
+  spos=get(fig,'Position');
+  spos(4)=ysize*(0.4+0.3*(max(ceil(s1),1)));
   s1=6*min([max([1 ceil(s1)]) 4])+4;
   pos=[0 14.8-s1/2 20 s1];
-  set(fig,'PaperPosition',pos,'name',name,'UserData',pos)
+  set(fig,'PaperPosition',pos,'name',name,'UserData',pos,'Position',spos)
  end
 elseif nargin>3
  set(h,'string',head)
